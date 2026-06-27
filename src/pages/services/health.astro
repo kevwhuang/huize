@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '专家资源对接与就医协助，让看病更省心、更高效。', title: '就医绿色通道' },
+    { description: '住院—社区—居家全周期康复评估与训练，科学回归健康生活。', title: '三级康复服务' },
+    { description: '药安心全球药械专享服务，特药与器械便捷可及。', title: '便捷购药服务' },
+];
+---
+
+<Layout
+    description="绿通、诊疗、护理、康复、购药一体化。聚焦脑卒中、骨科等刚需领域，提供三级康复服务。"
+    title="健康管理 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="SERVICE CENTER &middot; HEALTH" title="健康管理" />
+        <Subpage
+            cards={CARDS}
+            lead="绿通、诊疗、护理、康复、购药一体化。聚焦脑卒中、骨科等刚需领域，为家庭提供住院—社区—居家的三级康复服务。"
+        />
+    </main>
+    <Footer />
+</Layout>

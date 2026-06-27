@@ -1,0 +1,117 @@
+---
+const NEWS_ITEMS = [
+    {
+        category: '公司新闻',
+        date: '2024.03.29',
+        image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+        path: '/news/company',
+        summary: '招商仁和人寿携手上海惠泽健康开启战略合作。',
+        title: '招商仁和人寿携手上海惠泽健康开启全面战略合作',
+    },
+    {
+        category: '公司新闻',
+        date: '2023.09.01',
+        image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
+        path: '/news/company',
+        summary: '上海惠泽智通健康科技有限公司重要公告，必读！',
+        title: '重要公告，必读！',
+    },
+    {
+        category: '公司新闻',
+        date: '2022.11.26',
+        image: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=800&q=80',
+        path: '/news/company',
+        summary: '为广大老百姓带来全球特药和器械服务。',
+        title: '惠泽健康【药安心*全球药械专享服务】隆重上市',
+    },
+    {
+        category: '公司新闻',
+        date: '2022.01.27',
+        image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80',
+        path: '/news/company',
+        summary: '由清华大学金融科技研究院等学术指导单位发起评选。',
+        title: '惠泽健康成功入选2021年全球金融科技创业大赛优胜项目50强',
+    },
+];
+---
+
+<section class="news" aria-labelledby="news-title">
+    <div class="shell py-[clamp(64px,8vw,116px)]">
+        <div class="flex flex-wrap items-end justify-between gap-5">
+            <div>
+                <div class="flex items-center gap-3">
+                    <span class="block h-[2px] w-[30px] bg-gold" />
+                    <span class="font-label text-xs font-medium uppercase tracking-[3px] text-gold">News Center</span>
+                </div>
+                <h2
+                    class="mt-4 font-display text-[clamp(1.9rem,3.4vw,2.7rem)] font-bold tracking-[.5px] text-pine"
+                    id="news-title"
+                >
+                    新闻中心
+                </h2>
+                <p class="mt-3 text-base font-light text-sage-light">了解惠泽的最新动态与行业洞察</p>
+            </div>
+            <a
+                class="news__more inline-flex items-center gap-[9px] pb-2 text-[15.5px] font-medium text-jade"
+                href="/news"
+            >
+                了解更多
+                <span class="inline-block h-2 w-2 rotate-45 border-r-2 border-t-2 border-jade" />
+            </a>
+        </div>
+
+        <ul class="mt-[46px] grid list-none grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-[26px]">
+            {NEWS_ITEMS.map(item => (
+                <li class="flex">
+                    <a
+                        class="news__card flex flex-col overflow-hidden rounded-[18px] border border-silk bg-white shadow-[0_8px_24px_rgba(7,58,51,.05)]"
+                        href={item.path}
+                    >
+                        <div
+                            aria-hidden="true"
+                            class="relative h-[170px] bg-gradient-to-br from-jade-light to-pine"
+                        >
+                            <div
+                                class="absolute inset-0 bg-cover bg-center"
+                                style={`background-image:url('${item.image}')`}
+                            />
+                        </div>
+                        <div class="flex flex-1 flex-col p-[22px]">
+                            <span class="inline-block self-start rounded-[20px] bg-mint px-3 py-[5px] text-[11.5px] tracking-[1px] text-jade">{item.category}</span>
+                            <h3 class="mt-[14px] font-display text-[17px] font-semibold leading-[1.55] text-cedar">{item.title}</h3>
+                            <p class="mt-[10px] text-[13.5px] leading-[1.7] text-haze">{item.summary}</p>
+                            <time class="mt-auto block pt-4 font-label text-[13px] tracking-[1px] text-fog" datetime={item.date.replace(/\./g, '-')}>{item.date}</time>
+                        </div>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .news__card {
+        transition: box-shadow var(--duration-base), transform var(--duration-base);
+    }
+
+    .news__card:hover {
+        box-shadow: 0 26px 50px rgba(7, 58, 51, .13);
+        transform: translateY(-7px);
+    }
+
+    .news__card:active {
+        transform: translateY(-2px);
+    }
+
+    .news__more {
+        transition: gap var(--duration-fast);
+    }
+
+    .news__more:hover {
+        gap: 14px;
+    }
+
+    .news__more:active {
+        opacity: 0.8;
+    }
+</style>

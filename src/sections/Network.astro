@@ -1,0 +1,171 @@
+---
+const PANELS = [
+    {
+        description: '各类康养基地介绍。依托优质自然与医疗资源，打造旅居康养与疗愈目的地。',
+        link: '/network/bases',
+        number: '01',
+        tags: ['40+ 实体机构', '旅居疗愈', '医养结合'],
+        title: '康养基地',
+    },
+    {
+        description: '养老机构列表。覆盖机构养老、社区照护与居家护理的多层次养老服务网络。',
+        link: '/network/elderly-care',
+        number: '02',
+        tags: ['机构养老', '社区照护', '居家护理'],
+        title: '养老机构',
+    },
+    {
+        description: '专科康复医院，三级及以上医院，全国医疗列表。聚焦脑卒中与骨科康复。',
+        link: '/network/medical',
+        number: '03',
+        tags: ['100+ 合作机构', '专科康复', '三级医院'],
+        title: '医疗机构',
+    },
+    {
+        description: '服务城市列表。服务网络覆盖全国500个城市，累计服务超1000万人次。',
+        link: '/network/cities',
+        number: '04',
+        tags: ['500+ 城市', '就近触达', '本地化网络'],
+        title: '服务城市',
+    },
+];
+---
+
+<section
+    class="bg-mint"
+    id="network"
+>
+    <div class="shell flex flex-wrap gap-[clamp(40px,5vw,72px)] py-[clamp(64px,8vw,116px)]">
+        <div class="network__left min-w-0 flex-[1_1_360px]">
+            <div class="flex items-center gap-3">
+                <span class="h-0.5 w-[30px] bg-gold" />
+                <span class="font-label text-xs font-medium uppercase tracking-[3px] text-gold">Service Network</span>
+            </div>
+            <h2
+                class="mt-[18px] font-display text-[clamp(1.9rem,3.4vw,2.7rem)] font-bold leading-[1.32] tracking-wide text-pine"
+                id="network-title"
+            >
+                覆盖全国的<br />康养与医疗服务网络
+            </h2>
+            <p class="mt-5 text-base font-light leading-8 text-sage">
+                服务网络覆盖全国500个城市，依托康养基地、养老机构与医疗机构，累计为超过1000万人次提供专业照护服务。
+            </p>
+            <div
+                aria-hidden="true"
+                class="relative mt-[30px] min-h-[230px] overflow-hidden rounded-[18px] shadow-[0_22px_50px_rgba(7,58,51,.16)]"
+            >
+                <div
+                    class="absolute inset-0 bg-cover bg-center"
+                    style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80');"
+                />
+                <div class="absolute inset-0 bg-gradient-to-br from-[rgba(7,58,51,.15)] to-[rgba(7,58,51,.5)]" />
+                <span class="absolute bottom-4 left-[18px] font-label text-[11px] uppercase tracking-[2px] text-white/85">
+                    nationwide &middot; 全国网络
+                </span>
+            </div>
+        </div>
+
+        <div
+            aria-labelledby="network-title"
+            class="network__right flex min-w-0 flex-[1_1_440px] flex-col gap-3.5"
+        >
+            {PANELS.map(panel => (
+                <details
+                    class="network__panel overflow-hidden rounded-2xl border border-shell bg-white shadow-[0_6px_18px_rgba(7,58,51,.04)]"
+                    name="network"
+                >
+                    <summary class="flex w-full cursor-pointer items-center justify-between gap-4 border-none bg-none p-[24px_26px] text-left">
+                        <span class="flex items-center gap-4">
+                            <span class="network__number font-label text-sm font-semibold text-sage-pale">{panel.number}</span>
+                            <span class="font-display text-[19px] font-semibold text-pine">{panel.title}</span>
+                        </span>
+                        <span class="network__icon relative h-[18px] w-[18px] shrink-0 transition-transform duration-[var(--duration-base)]">
+                            <span class="absolute left-0 top-2 h-0.5 w-[18px] bg-jade" />
+                            <span class="absolute left-2 top-0 h-[18px] w-0.5 bg-jade" />
+                        </span>
+                    </summary>
+                    <div class="px-[26px] pb-[26px]">
+                        <p class="m-0 text-[15px] font-light leading-[1.9] text-sage">{panel.description}</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            {panel.tags.map(tag => (
+                                <span class="rounded-[18px] bg-mint px-3.5 py-[7px] text-[13px] text-jade">{tag}</span>
+                            ))}
+                        </div>
+                        <a
+                            class="network__link mt-[18px] inline-flex items-center gap-2 text-[14.5px] font-medium text-jade transition-[gap] duration-[var(--duration-fast)] hover:gap-[13px]"
+                            href={panel.link}
+                        >
+                            查看更多
+                            <span class="inline-block h-[7px] w-[7px] rotate-45 border-r-2 border-t-2 border-jade" />
+                        </a>
+                    </div>
+                </details>
+            ))}
+        </div>
+    </div>
+</section>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener('astro:page-load', initNetwork);
+
+    function initNetwork() {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const left = document.querySelector<HTMLElement>('.network__left');
+        const right = document.querySelector<HTMLElement>('.network__right');
+
+        if (reduced) {
+            left?.style.setProperty('opacity', '1');
+            right?.style.setProperty('opacity', '1');
+            return;
+        }
+
+        if (left) {
+            gsap.from(left, {
+                duration: 0.9,
+                ease: 'power3.out',
+                opacity: 0,
+                scrollTrigger: { start: 'top 85%', trigger: left },
+                y: 30,
+            });
+        }
+
+        if (right) {
+            gsap.from(right, {
+                delay: 0.1,
+                duration: 0.9,
+                ease: 'power3.out',
+                opacity: 0,
+                scrollTrigger: { start: 'top 85%', trigger: right },
+                y: 30,
+            });
+        }
+
+        document.addEventListener('astro:before-preparation', () => {
+            ScrollTrigger.getAll().forEach(st => st.kill());
+        }, { once: true });
+    }
+</script>
+
+<style>
+    details[open] .network__icon {
+        transform: rotate(45deg);
+    }
+
+    details[open] .network__number {
+        color: var(--color-jade);
+    }
+
+    summary::-webkit-details-marker,
+    summary::marker {
+        display: none;
+    }
+
+    summary {
+        list-style: none;
+    }
+</style>

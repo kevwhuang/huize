@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '021-5453-0907', title: '服务热线' },
+    { description: 'www.huizehealth.com', title: '公司网址' },
+    { description: '上海市闵行区元江路525号24幢别墅', title: '公司地址' },
+];
+---
+
+<Layout
+    description="欢迎垂询惠泽的康养与健康管理服务。服务热线 021-5453-0907。"
+    title="联系我们 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="ABOUT HUIZE &middot; CONTACT" title="联系我们" />
+        <Subpage
+            cards={CARDS}
+            lead="欢迎垂询惠泽的康养与健康管理服务。服务热线 021-5453-0907，地址：上海市闵行区元江路525号24幢别墅。"
+        />
+    </main>
+    <Footer />
+</Layout>

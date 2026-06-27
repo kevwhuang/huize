@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '2024-03-29', title: '招商仁和人寿携手上海惠泽健康开启全面战略合作' },
+    { description: '2023-09-01', title: '重要公告，必读！' },
+    { description: '2022-11-26', title: '惠泽健康【药安心*全球药械专享服务】隆重上市' },
+];
+---
+
+<Layout
+    description="惠泽健康的企业动态、战略合作与品牌大事记。"
+    title="公司新闻 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="NEWS CENTER &middot; COMPANY" title="公司新闻" />
+        <Subpage
+            cards={CARDS}
+            lead="惠泽健康的企业动态、战略合作与品牌大事记。"
+        />
+    </main>
+    <Footer />
+</Layout>

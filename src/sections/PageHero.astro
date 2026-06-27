@@ -1,0 +1,96 @@
+---
+interface Props {
+    section: string;
+    title: string;
+}
+
+const { section, title } = Astro.props;
+---
+
+<section
+    aria-labelledby="pagehero-title"
+    class="pagehero"
+>
+    <div class="pagehero__glow" />
+    <div class="shell pagehero__inner">
+        <p class="pagehero__section">{section}</p>
+        <h1
+            class="pagehero__title"
+            id="pagehero-title"
+        >{title}
+        </h1>
+        <nav class="pagehero__breadcrumb" aria-label="breadcrumb">
+            <a href="/">首页</a>
+            <span>/</span>
+            <span class="pagehero__current">{title}</span>
+        </nav>
+    </div>
+</section>
+
+<style>
+    .pagehero {
+        background: var(--color-pine);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .pagehero__glow {
+        background: radial-gradient(circle, rgba(255, 255, 255, .06), transparent 70%);
+        border-radius: 50%;
+        height: 380px;
+        position: absolute;
+        right: -80px;
+        top: -100px;
+        width: 380px;
+    }
+
+    .pagehero__inner {
+        padding-bottom: clamp(56px, 7vw, 92px);
+        padding-top: clamp(56px, 7vw, 92px);
+        position: relative;
+    }
+
+    .pagehero__section {
+        color: rgba(255, 255, 255, .55);
+        font-family: var(--font-label);
+        font-size: 12px;
+        letter-spacing: 2px;
+        margin-bottom: 0;
+        text-transform: uppercase;
+    }
+
+    .pagehero__title {
+        color: #ffffff;
+        font-family: var(--font-display);
+        font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 0;
+    }
+
+    .pagehero__breadcrumb {
+        align-items: center;
+        color: rgba(255, 255, 255, .6);
+        display: flex;
+        font-size: 13.5px;
+        gap: 10px;
+        margin-bottom: 0;
+    }
+
+    .pagehero__breadcrumb a {
+        color: rgba(255, 255, 255, .6);
+        transition: color var(--duration-fast);
+    }
+
+    .pagehero__breadcrumb a:hover {
+        color: #ffffff;
+    }
+
+    .pagehero__breadcrumb a:active {
+        opacity: 0.8;
+    }
+
+    .pagehero__current {
+        color: var(--color-gold-light);
+    }
+</style>

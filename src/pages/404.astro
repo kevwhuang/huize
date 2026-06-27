@@ -1,13 +1,19 @@
 ---
 import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
 import NotFound from '@sections/NotFound.astro';
 
 export const prerender = false;
 ---
 
 <Layout
-    description="The page you're looking for doesn't exist."
-    title="404 - Not Found"
+    description="您访问的页面不存在。"
+    title="404 &mdash; 惠泽健康"
 >
-    <NotFound />
+    <Navbar />
+    <main class="flex-1">
+        <NotFound />
+    </main>
+    <Footer />
 </Layout>

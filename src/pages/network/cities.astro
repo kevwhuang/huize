@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '服务网络覆盖全国，随时随地触达专业照护。', title: '500+ 服务城市' },
+    { description: '累计服务超千万人次，沉淀丰富的照护经验。', title: '1000万+ 服务人次' },
+    { description: '依托本地化网络，让服务更贴近每一个家庭。', title: '就近触达' },
+];
+---
+
+<Layout
+    description="服务城市列表。惠泽服务网络覆盖全国500个城市，累计服务超过1000万人次。"
+    title="服务城市 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="SERVICE NETWORK &middot; CITIES" title="服务城市" />
+        <Subpage
+            cards={CARDS}
+            lead="服务城市列表。惠泽服务网络覆盖全国500个城市，累计为超过1000万人次提供康养与健康管理服务。"
+        />
+    </main>
+    <Footer />
+</Layout>

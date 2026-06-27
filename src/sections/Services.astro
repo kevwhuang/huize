@@ -1,0 +1,253 @@
+---
+const SERVICE_PANELS = [
+    {
+        bullets: ['旅居康养疗愈', '全国机构养老', '社区日间照护', '专业居家护理'],
+        description: '旅居康养疗愈，全国养老服务。依托遍布全国的康养基地与养老机构网络，提供多场景的专业照护。',
+        english: 'Wellness',
+        id: 'wellness',
+        image: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80',
+        label: '康养服务',
+        number: '01',
+        path: '/services/wellness',
+        subtitle: '旅居康养 · 全国养老',
+    },
+    {
+        bullets: ['就医绿色通道', '院内护理 · 居家护理', '上门康复 · 远程评估', '护工到家 · 社区康复'],
+        description: '绿通、诊疗、护理、康复、购药一体化。聚焦脑卒中、骨科等刚需领域，提供住院—社区—居家三级康复服务。',
+        english: 'Health',
+        id: 'health',
+        image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80',
+        label: '健康管理',
+        number: '02',
+        path: '/services/health',
+        subtitle: '诊疗 · 护理 · 康复',
+    },
+    {
+        bullets: ['健康增值服务', '理赔协助支持', '老人商业医疗保险', '企业团体方案'],
+        description: '一站式健康增值服务。为保险与企业客户提供健康管理、理赔协助与定制化增值方案。',
+        english: 'Insurance',
+        id: 'insurance',
+        image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80',
+        label: '保险服务',
+        number: '03',
+        path: '/services/insurance',
+        subtitle: '一站式健康增值',
+    },
+    {
+        bullets: ['免疫与细胞治疗', '全球特药器械', '海外医疗对接', '专属健康管家'],
+        description: '免疫、细胞、特药、海外医疗。为高净值家庭提供前沿医疗与全球优质医疗资源对接。',
+        english: 'Premium',
+        id: 'premium',
+        image: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&q=80',
+        label: '高端定制',
+        number: '04',
+        path: '/services/premium',
+        subtitle: '免疫 · 细胞 · 海外医疗',
+    },
+];
+---
+
+<section
+    aria-labelledby="services-title"
+    class="services relative overflow-hidden bg-pine"
+    id="services"
+>
+    <div class="absolute -left-[90px] -top-[90px] h-[340px] w-[340px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,.05),transparent_70%)]" />
+    <div class="shell relative py-[clamp(64px,8vw,116px)]">
+        <div class="services__header mb-[54px] text-center">
+            <div class="inline-flex items-center gap-3">
+                <span class="block h-[2px] w-[30px] bg-gold" />
+                <span class="font-label text-xs font-medium uppercase tracking-[3px] text-gold-light">Service Center</span>
+                <span class="block h-[2px] w-[30px] bg-gold" />
+            </div>
+            <h2
+                class="mt-[18px] font-display text-[clamp(1.9rem,3.6vw,2.8rem)] font-bold tracking-[1px] text-white"
+                id="services-title"
+            >
+                惠泽 &mdash; 您专属的健康管家
+            </h2>
+            <p class="mt-4 text-base font-light text-white/70">覆盖康养、健康、保险与高端医疗的一体化服务体系</p>
+        </div>
+
+        <div class="flex flex-wrap items-stretch gap-[26px]">
+            <div
+                class="flex min-w-0 flex-[1_1_280px] flex-col gap-[14px]"
+                role="tablist"
+            >
+                {SERVICE_PANELS.map(panel => (
+                    <button
+                        aria-controls={`panel-${panel.id}`}
+                        class="services__tab"
+                        data-service-tab={panel.id}
+                        role="tab"
+                        type="button"
+                    >
+                        <span class="services__tab-number">{panel.number}</span>
+                        <span class="flex flex-col gap-[5px]">
+                            <span class="font-display text-lg font-semibold tracking-[1px]">{panel.label}</span>
+                            <span class="services__tab-subtitle text-[12.5px] tracking-[.5px]">{panel.subtitle}</span>
+                        </span>
+                    </button>
+                ))}
+            </div>
+
+            <div class="min-w-0 flex-[2_1_460px] rounded-[20px] bg-white p-[clamp(26px,3vw,42px)] shadow-[0_30px_60px_rgba(0,0,0,.22)]">
+                {SERVICE_PANELS.map(panel => (
+                    <div
+                        class="services__panel"
+                        data-service-panel={panel.id}
+                        id={`panel-${panel.id}`}
+                        role="tabpanel"
+                    >
+                        <div class="flex flex-wrap items-center gap-[34px]">
+                            <div class="min-w-0 flex-[1_1_280px]">
+                                <span class="font-label text-[11px] font-normal uppercase tracking-[2.5px] text-gold">{panel.number} / {panel.english}</span>
+                                <h3 class="mt-3 font-display text-[28px] font-bold text-pine">{panel.label}</h3>
+                                <p class="mt-4 text-[15.5px] font-light leading-[1.95] text-sage">{panel.description}</p>
+                                <ul class="mt-[22px] flex flex-col gap-[13px]">
+                                    {panel.bullets.map(bullet => (
+                                        <li class="flex items-center gap-[11px]">
+                                            <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-mint">
+                                                <svg
+                                                    fill="none"
+                                                    height="11"
+                                                    stroke="#0E7C6B"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="3"
+                                                    viewBox="0 0 24 24"
+                                                    width="11"
+                                                >
+                                                    <polyline points="20 6 9 17 4 12" />
+                                                </svg>
+                                            </span>
+                                            <span class="text-[14.5px] text-sage-dark">{bullet}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <a
+                                    class="services__more mt-[26px] inline-flex items-center gap-[9px] text-[15px] font-medium text-jade"
+                                    href={panel.path}
+                                >
+                                    查看更多
+                                    <span class="inline-block h-[7px] w-[7px] rotate-45 border-r-2 border-t-2 border-jade" />
+                                </a>
+                            </div>
+                            <div
+                                aria-hidden="true"
+                                class="relative min-h-[240px] min-w-0 flex-[1_1_200px] self-stretch overflow-hidden rounded-2xl bg-gradient-to-br from-jade-light to-pine"
+                            >
+                                <div
+                                    class="absolute inset-0 bg-cover bg-center"
+                                    style={`background-image:url('${panel.image}')`}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .services__tab {
+        align-items: center;
+        background: #ffffff;
+        border: 1px solid var(--color-stone);
+        border-radius: 16px;
+        box-shadow: 0 1px 0 rgba(7, 58, 51, .04);
+        color: var(--color-pine-light);
+        display: flex;
+        gap: 16px;
+        padding: 20px 22px;
+        text-align: left;
+        transition: transform var(--duration-fast);
+    }
+
+    .services__tab:hover {
+        transform: translateX(4px);
+    }
+
+    .services__tab:active {
+        transform: translateX(2px);
+    }
+
+    .services__tab[aria-selected="true"] {
+        background: var(--color-jade);
+        border-color: var(--color-jade);
+        box-shadow: 0 16px 34px rgba(14, 124, 107, .26);
+        color: #ffffff;
+    }
+
+    .services__tab-number {
+        color: var(--color-sage-pale);
+        font-family: var(--font-label);
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .services__tab[aria-selected="true"] .services__tab-number {
+        color: rgba(255, 255, 255, .55);
+    }
+
+    .services__tab-subtitle {
+        color: var(--color-haze);
+    }
+
+    .services__tab[aria-selected="true"] .services__tab-subtitle {
+        color: rgba(255, 255, 255, .78);
+    }
+
+    .services__panel {
+        display: none;
+    }
+
+    .services__panel[data-active] {
+        display: block;
+    }
+
+    .services__more {
+        transition: gap var(--duration-fast);
+    }
+
+    .services__more:hover {
+        gap: 14px;
+    }
+
+    .services__more:active {
+        opacity: 0.8;
+    }
+</style>
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        const section = document.querySelector<HTMLElement>('.services');
+        if (!section) return;
+
+        const tabs = section.querySelectorAll<HTMLButtonElement>('[data-service-tab]');
+        const panels = section.querySelectorAll<HTMLElement>('[data-service-panel]');
+
+        function activate(id: string) {
+            tabs.forEach((tab) => {
+                tab.setAttribute('aria-selected', tab.dataset.serviceTab === id ? 'true' : 'false');
+            });
+            panels.forEach((panel) => {
+                if (panel.dataset.servicePanel === id) {
+                    panel.setAttribute('data-active', '');
+                } else {
+                    panel.removeAttribute('data-active');
+                }
+            });
+        }
+
+        activate('wellness');
+
+        tabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                const id = tab.dataset.serviceTab;
+                if (id) activate(id);
+            });
+        });
+    });
+</script>

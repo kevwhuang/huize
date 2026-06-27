@@ -1,0 +1,29 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '旅居康养疗愈，全国养老服务网络，覆盖机构、社区与居家多场景照护。', title: '康养服务' },
+    { description: '绿通、诊疗、护理、康复、购药一体化，聚焦脑卒中与骨科刚需康复。', title: '健康管理' },
+    { description: '为保险与企业客户提供一站式健康增值、理赔协助与定制化方案。', title: '保险服务' },
+    { description: '免疫、细胞、特药、海外医疗，对接全球优质医疗资源。', title: '高端定制' },
+];
+---
+
+<Layout
+    description="惠泽构建覆盖康养、健康管理、保险增值与高端医疗的一体化服务体系，为刚需家庭提供全流程照护解决方案。"
+    title="服务中心 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="SERVICE CENTER" title="服务中心" />
+        <Subpage
+            cards={CARDS}
+            lead="惠泽构建覆盖康养、健康管理、保险增值与高端医疗的一体化服务体系，以专业与温度，为刚需家庭提供全流程、一站式的照护与健康解决方案。"
+        />
+    </main>
+    <Footer />
+</Layout>

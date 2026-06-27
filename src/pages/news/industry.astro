@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '行业观察', title: '银发经济与康养产业的新机遇' },
+    { description: '行业观察', title: '三级康复体系建设的实践与思考' },
+    { description: '行业观察', title: '数字健康赋能养老服务升级' },
+];
+---
+
+<Layout
+    description="聚焦康养、康复与数字健康产业的趋势观察与行业洞察。"
+    title="行业新闻 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="NEWS CENTER &middot; INDUSTRY" title="行业新闻" />
+        <Subpage
+            cards={CARDS}
+            lead="聚焦康养、康复与数字健康产业的趋势观察与行业洞察。"
+        />
+    </main>
+    <Footer />
+</Layout>

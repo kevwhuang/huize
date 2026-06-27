@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '专注脑卒中、骨科等刚需康复领域，解决真实痛点。', title: '聚焦刚需' },
+    { description: '标准化服务与专业团队，让照护值得托付。', title: '专业可靠' },
+    { description: '链接上下游供需，与合作伙伴共同成长。', title: '合作共赢' },
+];
+---
+
+<Layout
+    description="以专业与温度照护每一段人生旅程。惠泽坚持聚焦刚需、专业可靠、合作共赢。"
+    title="企业文化 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="ABOUT HUIZE &middot; CULTURE" title="企业文化" />
+        <Subpage
+            cards={CARDS}
+            lead="以专业与温度照护每一段人生旅程。惠泽坚持聚焦刚需、专业可靠、合作共赢，赋能合作伙伴共同发展。"
+        />
+    </main>
+    <Footer />
+</Layout>

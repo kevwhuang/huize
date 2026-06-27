@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '遍布全国的自营实体机构。', title: '40+ 实体机构' },
+    { description: '服务网络覆盖全国五百城。', title: '500 服务城市' },
+    { description: '累计服务超千万人次。', title: '1000万+ 服务人次' },
+];
+---
+
+<Layout
+    description="上海惠泽是一家数字健康科技公司，提供全流程、一站式的养老服务和健康管理服务。"
+    title="关于惠泽 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="ABOUT HUIZE" title="关于惠泽" />
+        <Subpage
+            cards={CARDS}
+            lead="上海惠泽是一家数字健康科技公司，提供全流程、一站式的养老服务和健康管理服务。通过惠泽平台，链接保险客户、企业客户、个人客户和康养机构、医疗机构、服务机构等，打通上下游供需，赋能合作伙伴共同发展。"
+        />
+    </main>
+    <Footer />
+</Layout>

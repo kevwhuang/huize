@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '各类康养基地，依托优质自然与医疗资源打造疗愈目的地。', title: '康养基地' },
+    { description: '多层次养老机构网络，覆盖机构、社区与居家照护。', title: '养老机构' },
+    { description: '专科康复医院与三级及以上医院，聚焦脑卒中与骨科康复。', title: '医疗机构' },
+];
+---
+
+<Layout
+    description="惠泽服务网络覆盖全国500个城市，依托康养基地、养老机构与医疗机构，累计服务超过1000万人次。"
+    title="服务网络 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="SERVICE NETWORK" title="服务网络" />
+        <Subpage
+            cards={CARDS}
+            lead="惠泽服务网络覆盖全国500个城市，依托康养基地、养老机构与医疗机构，累计为超过1000万人次提供服务。"
+        />
+    </main>
+    <Footer />
+</Layout>

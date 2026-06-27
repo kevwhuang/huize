@@ -1,5 +1,7 @@
 ---
-import '@fontsource/geist-sans/index.css';
+import '@fontsource/jost';
+import '@fontsource/noto-sans-sc';
+import '@fontsource/noto-serif-sc';
 import { ClientRouter } from 'astro:transitions';
 
 import '@/global.css';
@@ -15,14 +17,14 @@ const { description, title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
     <head>
         <meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>{title}</title>
         <meta content={description} name="description" />
-        <meta content="Kevin Huang" name="author" />
-        <meta content="#09090b" name="theme-color" />
+        <meta content="惠泽健康" name="author" />
+        <meta content="#0A3A33" name="theme-color" />
         <link href={canonicalUrl} rel="canonical" />
         <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
@@ -30,7 +32,7 @@ const { description, title } = Astro.props;
         <meta content={description} property="og:description" />
         <meta content={`${Astro.site}og.png`} property="og:image" />
         <meta content={canonicalUrl} property="og:url" />
-        <meta content="Huize" property="og:site_name" />
+        <meta content="惠泽健康" property="og:site_name" />
         <meta content="website" property="og:type" />
         <meta content="summary_large_image" name="twitter:card" />
         <meta content={title} name="twitter:title" />
@@ -41,20 +43,14 @@ const { description, title } = Astro.props;
             set:html={JSON.stringify({
                 '@context': 'https://schema.org',
                 '@type': 'WebSite',
-                'author': {
-                    '@type': 'Person',
-                    'name': 'Kevin Huang',
-                },
-                'name': 'Huize',
+                'name': '惠泽健康',
                 'url': Astro.site,
             })}
             type="application/ld+json"
         />
         <ClientRouter />
     </head>
-    <body class="flex flex-col min-h-screen font-sans bg-zinc-950 text-white">
-        <main class="flex flex-1 flex-col">
-            <slot />
-        </main>
+    <body class="flex min-h-screen flex-col bg-cloud font-sans text-slate">
+        <slot />
     </body>
 </html>

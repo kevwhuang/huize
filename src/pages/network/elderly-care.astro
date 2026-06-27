@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '专业团队与标准化服务，提供安心舒适的机构养老体验。', title: '机构养老' },
+    { description: '贴近社区的日间照护，兼顾专业与家庭温度。', title: '社区日间照护' },
+    { description: '护工到家、康复师上门，让照护抵达每一个家庭。', title: '居家护理' },
+];
+---
+
+<Layout
+    description="养老机构列表。覆盖机构养老、社区照护与居家护理的多层次养老服务网络。"
+    title="养老机构 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="SERVICE NETWORK &middot; ELDERLY CARE" title="养老机构" />
+        <Subpage
+            cards={CARDS}
+            lead="养老机构列表。覆盖机构养老、社区照护与居家护理的多层次养老服务网络，为长者提供专业、安心的照护。"
+        />
+    </main>
+    <Footer />
+</Layout>

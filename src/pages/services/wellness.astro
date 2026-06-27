@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '精选自然与医疗资源优质目的地，打造身心疗愈的旅居康养体验。', title: '旅居康养疗愈' },
+    { description: '40余家实体机构与百余家合作机构，提供专业、安心的机构养老服务。', title: '全国机构养老' },
+    { description: '护工到家、康复师上门，让专业照护抵达每一个家庭。', title: '专业居家护理' },
+];
+---
+
+<Layout
+    description="旅居康养疗愈，全国养老服务。依托遍布全国的康养基地与养老机构网络，提供多场景的专业照护服务。"
+    title="康养服务 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="SERVICE CENTER &middot; WELLNESS" title="康养服务" />
+        <Subpage
+            cards={CARDS}
+            lead="旅居康养疗愈，全国养老服务。依托遍布全国的康养基地与养老机构网络，提供旅居、机构、社区与居家多场景的专业照护服务。"
+        />
+    </main>
+    <Footer />
+</Layout>

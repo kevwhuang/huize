@@ -1,23 +1,75 @@
 @import 'tailwindcss';
 
 @theme {
-    --color-cyan: #06b6d4;
-    --color-cyan-80: #06b6d4cc;
-    --font-sans: 'Geist', system-ui, sans-serif;
+    --color-ash: #9aa8a3;
+    --color-cedar: #1a2e29;
+    --color-cloud: #F8FBFA;
+    --color-coral: #C0563F;
+    --color-dew: #FAFCFB;
+    --color-fog: #758380;
+    --color-forest: #073029;
+    --color-gold: #B5893F;
+    --color-gold-light: #C9A24B;
+    --color-haze: #6b7a74;
+    --color-ivory: #E9F1EE;
+    --color-jade: #0E7C6B;
+    --color-jade-10: #0E7C6B1a;
+    --color-jade-30: #0E7C6B4d;
+    --color-jade-85: #0E7C6Bd9;
+    --color-jade-deep: #0A6457;
+    --color-jade-light: #12907D;
+    --color-laurel: #D9ECE5;
+    --color-mint: #EEF6F3;
+    --color-mist: #F1F8F5;
+    --color-moss: #2c3e39;
+    --color-moss-light: #2c423b;
+    --color-pine: #0A3A33;
+    --color-pine-light: #0A4A42;
+    --color-reef: #9ed3c6;
+    --color-sage: #55645F;
+    --color-sage-dark: #3a534c;
+    --color-sage-light: #667570;
+    --color-sage-pale: #C2D2CC;
+    --color-sand: #D5E5DF;
+    --color-shell: #E1ECE8;
+    --color-silk: #EAF1EE;
+    --color-slate: #16241F;
+    --color-snow: #EEF4F2;
+    --color-stone: #E4ECE9;
+    --color-teal: #0A2E29;
+    --color-willow: #DDEBE6;
+    --font-display: 'Noto Serif SC', serif;
+    --font-label: 'Jost', sans-serif;
+    --font-sans: 'Noto Sans SC', sans-serif;
+}
+
+:root {
+    --duration-fast: 200ms;
+    --duration-base: 300ms;
+    --duration-slow: 500ms;
+    --duration-reveal: 900ms;
+    --duration-carousel: 1200ms;
+    --ease-out: cubic-bezier(0.22, 0.7, 0.2, 1);
+    --shell: 1260px;
 }
 
 :focus {
     outline: none;
 }
 
-:focus-visible:not(input) {
+:focus-visible:not(input):not(textarea):not(select) {
     border-radius: 2px;
-    outline: 2px solid var(--color-cyan-80);
+    outline: 2px solid var(--color-jade-85);
     outline-offset: 2px;
 }
 
 ::placeholder {
     user-select: none;
+}
+
+::selection {
+    background: var(--color-jade);
+    color: #ffffff;
 }
 
 @media (prefers-reduced-motion: reduce) {

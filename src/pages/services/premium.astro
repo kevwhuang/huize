@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '对接前沿免疫与细胞治疗技术，探索健康新可能。', title: '免疫与细胞治疗' },
+    { description: '药安心全球药械专享服务，引入全球特药与高端医疗器械。', title: '全球特药器械' },
+    { description: '专属健康管家，协助海外优质医疗资源对接与全程陪护。', title: '海外医疗对接' },
+];
+---
+
+<Layout
+    description="免疫、细胞、特药、海外医疗。为高净值家庭提供前沿医疗技术与全球优质医疗资源对接。"
+    title="高端定制 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="SERVICE CENTER &middot; PREMIUM" title="高端定制" />
+        <Subpage
+            cards={CARDS}
+            lead="免疫、细胞、特药、海外医疗。为高净值家庭提供前沿医疗技术与全球优质医疗资源的专属对接服务。"
+        />
+    </main>
+    <Footer />
+</Layout>

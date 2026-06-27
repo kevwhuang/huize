@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '精选生态与气候资源优越的目的地，营造身心疗愈空间。', title: '自然疗愈环境' },
+    { description: '基地内配套专业医疗与康复服务，照护无忧。', title: '医养结合配套' },
+    { description: '遍布全国的自营实体机构，服务标准统一可靠。', title: '40+ 实体机构' },
+];
+---
+
+<Layout
+    description="各类康养基地介绍。依托优质自然与医疗资源，打造旅居康养与疗愈目的地。"
+    title="康养基地 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="SERVICE NETWORK &middot; BASES" title="康养基地" />
+        <Subpage
+            cards={CARDS}
+            lead="各类康养基地介绍。依托优质自然与医疗资源，打造旅居康养与疗愈目的地，让每一段疗愈旅程都安心舒适。"
+        />
+    </main>
+    <Footer />
+</Layout>

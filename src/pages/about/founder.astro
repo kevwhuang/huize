@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '深耕健康与康养产业，洞察刚需家庭的真实需求。', title: '行业洞察' },
+    { description: '以数字平台链接供需，重塑服务效率与体验。', title: '科技驱动' },
+    { description: '让专业照护普惠可及，创造长期社会价值。', title: '社会价值' },
+];
+---
+
+<Layout
+    description="惠泽由资深健康产业团队创立，致力于以数字科技重构康养与健康管理服务。"
+    title="创始人 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="ABOUT HUIZE &middot; FOUNDER" title="创始人" />
+        <Subpage
+            cards={CARDS}
+            lead="惠泽由资深健康产业团队创立，致力于以数字科技重构康养与健康管理服务，让专业照护惠及更多刚需家庭。"
+        />
+    </main>
+    <Footer />
+</Layout>

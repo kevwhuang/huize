@@ -1,0 +1,110 @@
+---
+const HIGHLIGHTS = [
+    '一站式服务体系',
+    '覆盖全国服务网络',
+    '聚焦刚需康复领域',
+    '数字平台赋能伙伴',
+];
+---
+
+<section
+    aria-labelledby="about-title"
+    class="shell flex flex-wrap items-center gap-[clamp(40px,5vw,72px)] py-[clamp(64px,8vw,116px)]"
+>
+    <div class="about__image min-w-0 flex-[1_1_380px]">
+        <div class="relative min-h-[clamp(320px,38vw,460px)] overflow-hidden rounded-[20px] bg-gradient-to-br from-jade to-pine shadow-[0_26px_60px_rgba(7,58,51,.18)]">
+            <div
+                aria-hidden="true"
+                class="absolute inset-0 bg-cover bg-center"
+                style="background-image:url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1000&q=80');"
+            />
+            <div class="absolute inset-0 bg-[linear-gradient(160deg,rgba(7,58,51,.12),rgba(7,58,51,.5))]" />
+            <div class="absolute bottom-4 left-4 flex items-center gap-[11px] rounded-full bg-white/95 py-2 pr-[18px] pl-[9px] shadow-[0_14px_30px_rgba(7,58,51,.24)]">
+                <span class="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-3 border-gold">
+                    <span class="absolute h-[3px] w-[11px] rounded-sm bg-jade" />
+                    <span class="absolute h-[11px] w-[3px] rounded-sm bg-jade" />
+                </span>
+                <span class="font-display text-sm font-semibold tracking-wide text-pine">
+                    一戒在手 &middot; 健康我有
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="about__text min-w-0 flex-[1_1_440px]">
+        <div class="flex items-center gap-3">
+            <span class="h-0.5 w-[30px] bg-gold" />
+            <span class="font-label text-xs font-medium uppercase tracking-[3px] text-gold">
+                About Huize
+            </span>
+        </div>
+        <h2
+            class="mt-[18px] font-display text-[clamp(1.9rem,3.4vw,2.7rem)] font-bold leading-[1.32] tracking-wide text-pine"
+            id="about-title"
+        >
+            链接供需两端，<br />赋能健康产业共生共长
+        </h2>
+        <p class="mt-[22px] text-base font-light leading-[2.05] text-sage">
+            上海惠泽是一家数字健康科技公司，提供全流程、一站式的养老服务和健康管理服务。通过惠泽平台，链接保险客户、企业客户、个人客户和康养机构、医疗机构、服务机构等，打通上下游供需，赋能合作伙伴共同发展。惠泽旗下有40多家实体机构，服务覆盖全国500个城市，累计为超过1000万人次提供服务。
+        </p>
+        <ul class="mt-[30px] grid list-none grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3.5">
+            {HIGHLIGHTS.map(text => (
+                <li class="flex items-start gap-[11px]">
+                    <span class="mt-[7px] h-2 w-2 shrink-0 rounded-full bg-jade" />
+                    <span class="text-[14.5px] leading-[1.5] text-sage-dark">{text}</span>
+                </li>
+            ))}
+        </ul>
+        <a
+            class="group mt-8 inline-flex items-center gap-[9px] text-[15.5px] font-medium text-jade transition-[gap] duration-[var(--duration-fast)] hover:gap-3.5 active:opacity-80"
+            href="/about"
+        >
+            了解更多
+            <span class="inline-block h-2 w-2 rotate-45 border-t-2 border-r-2 border-jade" />
+        </a>
+    </div>
+</section>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener('astro:page-load', initAbout);
+
+    function initAbout() {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduced) return;
+
+        const image = document.querySelector<HTMLElement>('.about__image');
+        const text = document.querySelector<HTMLElement>('.about__text');
+
+        if (image) {
+            gsap.from(image, {
+                duration: 0.9,
+                ease: 'power3.out',
+                opacity: 0,
+                scrollTrigger: {
+                    start: 'top 85%',
+                    trigger: image,
+                },
+                y: 30,
+            });
+        }
+
+        if (text) {
+            gsap.from(text, {
+                delay: 0.1,
+                duration: 0.9,
+                ease: 'power3.out',
+                opacity: 0,
+                scrollTrigger: {
+                    start: 'top 85%',
+                    trigger: text,
+                },
+                y: 30,
+            });
+        }
+    }
+</script>

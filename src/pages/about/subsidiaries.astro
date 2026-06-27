@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '旅居康养与疗愈目的地。', title: '康养基地' },
+    { description: '多层次养老照护机构。', title: '养老机构' },
+    { description: '专科康复医院与医疗资源。', title: '康复医疗机构' },
+];
+---
+
+<Layout
+    description="惠泽旗下拥有40多家实体机构，覆盖康养基地、养老机构与康复医疗机构。"
+    title="旗下机构 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="ABOUT HUIZE &middot; SUBSIDIARIES" title="旗下机构" />
+        <Subpage
+            cards={CARDS}
+            lead="惠泽旗下拥有40多家实体机构，覆盖康养基地、养老机构与康复医疗机构，服务覆盖全国500个城市。"
+        />
+    </main>
+    <Footer />
+</Layout>

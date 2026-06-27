@@ -1,0 +1,28 @@
+---
+import Layout from '@/Layout.astro';
+import Footer from '@sections/Footer.astro';
+import Navbar from '@sections/Navbar.astro';
+import PageHero from '@sections/PageHero.astro';
+import Subpage from '@sections/Subpage.astro';
+
+const CARDS = [
+    { description: '为保险产品赋能，提供贯穿全程的健康管理增值权益。', title: '健康增值服务' },
+    { description: '专业团队协助理赔流程，提升客户服务体验与满意度。', title: '理赔协助支持' },
+    { description: '面向企业客户的团体健康与康养定制服务方案。', title: '企业团体方案' },
+];
+---
+
+<Layout
+    description="一站式健康增值服务。为保险与企业客户提供定制化的健康增值与理赔协助方案。"
+    title="保险服务 &mdash; 惠泽健康"
+>
+    <Navbar />
+    <main class="flex-1">
+        <PageHero section="SERVICE CENTER &middot; INSURANCE" title="保险服务" />
+        <Subpage
+            cards={CARDS}
+            lead="一站式健康增值服务。链接保险客户与康养、医疗、服务机构，为保险与企业客户提供定制化的健康增值与理赔协助方案。"
+        />
+    </main>
+    <Footer />
+</Layout>

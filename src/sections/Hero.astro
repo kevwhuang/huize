@@ -1,0 +1,297 @@
+---
+const CAPTIONS = [
+    'elderly care · 长者照护',
+    'wellness · 康养疗愈',
+    'healthcare · 专业医护',
+    'nature · 自然康养',
+];
+
+const IMAGES = [
+    'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1000&q=80',
+    'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1000&q=80',
+];
+
+const STATS = [
+    { label: '实体机构', suffix: '+', target: 40 },
+    { label: '合作机构', suffix: '+', target: 100 },
+    { label: '服务人次', suffix: '万+', target: 1000 },
+    { label: '服务城市', suffix: '+', target: 500 },
+];
+---
+
+<section
+    aria-labelledby="hero-title"
+    class="hero relative overflow-hidden"
+>
+    <div class="absolute -top-30 -right-25 h-105 w-105 rounded-full bg-[radial-gradient(circle,rgba(14,124,107,.10),transparent_70%)]" />
+    <div class="shell flex flex-wrap items-center gap-[clamp(36px,5vw,64px)] py-[clamp(48px,7vw,96px)]">
+        <div class="hero__content min-w-0 flex-[1_1_460px]">
+            <div class="inline-flex items-center gap-2.5 rounded-full border border-willow bg-white px-4 py-2 shadow-[0_6px_16px_rgba(7,58,51,.05)]">
+                <span class="h-[7px] w-[7px] rounded-full bg-gold" />
+                <span class="font-label text-[11.5px] font-medium uppercase tracking-[2.5px] text-pine-light">
+                    数字健康科技平台 &middot; Digital Health
+                </span>
+            </div>
+            <h1
+                class="mt-[26px] font-display text-[clamp(2.6rem,5.4vw,4.3rem)] font-bold leading-[1.18] tracking-wide text-pine"
+                id="hero-title"
+            >
+                全流程一站式<br />康养与健康管理
+            </h1>
+            <p class="mt-6 max-w-[560px] text-[clamp(15.5px,1.5vw,17.5px)] font-light leading-[1.95] text-sage">
+                惠泽链接保险、企业、个人客户与康养、医疗、服务机构，打通上下游供需，为刚需家庭提供住院&mdash;社区&mdash;居家的三级康复与照护服务。
+            </p>
+            <div class="mt-[34px] flex flex-wrap gap-3.5">
+                <a
+                    class="hero__cta rounded-xl bg-jade px-8 py-4 text-base font-medium tracking-wide text-white shadow-[0_16px_32px_rgba(14,124,107,.30)] transition-[transform,background] duration-[var(--duration-fast)] hover:translate-y-[-2px] hover:bg-jade-deep active:translate-y-0"
+                    href="#contact"
+                >
+                    立即咨询
+                </a>
+                <a
+                    class="rounded-xl border border-sand bg-white px-[30px] py-4 text-base font-medium text-pine-light transition-[border-color,color] duration-[var(--duration-fast)] hover:border-jade hover:text-jade active:opacity-80"
+                    href="#services"
+                >
+                    探索服务体系
+                </a>
+            </div>
+            <div
+                class="hero__stats mt-[46px] grid max-w-[620px] grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3.5"
+                id="hero-stats"
+            >
+                {STATS.map(stat => (
+                    <div class="rounded-[15px] border border-ivory bg-white px-[18px] py-5 shadow-[0_8px_22px_rgba(7,58,51,.05)]">
+                        <div
+                            class="font-display text-[34px] font-bold leading-none text-jade"
+                            data-stat-suffix={stat.suffix}
+                            data-stat-target={stat.target}
+                        >
+                            0{stat.suffix}
+                        </div>
+                        <div class="mt-[9px] text-[13px] tracking-wide text-sage-light">
+                            {stat.label}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <div class="hero__carousel relative min-w-0 flex-[1_1_380px]">
+            <div class="relative min-h-[clamp(360px,42vw,520px)] overflow-hidden rounded-[22px] bg-gradient-to-br from-jade-light to-pine shadow-[0_30px_70px_rgba(7,58,51,.22)]">
+                <div aria-hidden="true">
+                    {IMAGES.map((src, i) => (
+                        <div
+                            class="hero__slide absolute inset-0 bg-cover bg-center transition-opacity duration-[1200ms] ease-in-out"
+                            data-slide={i}
+                            style={`background-image:url('${src}');opacity:${i === 0 ? 1 : 0};`}
+                        />
+                    ))}
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(7,58,51,.55)]" />
+                <span
+                    class="hero__caption absolute bottom-4 left-[18px] font-label text-[11px] uppercase tracking-[2px] text-white/85"
+                    id="hero-caption"
+                >
+                    {CAPTIONS[0]}
+                </span>
+                <div
+                    aria-label="图片导航"
+                    class="absolute bottom-4 right-4 z-[2] flex gap-[7px]"
+                    role="group"
+                >
+                    {[0, 1, 2, 3].map(i => (
+                        <button
+                            aria-label={`切换到第 ${i + 1} 张图片`}
+                            class="hero__dot h-[9px] w-[9px] cursor-pointer rounded-full transition-[background,transform] duration-[var(--duration-base)]"
+                            data-dot={i}
+                            style={`background:${i === 0 ? '#ffffff' : 'rgba(255,255,255,.5)'};`}
+                        />
+                    ))}
+                </div>
+            </div>
+            <div class="absolute -left-[18px] bottom-[34px] flex max-w-[240px] items-center gap-3.5 rounded-2xl bg-white p-[18px_22px] shadow-[0_20px_44px_rgba(7,58,51,.16)]">
+                <span class="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-xl bg-mint">
+                    <svg
+                        fill="none"
+                        height="22"
+                        stroke="#0E7C6B"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        width="22"
+                    >
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                </span>
+                <div>
+                    <div class="font-display text-[15px] font-semibold text-pine-light">
+                        三级康复服务
+                    </div>
+                    <div class="mt-[3px] text-xs text-sage-light">
+                        住院 &middot; 社区 &middot; 居家
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener('astro:page-load', initHero);
+
+    function initHero() {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        let heroInterval: ReturnType<typeof setInterval> | undefined;
+        let currentSlide = 0;
+        let statsAnimated = false;
+
+        const slides = document.querySelectorAll<HTMLElement>('[data-slide]');
+        const dots = document.querySelectorAll<HTMLElement>('[data-dot]');
+        const caption = document.getElementById('hero-caption');
+        const captions = [
+            'elderly care · 长者照护',
+            'wellness · 康养疗愈',
+            'healthcare · 专业医护',
+            'nature · 自然康养',
+        ];
+
+        function goToSlide(index: number) {
+            currentSlide = index;
+            slides.forEach((slide, i) => {
+                slide.style.opacity = i === index ? '1' : '0';
+            });
+            dots.forEach((dot, i) => {
+                dot.style.background = i === index ? '#ffffff' : 'rgba(255,255,255,.5)';
+            });
+            if (caption) caption.textContent = captions[index];
+        }
+
+        function startCarousel() {
+            clearInterval(heroInterval);
+            heroInterval = setInterval(() => {
+                goToSlide((currentSlide + 1) % 4);
+            }, 4200);
+        }
+
+        if (slides.length) {
+            startCarousel();
+
+            dots.forEach((dot) => {
+                dot.addEventListener('click', () => {
+                    const index = parseInt(dot.getAttribute('data-dot') || '0', 10);
+                    goToSlide(index);
+                    startCarousel();
+                }, { signal });
+            });
+        }
+
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const statsGrid = document.getElementById('hero-stats');
+
+        if (statsGrid) {
+            const statEls = statsGrid.querySelectorAll<HTMLElement>('[data-stat-target]');
+
+            if (reduced) {
+                statEls.forEach((element) => {
+                    const target = parseInt(element.dataset.statTarget || '0', 10);
+                    const suffix = element.dataset.statSuffix || '';
+                    element.textContent = target + suffix;
+                });
+                statsAnimated = true;
+            } else {
+                ScrollTrigger.create({
+                    once: true,
+                    onEnter() {
+                        if (statsAnimated) return;
+                        statsAnimated = true;
+                        const duration = 1.7;
+                        statEls.forEach((element) => {
+                            const target = parseInt(element.dataset.statTarget || '0', 10);
+                            const suffix = element.dataset.statSuffix || '';
+                            const counter = { val: 0 };
+                            gsap.to(counter, {
+                                duration,
+                                ease: 'power3.out',
+                                onUpdate() {
+                                    element.textContent = Math.round(counter.val) + suffix;
+                                },
+                                val: target,
+                            });
+                        });
+                    },
+                    start: 'top 85%',
+                    trigger: statsGrid,
+                });
+            }
+        }
+
+        const heroContent = document.querySelector<HTMLElement>('.hero__content');
+        const heroCarousel = document.querySelector<HTMLElement>('.hero__carousel');
+
+        if (!reduced) {
+            if (heroContent) {
+                gsap.from(heroContent, {
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    opacity: 0,
+                    y: 30,
+                });
+            }
+            if (heroCarousel) {
+                gsap.from(heroCarousel, {
+                    delay: 0.12,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    opacity: 0,
+                    y: 30,
+                });
+            }
+        }
+
+        document.querySelectorAll<HTMLElement>('[href="#contact"], [href="#services"]').forEach((button) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const id = button.getAttribute('href')?.replace('#', '') || '';
+                const target = document.getElementById(id);
+                if (target) {
+                    window.scrollTo({
+                        behavior: 'smooth',
+                        top: target.getBoundingClientRect().top + window.scrollY - 80,
+                    });
+                }
+            }, { signal });
+        });
+
+        document.addEventListener('astro:before-preparation', () => {
+            controller.abort();
+            clearInterval(heroInterval);
+            ScrollTrigger.getAll().forEach(st => st.kill());
+        }, { once: true });
+    }
+</script>
+
+<style>
+    .hero {
+        background: linear-gradient(180deg, var(--color-mist) 0%, var(--color-cloud) 100%);
+    }
+
+    .hero__dot {
+        position: relative;
+    }
+
+    .hero__dot::after {
+        content: '';
+        inset: -20px;
+        position: absolute;
+    }
+</style>
