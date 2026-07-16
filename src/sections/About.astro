@@ -1,4 +1,8 @@
 ---
+import { Image } from 'astro:assets';
+
+import logoIcon from '@images/logo_icon.webp';
+
 const HIGHLIGHTS = [
     '一站式服务体系',
     '覆盖全国服务网络',
@@ -20,10 +24,14 @@ const HIGHLIGHTS = [
             />
             <div class="absolute inset-0 bg-[linear-gradient(160deg,rgba(7,58,51,.12),rgba(7,58,51,.5))]" />
             <div class="absolute bottom-4 left-4 flex items-center gap-[11px] rounded-full bg-white/95 py-2 pr-[18px] pl-[9px] shadow-[0_14px_30px_rgba(7,58,51,.24)]">
-                <span class="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-3 border-gold">
-                    <span class="absolute h-[3px] w-[11px] rounded-sm bg-jade" />
-                    <span class="absolute h-[11px] w-[3px] rounded-sm bg-jade" />
-                </span>
+                <Image
+                    alt=""
+                    class="h-8 w-8 shrink-0"
+                    densities={[1, 2]}
+                    height={32}
+                    quality="max"
+                    src={logoIcon}
+                />
                 <span class="font-display text-sm font-semibold tracking-wide text-pine">
                     一戒在手 &middot; 健康我有
                 </span>

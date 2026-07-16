@@ -6,6 +6,7 @@ import { ClientRouter } from 'astro:transitions';
 
 import '@/global.css';
 import '@/styles.css';
+import logo from '@images/logo.webp';
 
 interface Props {
     description: string;
@@ -27,7 +28,7 @@ const { description, title } = Astro.props;
         <meta content="#0A3A33" name="theme-color" />
         <link href={canonicalUrl} rel="canonical" />
         <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <link href="/favicon.ico" rel="icon" type="image/x-icon" />
         <meta content={title} property="og:title" />
         <meta content={description} property="og:description" />
         <meta content={`${Astro.site}og.png`} property="og:image" />
@@ -38,6 +39,17 @@ const { description, title } = Astro.props;
         <meta content={title} name="twitter:title" />
         <meta content={description} name="twitter:description" />
         <meta content={`${Astro.site}og.png`} name="twitter:image" />
+        <script
+            is:inline
+            set:html={JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Organization',
+                'logo': new URL(logo.src, Astro.site),
+                'name': '惠泽健康',
+                'url': Astro.site,
+            })}
+            type="application/ld+json"
+        />
         <script
             is:inline
             set:html={JSON.stringify({

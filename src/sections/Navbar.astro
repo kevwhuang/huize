@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+
+import logoIcon from '@images/logo_icon.webp';
 import { ROUTES } from '@lib/utils';
 
 const pathname = Astro.url.pathname;
@@ -12,10 +15,14 @@ const pathname = Astro.url.pathname;
                 class="navbar__logo"
                 href="/"
             >
-                <span class="navbar__icon">
-                    <span class="navbar__icon-h" />
-                    <span class="navbar__icon-v" />
-                </span>
+                <Image
+                    alt=""
+                    class="navbar__icon"
+                    densities={[1, 2]}
+                    height={44}
+                    quality="max"
+                    src={logoIcon}
+                />
                 <span class="navbar__brand">
                     <span class="navbar__brand-zh">惠泽健康</span>
                     <span class="navbar__brand-en">Huize Health</span>
@@ -238,31 +245,9 @@ const pathname = Astro.url.pathname;
     }
 
     .navbar__icon {
-        align-items: center;
-        background: linear-gradient(150deg, var(--color-jade-light), var(--color-pine-light));
-        border-radius: 13px;
-        box-shadow: 0 8px 18px rgba(14, 124, 107, 0.30);
-        display: flex;
+        display: block;
         height: 44px;
-        justify-content: center;
-        position: relative;
-        width: 44px;
-    }
-
-    .navbar__icon-h {
-        background: #ffffff;
-        border-radius: 3px;
-        height: 5px;
-        position: absolute;
-        width: 19px;
-    }
-
-    .navbar__icon-v {
-        background: #ffffff;
-        border-radius: 3px;
-        height: 19px;
-        position: absolute;
-        width: 5px;
+        width: auto;
     }
 
     .navbar__brand {

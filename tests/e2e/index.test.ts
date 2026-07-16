@@ -6,6 +6,6 @@ test.describe('index page', () => {
     });
 
     test('loads with correct title', async ({ page }) => {
-        await expect(page).toHaveTitle('Huize');
+        await expect(page).toHaveTitle(/惠泽健康/);
     });
 });
