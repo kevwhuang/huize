@@ -1,0 +1,96 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+
+const INVESTORS = [
+    {
+        facts: [
+            '成立于2012年，总部设在上海',
+            '在北京、深圳、杭州、成都设有分支',
+            '已投资超过200家高科技高成长企业',
+            '基金LP包括徐小平、蔡文胜',
+        ],
+        name: '合力投资',
+    },
+    {
+        facts: [
+            '总部设在北京，专注预防医疗及大健康领域',
+            '已在德国、美国、新加坡、香港设立分支',
+            '与全球八十多个国家有业务往来',
+        ],
+        name: '世纪长河科技集团',
+    },
+];
+---
+
+<section
+    class="about-investors section"
+    aria-labelledby="about-investors-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow="Investors"
+            headingId="about-investors-title"
+        >
+            投资方
+        </SectionHead>
+
+        <ul
+            class="about-investors__list"
+            data-scroll="scale"
+            data-scroll-stagger="0.12"
+        >
+            {INVESTORS.map(investor => (
+                <li class="about-investors__item">
+                    <article class="about-investors__card card">
+                        <h3>{investor.name}</h3>
+                        <ul class="about-investors__facts">
+                            {investor.facts.map(fact => (
+                                <li>{fact}</li>
+                            ))}
+                        </ul>
+                    </article>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .about-investors__card {
+        height: 100%;
+    }
+
+    .about-investors__card h3 {
+        margin-bottom: 1.25rem;
+    }
+
+    .about-investors__facts {
+        display: grid;
+        gap: 0.875rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-investors__facts li {
+        border-left: 0.125rem solid var(--color-laurel);
+        color: var(--color-sage);
+        font-size: 0.9rem;
+        line-height: 1.8;
+        padding-left: 1rem;
+    }
+
+    .about-investors__list {
+        display: grid;
+        gap: clamp(1.5rem, calc(1.08rem + 2.08vw), 2.5rem);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    @media (max-width: 768px) {
+
+        .about-investors__list {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

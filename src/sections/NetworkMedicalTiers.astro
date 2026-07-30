@@ -1,0 +1,148 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { PUBLIC_HOSPITALS } from '@lib/constants';
+
+const TIERS = [
+    { name: '专科康复医院', number: '01' },
+    { name: '三级及以上医院', number: '02' },
+    { name: '二级及以上医院', number: '03' },
+];
+---
+
+<section
+    class="medical section"
+    aria-labelledby="medical-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow="Medical Network"
+            headingId="medical-title"
+        >
+            三个层级的医疗机构网络
+            <Fragment slot="text">
+                <p>专科康复医院、三级及以上医院与二级及以上医院共同构成惠泽的全国医疗资源网络。</p>
+            </Fragment>
+        </SectionHead>
+
+        <ol
+            class="medical__tiers"
+            data-scroll="up"
+            data-scroll-stagger="0.12"
+        >
+            {TIERS.map(tier => (
+                <li class="medical__tier">
+                    <span
+                        class="numeral numeral--gold medical__tier-number"
+                        aria-hidden="true"
+                    >
+                        {tier.number}
+                    </span>
+                    <h3>{tier.name}</h3>
+                </li>
+            ))}
+        </ol>
+
+        <div
+            class="medical__band"
+            data-scroll="scale"
+        >
+            <div
+                class="glow medical__band-glow"
+                aria-hidden="true"
+            />
+            <p class="medical__band-figure">
+                <span
+                    class="medical__band-value"
+                    data-count-to={PUBLIC_HOSPITALS}
+                >
+                    {PUBLIC_HOSPITALS}
+                </span>
+                <span class="medical__band-unit">家二级及以上公立医院</span>
+            </p>
+            <p class="medical__band-text">覆盖全国500个城市，聚焦脑卒中、骨科等刚需领域。</p>
+        </div>
+    </div>
+</section>
+
+<style>
+    .medical__band {
+        align-items: center;
+        background: var(--color-pine);
+        border-radius: var(--radius-card-lg);
+        box-shadow: var(--shadow-panel);
+        display: grid;
+        gap: clamp(1.25rem, calc(0.83rem + 2.08vw), 2.5rem);
+        grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+        margin-top: clamp(2.5rem, calc(1.67rem + 4.17vw), 4.5rem);
+        overflow: clip;
+        padding: clamp(2rem, calc(1.58rem + 2.08vw), 3.25rem);
+        position: relative;
+    }
+
+    .medical__band-figure {
+        margin-bottom: 0;
+        position: relative;
+    }
+
+    .medical__band-glow {
+        left: -6.25rem;
+        top: -9.375rem;
+    }
+
+    .medical__band-text {
+        color: var(--color-white-70);
+        line-height: 1.9;
+        margin-bottom: 0;
+        position: relative;
+    }
+
+    .medical__band-unit {
+        color: var(--color-reef);
+        display: block;
+        font-size: 0.9375rem;
+        margin-top: 0.5rem;
+    }
+
+    .medical__band-value {
+        color: #FFFFFF;
+        display: block;
+        font-family: var(--font-display);
+        font-size: clamp(2.6rem, calc(1.85rem + 3.75vw), 4.25rem);
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .medical__tier {
+        align-items: baseline;
+        border-top: 0.0625rem solid var(--color-shell);
+        display: flex;
+        gap: clamp(1rem, calc(0.58rem + 2.08vw), 2.25rem);
+        padding-block: clamp(1.25rem, calc(0.83rem + 2.08vw), 2.5rem);
+    }
+
+    .medical__tier:last-child {
+        border-bottom: 0.0625rem solid var(--color-shell);
+    }
+
+    .medical__tier h3 {
+        font-size: clamp(1.5rem, calc(1.19rem + 1.56vw), 2.25rem);
+        margin-bottom: 0;
+    }
+
+    .medical__tier-number {
+        flex-shrink: 0;
+    }
+
+    .medical__tiers {
+        list-style: none;
+        padding: 0;
+    }
+
+    @media (max-width: 1024px) {
+        .medical__band {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+</style>

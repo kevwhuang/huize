@@ -1,0 +1,95 @@
+---
+import { LINKS } from '@lib/constants';
+
+interface Props {
+    eyebrow?: string;
+    text?: string;
+}
+
+const { eyebrow = 'Talk to us', text = `拨打全国服务热线 ${LINKS.hotline}，专属健康顾问将为您匹配合适的康养与照护方案。` } = Astro.props;
+---
+
+<section
+    class="cta-banner section"
+    aria-labelledby="cta-banner-title"
+>
+    <div class="shell">
+        <div
+            class="cta-banner__panel"
+            data-scroll="scale"
+        >
+            <div
+                class="cta-banner__glow glow"
+                aria-hidden="true"
+            />
+            <div class="cta-banner__body">
+                <p
+                    class="eyebrow eyebrow--on-dark"
+                    lang="en"
+                >
+                    {eyebrow}
+                </p>
+                <h2 id="cta-banner-title">
+                    <slot>需要专业的康养与健康咨询？</slot>
+                </h2>
+                <p class="cta-banner__text">{text}</p>
+                <div class="cta-banner__actions">
+                    <a
+                        class="button button--large button--on-dark"
+                        href={LINKS.hotlineHref}
+                    >
+                        {LINKS.hotline}
+                    </a>
+                    <a
+                        class="button button--large button--outline"
+                        href="/about/contact"
+                    >
+                        在线咨询
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .cta-banner__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.875rem;
+        justify-content: center;
+    }
+
+    .cta-banner__body {
+        position: relative;
+        text-align: center;
+    }
+
+    .cta-banner__body h2 {
+        margin-bottom: 1rem;
+    }
+
+    .cta-banner__glow {
+        left: 50%;
+        top: -12.5rem;
+        transform: translateX(-50%);
+    }
+
+    .cta-banner__panel {
+        --heading-color: #FFFFFF;
+        background: var(--color-pine);
+        border-radius: var(--radius-card-lg);
+        box-shadow: var(--shadow-panel);
+        overflow: clip;
+        padding: clamp(2.5rem, calc(1.83rem + 3.33vw), 4rem) clamp(1.5rem, calc(0.83rem + 3.33vw), 3rem);
+        position: relative;
+    }
+
+    .cta-banner__text {
+        color: var(--color-white-70);
+        font-weight: 400;
+        margin-bottom: 2rem;
+        margin-inline: auto;
+        max-width: 34rem;
+    }
+</style>

@@ -5,8 +5,8 @@ test.describe('404 page', () => {
         await page.goto('/this-page-does-not-exist');
     });
 
-    test('displays 404 heading', async ({ page }) => {
-        await expect(page.locator('h1')).toContainText('404');
+    test('displays the 404 code', async ({ page }) => {
+        await expect(page.locator('.error-page__code')).toContainText('404');
     });
 
     test('returns 404 status', async ({ page }) => {

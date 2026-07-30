@@ -1,0 +1,290 @@
+---
+import { STATS } from '@lib/constants';
+
+const SLIDES = [
+    { caption: '长者照护 &middot; Elderly Care', image: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1000&q=80' },
+    { caption: '康养疗愈 &middot; Wellness', image: 'https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?auto=format&fit=crop&w=1000&q=80' },
+    { caption: '专业医护 &middot; Healthcare', image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1000&q=80' },
+    { caption: '自然康养 &middot; Nature', image: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1000&q=80' },
+];
+---
+
+<section
+    id="home-hero"
+    class="home-hero"
+    aria-labelledby="home-hero-title"
+>
+    <div
+        class="glow home-hero__glow"
+        aria-hidden="true"
+    />
+    <div class="home-hero__inner shell">
+        <div
+            class="home-hero__content"
+            data-scroll="left"
+            data-scroll-stagger
+        >
+            <p class="home-hero__badge">
+                <span
+                    class="home-hero__badge-dot"
+                    aria-hidden="true"
+                />
+                数字健康科技平台
+                <span lang="en">&middot; Digital Health</span>
+            </p>
+            <h1 id="home-hero-title">
+                全流程一站式<br />康养与健康管理
+            </h1>
+            <p class="home-hero__lead">
+                惠泽链接保险、企业、个人客户与康养、医疗、服务机构，打通上下游供需，为刚需家庭提供住院&mdash;社区&mdash;居家的三级康复与照护服务。
+            </p>
+            <div class="home-hero__actions">
+                <a
+                    class="button button--large button--primary"
+                    href="/about/contact"
+                >
+                    立即咨询
+                </a>
+                <a
+                    class="button button--ghost button--large"
+                    href="/services"
+                >
+                    探索服务体系
+                </a>
+            </div>
+            <dl
+                class="home-hero__stats"
+                data-scroll="scale"
+                data-scroll-stagger
+            >
+                {STATS.map(stat => (
+                    <div class="home-hero__stat">
+                        <dt class="home-hero__stat-label">{stat.label}</dt>
+                        <dd
+                            class="home-hero__stat-value"
+                            data-count-to={stat.countTo}
+                            data-suffix={stat.suffix}
+                        >
+                            {stat.countTo}{stat.suffix}
+                        </dd>
+                    </div>
+                ))}
+            </dl>
+        </div>
+
+        <div
+            class="home-hero__media"
+            aria-hidden="true"
+            data-scroll="right"
+        >
+            <div class="home-hero__frame">
+                {SLIDES.map((slide, index) => (
+                    <div
+                        class="home-hero__slide"
+                        data-active={index === 0 ? '' : undefined}
+                        data-caption={slide.caption}
+                        data-slide={index}
+                        style={`background-image:url('${slide.image}')`}
+                    />
+                ))}
+                <div class="home-hero__scrim" />
+                <p class="label home-hero__caption" set:html={SLIDES[0].caption} />
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .home-hero {
+        background: linear-gradient(180deg, var(--color-mist) 0%, var(--color-cloud) 100%);
+        overflow: clip;
+        position: relative;
+    }
+
+    .home-hero__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.875rem;
+        margin-bottom: 2.875rem;
+    }
+
+    .home-hero__badge {
+        align-items: center;
+        background: #FFFFFF;
+        border: 0.0625rem solid var(--color-willow);
+        border-radius: var(--radius-pill);
+        box-shadow: var(--shadow-card);
+        color: var(--color-pine-light);
+        display: inline-flex;
+        font-family: var(--font-label);
+        font-size: 0.72rem;
+        font-weight: 500;
+        gap: 0.625rem;
+        letter-spacing: 0.22em;
+        margin-bottom: 1.625rem;
+        padding: 0.5rem 1rem;
+        text-transform: uppercase;
+    }
+
+    .home-hero__badge-dot {
+        background: var(--color-gold);
+        border-radius: 50%;
+        height: 0.4375rem;
+        width: 0.4375rem;
+    }
+
+    .home-hero__caption {
+        background: var(--color-pine);
+        border-radius: var(--radius-card-sm);
+        bottom: 1rem;
+        color: #FFFFFF;
+        left: 1.125rem;
+        margin-bottom: 0;
+        padding: 0.375rem 0.75rem;
+        position: absolute;
+    }
+
+    .home-hero__content {
+        flex: 1 1 28.75rem;
+        min-width: 0;
+    }
+
+    .home-hero__frame {
+        border-radius: var(--radius-card-lg);
+        inset: 0;
+        overflow: clip;
+        position: absolute;
+    }
+
+    .home-hero__glow {
+        background: radial-gradient(circle, var(--color-jade-10), transparent 70%);
+        right: -6.25rem;
+        top: -7.5rem;
+    }
+
+    .home-hero__inner {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: clamp(2.25rem, calc(1.42rem + 4.17vw), 4rem);
+        padding-block: clamp(3rem, calc(1.75rem + 6.25vw), 6rem);
+        position: relative;
+    }
+
+    .home-hero__lead {
+        color: var(--color-sage);
+        font-size: var(--text-lead);
+        font-weight: 400;
+        line-height: 1.95;
+        margin-bottom: 2.125rem;
+        max-width: 35rem;
+    }
+
+    .home-hero__media {
+        flex: 1 1 23.75rem;
+        min-height: clamp(22.5rem, 42vw, 32.5rem);
+        min-width: 0;
+        position: relative;
+    }
+
+    .home-hero__scrim {
+        background: linear-gradient(160deg, var(--color-veil-12) 35%, var(--color-veil-80));
+        inset: 0;
+        position: absolute;
+    }
+
+    .home-hero__slide {
+        background-color: var(--color-pine);
+        background-position: center;
+        background-size: cover;
+        inset: 0;
+        opacity: 0;
+        position: absolute;
+        transition: opacity var(--duration-carousel) ease-in-out;
+    }
+
+    .home-hero__slide[data-active] {
+        opacity: 1;
+    }
+
+    .home-hero__stat {
+        background: #FFFFFF;
+        border: 0.0625rem solid var(--color-ivory);
+        border-radius: var(--radius-card-sm);
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 0.5625rem;
+        padding: 1.25rem 1.125rem;
+    }
+
+    .home-hero__stat-label {
+        color: var(--color-sage);
+        font-size: 0.8125rem;
+        letter-spacing: 0.04em;
+    }
+
+    .home-hero__stat-value {
+        color: var(--color-jade);
+        font-family: var(--font-display);
+        font-size: clamp(1.35rem, calc(1.24rem + 0.56vw), 1.5rem);
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    .home-hero__stats {
+        display: grid;
+        gap: 0.875rem;
+        grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+        max-width: 38.75rem;
+    }
+</style>
+
+<script>
+    import { REDUCED_MOTION_QUERY } from '@lib/constants';
+    import { registerPageScript } from '@lib/utils';
+
+    const SLIDE_INTERVAL = 4_200;
+
+    const reducedMotionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+
+    function initHeroCarousel(signal: AbortSignal) {
+        const caption = document.querySelector<HTMLElement>('.home-hero__caption');
+        const slides = Array.from(document.querySelectorAll<HTMLElement>('.home-hero__slide'));
+
+        if (!slides.length) return;
+
+        let current = 0;
+        let timer: ReturnType<typeof setInterval> | undefined;
+
+        function show(index: number) {
+            current = index;
+
+            slides.forEach((slide, position) => slide.toggleAttribute('data-active', position === index));
+
+            if (caption) caption.innerHTML = slides[index].dataset.caption ?? '';
+        }
+
+        function stop() {
+            clearInterval(timer);
+            timer = undefined;
+        }
+
+        function sync() {
+            stop();
+            show(0);
+
+            if (reducedMotionQuery.matches) return;
+
+            timer = setInterval(() => show((current + 1) % slides.length), SLIDE_INTERVAL);
+        }
+
+        sync();
+        reducedMotionQuery.addEventListener('change', sync, { signal });
+        signal.addEventListener('abort', stop);
+    }
+
+    registerPageScript(initHeroCarousel);
+</script>

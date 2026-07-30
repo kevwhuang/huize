@@ -1,0 +1,255 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { CITY_COVERAGE, TOTAL_CITIES } from '@lib/constants';
+
+const regions = CITY_COVERAGE.map(region => ({
+    cities: region.provinces.reduce((total, province) => total + province.cities.length, 0),
+    name: region.name,
+    provinces: region.provinces,
+}));
+
+const totalProvinces = regions.reduce((total, region) => total + region.provinces.length, 0);
+
+const TOTALS = [
+    { label: '大区域', value: regions.length },
+    { label: '个省级行政区', value: totalProvinces },
+    { label: '个覆盖城市', value: TOTAL_CITIES },
+];
+---
+
+<section
+    class="cities section"
+    aria-labelledby="cities-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow="City Coverage"
+            headingId="cities-title"
+        >
+            服务网络覆盖全国 {TOTAL_CITIES} 个城市
+            <Fragment slot="text">
+                <p>
+                    惠泽的康养、养老与医疗服务网络遍及七大区域、{totalProvinces} 个省级行政区，累计为超过1000万人次提供服务。
+                </p>
+            </Fragment>
+        </SectionHead>
+
+        <ul
+            class="cities__totals"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {TOTALS.map(total => (
+                <li class="card cities__total">
+                    <p
+                        class="cities__total-value"
+                        data-count-to={total.value}
+                    >
+                        {total.value}
+                    </p>
+                    <p class="cities__total-label">{total.label}</p>
+                </li>
+            ))}
+        </ul>
+
+        <p
+            class="cities__note"
+            data-scroll
+        >
+            覆盖城市（市辖区范围内，不含下辖县、县级市）
+        </p>
+
+        <div
+            class="cities__regions"
+            data-scroll="up"
+            data-scroll-stagger="0.06"
+        >
+            {regions.map((region, index) => (
+                <details
+                    class="card card--flush cities__region"
+                    open={index === 0}
+                >
+                    <summary>
+                        <div class="cities__region-heading">
+                            <h3 class="cities__region-name">{region.name}</h3>
+                            <span class="cities__region-count">{region.provinces.length} 个省级行政区 &middot; {region.cities} 个城市</span>
+                        </div>
+                        <span
+                            class="cities__region-toggle"
+                            aria-hidden="true"
+                        />
+                    </summary>
+                    <dl class="cities__provinces">
+                        {region.provinces.map(province => (
+                            <div class="cities__province">
+                                <dt>{province.name}</dt>
+                                <dd>{province.cities.join('、')}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                </details>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    .cities__note {
+        background: var(--color-mint);
+        border-left: 0.1875rem solid var(--color-jade);
+        border-radius: 0 var(--radius-card-sm) var(--radius-card-sm) 0;
+        color: var(--color-sage-dark);
+        font-size: 0.875rem;
+        line-height: 1.8;
+        margin-bottom: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+        padding: 0.875rem 1.125rem;
+    }
+
+    .cities__province {
+        border-top: 0.0625rem solid var(--color-snow);
+        display: grid;
+        gap: 0.5rem 1.5rem;
+        grid-template-columns: 6rem minmax(0, 1fr);
+        padding-block: 1rem;
+    }
+
+    .cities__province dd {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        line-height: 1.95;
+        margin-bottom: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .cities__province dt {
+        color: var(--color-pine);
+        font-family: var(--font-display);
+        font-size: 0.9375rem;
+        font-weight: 700;
+    }
+
+    .cities__provinces {
+        padding: 0 clamp(1.125rem, calc(0.92rem + 1.04vw), 1.625rem) 1.25rem;
+    }
+
+    .cities__region:hover {
+        border-color: var(--color-laurel);
+    }
+
+    .cities__region[open] .cities__region-toggle {
+        rotate: 45deg;
+    }
+
+    .cities__region summary {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        list-style: none;
+        padding: 1.25rem clamp(1.125rem, calc(0.92rem + 1.04vw), 1.625rem);
+        transition: background var(--duration-fast) var(--ease-out);
+        user-select: none;
+    }
+
+    .cities__region summary:active {
+        background: var(--color-snow);
+    }
+
+    .cities__region summary:hover {
+        background: var(--color-mist);
+    }
+
+    .cities__region-count {
+        color: var(--color-sage);
+        font-size: 0.8125rem;
+        letter-spacing: 0.04em;
+    }
+
+    .cities__region-heading {
+        align-items: baseline;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 1rem;
+    }
+
+    .cities__region-name {
+        font-size: 1.0625rem;
+        margin-bottom: 0;
+    }
+
+    .cities__region-toggle {
+        flex-shrink: 0;
+        height: 1rem;
+        position: relative;
+        transition: rotate var(--duration-base) var(--ease-out);
+        width: 1rem;
+    }
+
+    .cities__region-toggle::after,
+    .cities__region-toggle::before {
+        background: var(--color-jade);
+        content: '';
+        position: absolute;
+    }
+
+    .cities__region-toggle::after {
+        height: 1rem;
+        left: 0.4375rem;
+        top: 0;
+        width: 0.125rem;
+    }
+
+    .cities__region-toggle::before {
+        height: 0.125rem;
+        left: 0;
+        top: 0.4375rem;
+        width: 1rem;
+    }
+
+    .cities__regions {
+        display: grid;
+        gap: 0.875rem;
+    }
+
+    .cities__total {
+        padding: clamp(1.25rem, calc(0.83rem + 2.08vw), 2.5rem) 1.25rem;
+        text-align: center;
+    }
+
+    .cities__total-label {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        letter-spacing: 0.06em;
+        margin-bottom: 0;
+        margin-top: 0.5rem;
+    }
+
+    .cities__total-value {
+        color: var(--color-jade);
+        font-family: var(--font-display);
+        font-size: clamp(2rem, calc(1.67rem + 1.67vw), 3rem);
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 0;
+    }
+
+    .cities__totals {
+        display: grid;
+        gap: 0.875rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        list-style: none;
+        margin-bottom: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+        padding: 0;
+    }
+
+    @media (max-width: 768px) {
+        .cities__province {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .cities__totals {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

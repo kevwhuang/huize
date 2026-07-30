@@ -1,96 +1,119 @@
 ---
+import { ROUTES } from '@lib/constants';
+
 interface Props {
-    section: string;
+    eyebrow: string;
     title: string;
 }
 
-const { section, title } = Astro.props;
+const { eyebrow, title } = Astro.props;
+
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+
+const parent = ROUTES.find(route => route.path !== '/' && currentPath.startsWith(route.path) && route.path !== currentPath);
 ---
 
 <section
-    aria-labelledby="pagehero-title"
-    class="pagehero"
+    class="page-hero"
+    aria-labelledby="page-hero-title"
 >
-    <div class="pagehero__glow" />
-    <div class="shell pagehero__inner">
-        <p class="pagehero__section">{section}</p>
-        <h1
-            class="pagehero__title"
-            id="pagehero-title"
-        >{title}
-        </h1>
-        <nav class="pagehero__breadcrumb" aria-label="breadcrumb">
-            <a href="/">首页</a>
-            <span>/</span>
-            <span class="pagehero__current">{title}</span>
-        </nav>
+    <div
+        class="glow page-hero__glow"
+        aria-hidden="true"
+    />
+    <div class="page-hero__inner shell">
+        <div data-scroll="up" data-scroll-stagger>
+            <p
+                class="eyebrow eyebrow--on-dark"
+                lang="en"
+            >
+                {eyebrow}
+            </p>
+            <h1 id="page-hero-title">{title}</h1>
+            <nav
+                class="page-hero__breadcrumb"
+                aria-label="面包屑导航"
+            >
+                <ol>
+                    <li><a href="/">首页</a></li>
+                    {parent && <li><a href={parent.path}>{parent.label}</a></li>}
+                    <li><span aria-current="page">{title}</span></li>
+                </ol>
+            </nav>
+            <slot />
+        </div>
     </div>
 </section>
 
 <style>
-    .pagehero {
+    .page-hero {
+        --heading-color: #FFFFFF;
         background: var(--color-pine);
-        overflow: hidden;
+        overflow: clip;
         position: relative;
     }
 
-    .pagehero__glow {
-        background: radial-gradient(circle, rgba(255, 255, 255, .06), transparent 70%);
-        border-radius: 50%;
-        height: 380px;
+    .page-hero h1 {
+        margin-bottom: 1rem;
+    }
+
+    .page-hero__breadcrumb {
+        color: var(--color-white-70);
+        font-size: 0.84rem;
+    }
+
+    .page-hero__breadcrumb a {
+        color: var(--color-white-70);
+        position: relative;
+        transition: color var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+    }
+
+    .page-hero__breadcrumb a::after {
+        content: '';
+        inset: -0.75rem -0.5rem;
         position: absolute;
-        right: -80px;
-        top: -100px;
-        width: 380px;
     }
 
-    .pagehero__inner {
-        padding-bottom: clamp(56px, 7vw, 92px);
-        padding-top: clamp(56px, 7vw, 92px);
-        position: relative;
-    }
-
-    .pagehero__section {
-        color: rgba(255, 255, 255, .55);
-        font-family: var(--font-label);
-        font-size: 12px;
-        letter-spacing: 2px;
-        margin-bottom: 0;
-        text-transform: uppercase;
-    }
-
-    .pagehero__title {
-        color: #ffffff;
-        font-family: var(--font-display);
-        font-size: clamp(2.1rem, 4.4vw, 3.4rem);
-        font-weight: 700;
-        letter-spacing: 1px;
-        margin-bottom: 0;
-    }
-
-    .pagehero__breadcrumb {
-        align-items: center;
-        color: rgba(255, 255, 255, .6);
-        display: flex;
-        font-size: 13.5px;
-        gap: 10px;
-        margin-bottom: 0;
-    }
-
-    .pagehero__breadcrumb a {
-        color: rgba(255, 255, 255, .6);
-        transition: color var(--duration-fast);
-    }
-
-    .pagehero__breadcrumb a:hover {
-        color: #ffffff;
-    }
-
-    .pagehero__breadcrumb a:active {
+    .page-hero__breadcrumb a:active {
         opacity: 0.8;
     }
 
-    .pagehero__current {
+    .page-hero__breadcrumb a:hover {
+        color: #FFFFFF;
+    }
+
+    .page-hero__breadcrumb li {
+        align-items: center;
+        display: flex;
+        gap: 0.625rem;
+    }
+
+    .page-hero__breadcrumb li + li::before {
+        color: var(--color-white-55);
+        content: '/';
+        content: '/' / '';
+    }
+
+    .page-hero__breadcrumb ol {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.625rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .page-hero__breadcrumb [aria-current] {
         color: var(--color-gold-light);
+    }
+
+    .page-hero__glow {
+        right: -5rem;
+        top: -6.25rem;
+    }
+
+    .page-hero__inner {
+        padding-block: clamp(3.5rem, calc(2.5rem + 5vw), 6rem);
+        position: relative;
     }
 </style>

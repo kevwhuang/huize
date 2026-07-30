@@ -5,7 +5,7 @@ test.describe('500 page', () => {
         await page.goto('/500');
     });
 
-    test('displays 500 heading', async ({ page }) => {
-        await expect(page.locator('h1')).toContainText('500');
+    test('displays the 500 code', async ({ page }) => {
+        await expect(page.locator('.error-page__code')).toContainText('500');
     });
 });

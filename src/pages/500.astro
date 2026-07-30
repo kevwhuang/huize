@@ -1,8 +1,6 @@
 ---
 import ErrorServer from '@sections/ErrorServer.astro';
-import Footer from '@sections/Footer.astro';
 import Layout from '@/Layout.astro';
-import Navbar from '@sections/Navbar.astro';
 
 export const prerender = false;
 ---
@@ -10,11 +8,7 @@ export const prerender = false;
 <Layout
     description="服务器出现错误，请稍后再试。"
     noindex
-    title={'Server Error \u2014 惠泽健康'}
+    title="服务器错误 — 惠泽健康"
 >
-    <Navbar />
-    <main class="flex-1">
-        <ErrorServer />
-    </main>
-    <Footer />
+    <ErrorServer />
 </Layout>

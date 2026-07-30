@@ -1,59 +1,60 @@
 ---
-
+import { LINKS } from '@lib/constants';
 ---
 
 <section
+    class="error-page section"
     aria-labelledby="error-server-title"
-    class="errorserver"
 >
-    <h1
-        id="error-server-title"
-        class="errorserver__code"
-    >500
-    </h1>
-    <p class="errorserver__text">服务器出现错误，请稍后再试</p>
-    <a class="errorserver__link" href="/">返回首页</a>
+    <div class="shell">
+        <div
+            class="error-page__head"
+            data-scroll
+            data-scroll-stagger
+        >
+            <p
+                class="error-page__code"
+                aria-hidden="true"
+            >
+                500
+            </p>
+            <h1 id="error-server-title">服务器出现错误</h1>
+            <p class="error-page__text">
+                请稍后再试。若问题持续，欢迎直接联系我们，专属健康顾问会尽快为您处理。
+            </p>
+            <div class="error-page__actions">
+                <a
+                    class="button button--large button--primary"
+                    href="/"
+                >
+                    返回首页
+                </a>
+                <a
+                    class="button button--ghost button--large"
+                    href={LINKS.hotlineHref}
+                >
+                    致电 {LINKS.hotline}
+                </a>
+            </div>
+        </div>
+
+        <dl
+            class="error-page__contact"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            <div class="card">
+                <dt>全国服务热线</dt>
+                <dd><a href={LINKS.hotlineHref}>{LINKS.hotline}</a></dd>
+            </div>
+            <div class="card">
+                <dt>上海总部</dt>
+                <dd><a href={LINKS.shanghaiHref}>{LINKS.shanghai}</a></dd>
+            </div>
+            <div class="card">
+                <dt>公司地址</dt>
+                <dd>{LINKS.address}</dd>
+            </div>
+        </dl>
+    </div>
 </section>
-
-<style>
-    .errorserver {
-        align-items: center;
-        display: grid;
-        justify-items: center;
-        min-height: 60vh;
-        padding: 80px 20px;
-    }
-
-    .errorserver__code {
-        color: var(--color-pine);
-        font-family: var(--font-display);
-        font-size: clamp(4rem, 10vw, 8rem);
-        font-weight: 700;
-        margin-bottom: 16px;
-    }
-
-    .errorserver__text {
-        color: var(--color-sage);
-        font-size: 18px;
-        margin-bottom: 32px;
-    }
-
-    .errorserver__link {
-        background: var(--color-jade);
-        border-radius: 12px;
-        color: #ffffff;
-        font-size: 15.5px;
-        font-weight: 500;
-        padding: 15px 30px;
-        transition: background var(--duration-fast), transform var(--duration-fast);
-    }
-
-    .errorserver__link:hover {
-        background: var(--color-jade-deep);
-        transform: translateY(-2px);
-    }
-
-    .errorserver__link:active {
-        transform: translateY(0);
-    }
-</style>

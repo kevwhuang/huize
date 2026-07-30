@@ -1,0 +1,273 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { BASE_THEMES, PUBLIC_HOSPITALS } from '@lib/constants';
+
+const PANELS = [
+    {
+        description: '各类康养基地介绍。依托优质自然与医疗资源，打造旅居康养与疗愈目的地。',
+        link: '/network/bases',
+        number: '01',
+        tags: ['21 个基地', BASE_THEMES.join(' · '), '医养结合'],
+        title: '康养基地',
+    },
+    {
+        description: '从40000多家机构中甄选2000家，覆盖机构养老、社区照护与居家护理的多层次服务网络。',
+        link: '/network/elderly-care',
+        number: '02',
+        tags: ['2000 家甄选机构', '机构养老', '居家护理'],
+        title: '养老机构',
+    },
+    {
+        description: '专科康复医院，三级及以上医院，全国医疗网络。聚焦脑卒中与骨科康复。',
+        link: '/network/medical',
+        number: '03',
+        tags: [`${PUBLIC_HOSPITALS} 家医院`, '专科康复', '就医绿通'],
+        title: '医疗机构',
+    },
+    {
+        description: '服务网络覆盖全国530个城市，累计服务超1000万人次。',
+        link: '/network/cities',
+        number: '04',
+        tags: ['530 个城市', '就近触达', '本地化网络'],
+        title: '服务城市',
+    },
+];
+---
+
+<section
+    id="network"
+    class="home-network section section--tint"
+    aria-labelledby="home-network-title"
+>
+    <div class="shell home-network__grid">
+        <div data-scroll="left">
+            <SectionHead
+                eyebrow="Service Network"
+                headingId="home-network-title"
+            >
+                覆盖全国的<br />康养与医疗服务网络
+            </SectionHead>
+            <p class="home-network__text">
+                服务网络覆盖全国500个城市，依托康养基地、养老机构与医疗机构，累计为超过1000万人次提供专业照护服务。
+            </p>
+            <div class="home-network__media">
+                <div
+                    class="home-network__photo"
+                    aria-hidden="true"
+                />
+                <div
+                    class="home-network__scrim"
+                    aria-hidden="true"
+                />
+                <p class="label home-network__caption">
+                    全国网络
+                    <span lang="en">&middot; Nationwide</span>
+                </p>
+            </div>
+        </div>
+
+        <ul
+            class="home-network__list"
+            data-scroll="right"
+            data-scroll-stagger
+        >
+            {PANELS.map(panel => (
+                <li>
+                    <details
+                        class="home-network__panel"
+                        name="home-network"
+                    >
+                        <summary>
+                            <span class="home-network__summary-text">
+                                <span class="numeral home-network__number">{panel.number}</span>
+                                <span class="home-network__title">{panel.title}</span>
+                            </span>
+                            <span
+                                class="home-network__toggle"
+                                aria-hidden="true"
+                            />
+                        </summary>
+                        <div class="home-network__body">
+                            <p>{panel.description}</p>
+                            <div class="home-network__tags">
+                                {panel.tags.map(tag => (
+                                    <span class="tag">{tag}</span>
+                                ))}
+                            </div>
+                            <a
+                                class="link-more"
+                                href={panel.link}
+                            >
+                                查看更多
+                            </a>
+                        </div>
+                    </details>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .home-network__body {
+        padding: 0 1.625rem 1.625rem;
+    }
+
+    .home-network__body p {
+        color: var(--color-sage);
+        font-size: 0.95rem;
+        font-weight: 400;
+        line-height: 1.9;
+        margin-bottom: 1rem;
+    }
+
+    .home-network__caption {
+        background: var(--color-pine);
+        border-radius: var(--radius-card-sm);
+        bottom: 1rem;
+        color: #FFFFFF;
+        left: 1.125rem;
+        margin-bottom: 0;
+        padding: 0.375rem 0.75rem;
+        position: absolute;
+    }
+
+    .home-network__grid {
+        align-items: center;
+        display: grid;
+        gap: clamp(2.5rem, calc(1.67rem + 4.17vw), 4.5rem);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    }
+
+    .home-network__list {
+        background: #FFFFFF;
+        border: 0.0625rem solid var(--color-shell);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-card);
+        display: grid;
+        list-style: none;
+        overflow: clip;
+        padding: 0;
+    }
+
+    .home-network__list > li + li {
+        border-top: 0.0625rem solid var(--color-shell);
+    }
+
+    .home-network__media {
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-lift);
+        min-height: 14.375rem;
+        overflow: clip;
+        position: relative;
+    }
+
+    .home-network__panel {
+        overflow: clip;
+    }
+
+    .home-network__panel[open] .home-network__number {
+        color: var(--color-jade);
+    }
+
+    .home-network__panel[open] .home-network__toggle {
+        rotate: 45deg;
+    }
+
+    .home-network__panel summary {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        list-style: none;
+        padding: 1.5rem 1.625rem;
+        transition: background var(--duration-fast) var(--ease-out);
+        user-select: none;
+    }
+
+    .home-network__panel summary:active {
+        background: var(--color-snow);
+    }
+
+    .home-network__panel summary:hover {
+        background: var(--color-mist);
+    }
+
+    .home-network__photo {
+        background-color: var(--color-pine);
+        background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80');
+        background-position: center;
+        background-size: cover;
+        inset: 0;
+        position: absolute;
+    }
+
+    .home-network__scrim {
+        background: linear-gradient(160deg, var(--color-veil-12) 35%, var(--color-veil-80));
+        inset: 0;
+        position: absolute;
+    }
+
+    .home-network__summary-text {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .home-network__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.125rem;
+    }
+
+    .home-network__text {
+        color: var(--color-sage);
+        font-weight: 400;
+        line-height: 2;
+        margin-bottom: 1.875rem;
+    }
+
+    .home-network__title {
+        color: var(--color-pine);
+        font-family: var(--font-display);
+        font-size: 1.1875rem;
+        font-weight: 700;
+    }
+
+    .home-network__toggle {
+        flex-shrink: 0;
+        height: 1.125rem;
+        position: relative;
+        transition: rotate var(--duration-base) var(--ease-out);
+        width: 1.125rem;
+    }
+
+    .home-network__toggle::after,
+    .home-network__toggle::before {
+        background: var(--color-jade);
+        content: '';
+        position: absolute;
+    }
+
+    .home-network__toggle::after {
+        height: 1.125rem;
+        left: 0.5rem;
+        top: 0;
+        width: 0.125rem;
+    }
+
+    .home-network__toggle::before {
+        height: 0.125rem;
+        left: 0;
+        top: 0.5rem;
+        width: 1.125rem;
+    }
+
+    @media (max-width: 1024px) {
+        .home-network__grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+</style>

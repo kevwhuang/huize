@@ -1,28 +1,20 @@
 ---
+import CtaBanner from '@sections/CtaBanner.astro';
 import Layout from '@/Layout.astro';
-import Footer from '@sections/Footer.astro';
-import Navbar from '@sections/Navbar.astro';
+import NetworkElderlyCareProvinces from '@sections/NetworkElderlyCareProvinces.astro';
+import NetworkElderlyCareStats from '@sections/NetworkElderlyCareStats.astro';
 import PageHero from '@sections/PageHero.astro';
-import Subpage from '@sections/Subpage.astro';
-
-const CARDS = [
-    { description: '专业团队与标准化服务，提供安心舒适的机构养老体验。', title: '机构养老' },
-    { description: '贴近社区的日间照护，兼顾专业与家庭温度。', title: '社区日间照护' },
-    { description: '护工到家、康复师上门，让照护抵达每一个家庭。', title: '居家护理' },
-];
 ---
 
 <Layout
-    description="养老机构列表。覆盖机构养老、社区照护与居家护理的多层次养老服务网络。"
-    title={'养老机构 \u2014 惠泽健康'}
+    description="惠泽从40000多家机构中甄选出2000家服务质量优、市场口碑好、软硬件配套完整的养老与护理机构，分布于全国29个省级行政区。"
+    title="养老机构 — 惠泽健康"
 >
-    <Navbar />
-    <main class="flex-1">
-        <PageHero section="Service Network · Elderly Care" title="养老机构" />
-        <Subpage
-            cards={CARDS}
-            lead="养老机构列表。覆盖机构养老、社区照护与居家护理的多层次养老服务网络，为长者提供专业、安心的照护。"
-        />
-    </main>
-    <Footer />
+    <PageHero
+        eyebrow="Elderly Care"
+        title="养老机构"
+    />
+    <NetworkElderlyCareStats />
+    <NetworkElderlyCareProvinces />
+    <CtaBanner />
 </Layout>

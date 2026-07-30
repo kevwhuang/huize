@@ -1,0 +1,170 @@
+---
+const CREED = [
+    {
+        english: 'Vision',
+        label: '愿景',
+        number: '01',
+        statement: '打造中国领先的健康科技平台',
+    },
+    {
+        english: 'Mission',
+        label: '使命',
+        number: '02',
+        statement: '让人人享有健康品质生活',
+    },
+];
+
+const VALUES = ['专业', '诚信', '开放', '协作'];
+---
+
+<section
+    class="about-culture section"
+    aria-labelledby="about-culture-title"
+>
+    <div class="shell">
+        <h2
+            id="about-culture-title"
+            class="sr-only"
+        >
+            惠泽的愿景、使命与价值观
+        </h2>
+
+        <ol class="about-culture__creed">
+            {CREED.map((entry, index) => (
+                <li
+                    class="about-culture__entry"
+                    data-scroll={index === 0 ? 'left' : 'right'}
+                >
+                    <p
+                        class="about-culture__number numeral"
+                        aria-hidden="true"
+                    >{entry.number}
+                    </p>
+                    <h3 class="about-culture__label">
+                        {entry.label}
+                        <span
+                            class="label label--gold"
+                            aria-hidden="true"
+                            lang="en"
+                        >{entry.english}
+                        </span>
+                    </h3>
+                    <p class="about-culture__statement">{entry.statement}</p>
+                </li>
+            ))}
+            <li
+                class="about-culture__entry about-culture__entry--values"
+                data-scroll="up"
+            >
+                <p
+                    class="about-culture__number numeral"
+                    aria-hidden="true"
+                >03
+                </p>
+                <h3 class="about-culture__label">
+                    价值观
+                    <span
+                        class="label label--gold"
+                        aria-hidden="true"
+                        lang="en"
+                    >Values
+                    </span>
+                </h3>
+                <ul
+                    class="about-culture__values"
+                    data-scroll="scale"
+                    data-scroll-stagger
+                >
+                    {VALUES.map(value => (
+                        <li class="about-culture__value">{value}</li>
+                    ))}
+                </ul>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<style>
+    .about-culture__creed {
+        display: grid;
+        gap: clamp(3rem, calc(2.17rem + 4.17vw), 5rem);
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-culture__entry {
+        border-top: 0.125rem solid var(--color-laurel);
+        max-width: var(--measure-prose);
+        padding-top: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+    }
+
+    .about-culture__entry:nth-child(2) {
+        margin-left: auto;
+        text-align: right;
+    }
+
+    .about-culture__entry:nth-child(2) .about-culture__label {
+        justify-content: flex-end;
+    }
+
+    .about-culture__entry--values {
+        margin-inline: auto;
+        width: 100%;
+    }
+
+    .about-culture__label {
+        align-items: baseline;
+        color: var(--color-jade);
+        display: flex;
+        flex-wrap: wrap;
+        font-size: var(--text-h3);
+        gap: 0.875rem;
+        margin-bottom: 0.875rem;
+    }
+
+    .about-culture__number {
+        margin-bottom: 0.75rem;
+    }
+
+    .about-culture__statement {
+        color: var(--color-pine);
+        font-family: var(--font-display);
+        font-size: clamp(1.75rem, calc(1.33rem + 2.08vw), 3rem);
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        line-height: 1.35;
+        margin-bottom: 0;
+        text-wrap: balance;
+    }
+
+    .about-culture__value {
+        background: var(--color-mint);
+        border-radius: var(--radius-card);
+        color: var(--color-pine);
+        font-family: var(--font-display);
+        font-size: clamp(1.25rem, calc(1.08rem + 0.83vw), 1.75rem);
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        padding: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem) 0.75rem;
+        text-align: center;
+    }
+
+    .about-culture__values {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    @media (max-width: 768px) {
+
+        .about-culture__entry:nth-child(2) {
+            text-align: left;
+        }
+
+        .about-culture__entry:nth-child(2) .about-culture__label {
+            justify-content: flex-start;
+        }
+    }
+</style>

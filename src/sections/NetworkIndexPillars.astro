@@ -1,0 +1,165 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { BASES, PUBLIC_HOSPITALS, TOTAL_CITIES, TOTAL_INSTITUTIONS } from '@lib/constants';
+
+const PILLARS = [
+    {
+        countTo: BASES.length,
+        description: '依托优质自然与医疗资源打造的旅居康养与疗愈目的地，主题涵盖温泉、雨林、海滩与湿地。',
+        number: '01',
+        path: '/network/bases',
+        title: '康养基地',
+        unit: '个基地',
+    },
+    {
+        countTo: TOTAL_INSTITUTIONS,
+        description: '从40000多家机构中甄选，服务质量优、市场口碑好、软硬件配套完整，分布于全国29个省份。',
+        number: '02',
+        path: '/network/elderly-care',
+        title: '养老机构',
+        unit: '家甄选机构',
+    },
+    {
+        countTo: PUBLIC_HOSPITALS,
+        description: '覆盖二级及以上公立医院，涵盖专科康复医院与三级及以上医院，聚焦脑卒中、骨科等刚需领域。',
+        number: '03',
+        path: '/network/medical',
+        title: '医疗机构',
+        unit: '家公立医院',
+    },
+    {
+        countTo: TOTAL_CITIES,
+        description: '服务网络覆盖全国500个城市，遍及七大区域、31个省级行政区，累计服务超过1000万人次。',
+        number: '04',
+        path: '/network/cities',
+        title: '服务城市',
+        unit: '个城市',
+    },
+];
+---
+
+<section
+    class="network-pillars section"
+    aria-labelledby="network-pillars-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow="Service Network"
+            headingId="network-pillars-title"
+        >
+            覆盖全国的<br />康养与医疗服务网络
+            <Fragment slot="text">
+                <p>
+                    惠泽以康养基地、养老机构、医疗机构与服务城市四张网络为底座，为客户提供从旅居疗愈到刚需照护的完整服务链条。
+                </p>
+            </Fragment>
+        </SectionHead>
+
+        <ol
+            class="network-pillars__list"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {PILLARS.map(pillar => (
+                <li>
+                    <a
+                        class="card card--hover network-pillars__card"
+                        href={pillar.path}
+                    >
+                        <span
+                            class="numeral numeral--gold network-pillars__number"
+                            aria-hidden="true"
+                        >
+                            {pillar.number}
+                        </span>
+                        <span class="network-pillars__figure">
+                            <span
+                                class="network-pillars__value"
+                                data-count-to={pillar.countTo}
+                            >
+                                {pillar.countTo}
+                            </span>
+                            <span class="network-pillars__unit">{pillar.unit}</span>
+                        </span>
+                        <h3>{pillar.title}</h3>
+                        <span class="network-pillars__text">{pillar.description}</span>
+                        <span class="link-more">查看详情</span>
+                    </a>
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
+
+<style>
+    .network-pillars__card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+    }
+
+    .network-pillars__card:hover .link-more {
+        gap: 0.875rem;
+    }
+
+    .network-pillars__card .link-more {
+        align-self: start;
+        margin-top: auto;
+        padding-top: 1.25rem;
+    }
+
+    .network-pillars__card h3 {
+        margin-bottom: 0.625rem;
+    }
+
+    .network-pillars__figure {
+        align-items: baseline;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.875rem;
+    }
+
+    .network-pillars__list {
+        display: grid;
+        gap: clamp(1.125rem, calc(0.79rem + 1.67vw), 1.875rem);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .network-pillars__number {
+        position: absolute;
+        right: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+        top: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+    }
+
+    .network-pillars__text {
+        color: var(--color-sage);
+        font-size: 0.9rem;
+        line-height: 1.85;
+    }
+
+    .network-pillars__unit {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+    }
+
+    .network-pillars__value {
+        color: var(--color-jade);
+        font-family: var(--font-display);
+        font-size: clamp(2.1rem, calc(1.73rem + 1.88vw), 2.9rem);
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    @media (max-width: 768px) {
+        .network-pillars__list {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .network-pillars__list > li,
+    }
+</style>

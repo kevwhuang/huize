@@ -1,59 +1,78 @@
 ---
+import { LINKS, ROUTES } from '@lib/constants';
 
+const SECTIONS = ROUTES.filter(route => route.path !== '/');
 ---
 
 <section
+    class="error-page section"
     aria-labelledby="error-not-found-title"
-    class="notfound"
 >
-    <h1
-        id="error-not-found-title"
-        class="notfound__code"
-    >404
-    </h1>
-    <p class="notfound__text">您访问的页面不存在</p>
-    <a class="notfound__link" href="/">返回首页</a>
+    <div class="shell">
+        <div
+            class="error-page__head"
+            data-scroll
+            data-scroll-stagger
+        >
+            <p
+                class="error-page__code"
+                aria-hidden="true"
+            >
+                404
+            </p>
+            <h1 id="error-not-found-title">您访问的页面不存在</h1>
+            <p class="error-page__text">
+                页面可能已经移动或不再提供。您可以从下面的板块继续浏览，或直接致电
+                <a href={LINKS.hotlineHref}>{LINKS.hotline}</a>
+                与我们联系。
+            </p>
+            <a
+                class="button button--large button--primary"
+                href="/"
+            >
+                返回首页
+            </a>
+        </div>
+
+        <ul
+            class="error-page__contact error-page__grid"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {SECTIONS.map(section => (
+                <li>
+                    <a
+                        class="card card--hover error-page__card"
+                        href={section.path}
+                    >
+                        <h2>{section.label}</h2>
+                        <p>{(section.children ?? []).map(child => child.label).join(' · ')}</p>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
 </section>
 
 <style>
-    .notfound {
-        align-items: center;
-        display: grid;
-        justify-items: center;
-        min-height: 60vh;
-        padding: 80px 20px;
+    .error-page__card {
+        display: block;
+        height: 100%;
     }
 
-    .notfound__code {
-        color: var(--color-pine);
-        font-family: var(--font-display);
-        font-size: clamp(4rem, 10vw, 8rem);
-        font-weight: 700;
-        margin-bottom: 16px;
+    .error-page__card h2 {
+        font-size: var(--text-h3);
+        margin-bottom: 0.5rem;
     }
 
-    .notfound__text {
+    .error-page__card p {
         color: var(--color-sage);
-        font-size: 18px;
-        margin-bottom: 32px;
+        font-size: 0.84rem;
+        line-height: 1.7;
     }
 
-    .notfound__link {
-        background: var(--color-jade);
-        border-radius: 12px;
-        color: #ffffff;
-        font-size: 15.5px;
-        font-weight: 500;
-        padding: 15px 30px;
-        transition: background var(--duration-fast), transform var(--duration-fast);
-    }
-
-    .notfound__link:hover {
-        background: var(--color-jade-deep);
-        transform: translateY(-2px);
-    }
-
-    .notfound__link:active {
-        transform: translateY(0);
+    .error-page__grid {
+        list-style: none;
+        padding: 0;
     }
 </style>

@@ -1,0 +1,110 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { NEWS_INDUSTRY } from '@lib/constants';
+
+const ORDINAL_PAD = 2;
+
+const years = NEWS_INDUSTRY.map(item => Number.parseInt(item.date.slice(0, 4), 10));
+
+const firstYear = Math.min(...years);
+const lastYear = Math.max(...years);
+
+const range = firstYear === lastYear ? `${firstYear} 年` : `${firstYear} 至 ${lastYear} 年`;
+---
+
+<section
+    class="news-industry section section--tint"
+    aria-labelledby="news-industry-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow="Industry"
+            headingId="news-industry-title"
+        >
+            行业研究与健康知识
+            <Fragment slot="text">
+                <p>共 {NEWS_INDUSTRY.length} 篇康复、康养与大健康领域的报告与指南，发布于 {range}。</p>
+            </Fragment>
+        </SectionHead>
+
+        <ol
+            class="news-industry__list"
+            data-scroll="up"
+            data-scroll-stagger
+        >
+            {NEWS_INDUSTRY.map((item, index) => (
+                <li class="news-industry__item">
+                    <p
+                        class="news-industry__ordinal numeral numeral--gold"
+                        aria-hidden="true"
+                    >
+                        {String(index + 1).padStart(ORDINAL_PAD, '0')}
+                    </p>
+                    <article class="news-industry__body">
+                        <time
+                            class="label news-industry__date"
+                            datetime={item.date}
+                        >
+                            {item.date.replace(/-/g, '.')}
+                        </time>
+                        <h3 class="news-industry__title">
+                            <Fragment set:html={item.title} />
+                        </h3>
+                        <p class="news-industry__summary">{item.summary}</p>
+                    </article>
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
+
+<style>
+    .news-industry__body {
+        padding-bottom: clamp(1.5rem, calc(1.29rem + 1.04vw), 2.25rem);
+    }
+
+    .news-industry__date {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .news-industry__item {
+        border-top: 0.0625rem solid var(--color-sand);
+        display: grid;
+        gap: clamp(0.5rem, calc(0.08rem + 2.08vw), 2rem);
+        grid-template-columns: 4.5rem minmax(0, 1fr);
+        padding-top: clamp(1.5rem, calc(1.29rem + 1.04vw), 2.25rem);
+    }
+
+    .news-industry__list {
+        list-style: none;
+        margin: 0;
+        max-width: 60rem;
+        padding: 0;
+    }
+
+    .news-industry__ordinal {
+        font-size: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+        line-height: 1;
+        margin-bottom: 0;
+    }
+
+    .news-industry__summary {
+        color: var(--color-sage);
+        font-size: 0.95rem;
+        line-height: 1.95;
+        margin-bottom: 0;
+        max-width: var(--measure-prose);
+    }
+
+    .news-industry__title {
+        font-size: clamp(1.15rem, calc(1.04rem + 0.52vw), 1.4rem);
+        margin-bottom: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+        .news-industry__item {
+            grid-template-columns: 3rem minmax(0, 1fr);
+        }
+    }
+</style>

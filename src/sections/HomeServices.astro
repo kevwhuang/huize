@@ -1,0 +1,343 @@
+---
+import IconCheck from '@components/IconCheck.astro';
+import SectionHead from '@components/SectionHead.astro';
+import { SERVICES } from '@lib/constants';
+
+const BULLETS: Record<string, string[]> = {
+    health: ['就医绿色通道', '院内护理 &middot; 居家护理', '上门康复 &middot; 远程评估', '护工到家 &middot; 社区康复'],
+    insurance: ['健康增值服务', '理赔协助支持', '老人商业医疗保险', '企业团体方案'],
+    premium: ['免疫与细胞治疗', '全球特药器械', '海外医疗对接', '专属健康管家'],
+    wellness: ['旅居康养疗愈', '全国机构养老', '社区日间照护', '专业居家护理'],
+};
+---
+
+<section
+    id="services"
+    class="home-services section section--dark"
+    aria-labelledby="home-services-title"
+>
+    <div
+        class="glow home-services__glow"
+        aria-hidden="true"
+    />
+    <div class="shell">
+        <SectionHead
+            eyebrow="Service Center"
+            headingId="home-services-title"
+            isCentered
+            isOnDark
+        >
+            惠泽 &mdash; 您专属的健康管家
+            <Fragment slot="text">
+                <p>覆盖康养、健康、保险与高端医疗的一体化服务体系</p>
+            </Fragment>
+        </SectionHead>
+
+        <div class="home-services__layout">
+            <div
+                class="home-services__tabs"
+                aria-label="服务类别"
+                data-scroll="left"
+                data-scroll-stagger
+                role="tablist"
+            >
+                {SERVICES.map((service, index) => (
+                    <button
+                        id={`home-services-tab-${service.id}`}
+                        class="home-services__tab"
+                        aria-controls={`home-services-panel-${service.id}`}
+                        aria-selected={index === 0 ? 'true' : 'false'}
+                        data-tab={service.id}
+                        role="tab"
+                        tabindex={index === 0 ? undefined : '-1'}
+                        type="button"
+                    >
+                        <span class="numeral home-services__tab-number">{service.number}</span>
+                        <span class="home-services__tab-text">
+                            <span class="home-services__tab-label">{service.label}</span>
+                            <span class="home-services__tab-subtitle">{service.subtitle}</span>
+                        </span>
+                    </button>
+                ))}
+            </div>
+
+            <div data-scroll="right">
+                {SERVICES.map((service, index) => (
+                    <article
+                        id={`home-services-panel-${service.id}`}
+                        class="home-services__panel"
+                        aria-labelledby={`home-services-tab-${service.id}`}
+                        data-active={index === 0 ? '' : undefined}
+                        data-panel={service.id}
+                        role="tabpanel"
+                        tabindex="0"
+                    >
+                        <div class="home-services__panel-body">
+                            <div class="home-services__panel-copy">
+                                <p
+                                    class="label label--gold home-services__panel-eyebrow"
+                                    lang="en"
+                                >
+                                    {service.number} / {service.english}
+                                </p>
+                                <h3>{service.label}</h3>
+                                <p class="home-services__panel-text">{service.summary}</p>
+                                <ul class="home-services__list">
+                                    {BULLETS[service.id].map(bullet => (
+                                        <li>
+                                            <span
+                                                class="check"
+                                                aria-hidden="true"
+                                            >
+                                                <IconCheck size={11} strokeWidth={3} />
+                                            </span>
+                                            <span set:html={bullet} />
+                                        </li>
+                                    ))}
+                                </ul>
+                                <a
+                                    class="link-more"
+                                    href={service.path}
+                                >
+                                    查看更多
+                                </a>
+                            </div>
+                            <div
+                                class="home-services__panel-media"
+                                aria-hidden="true"
+                                style={`background-image:url('${service.image}')`}
+                            />
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .home-services__glow {
+        left: -5.625rem;
+        top: -5.625rem;
+    }
+
+    .home-services__layout {
+        align-items: start;
+        display: grid;
+        gap: 1.625rem;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    }
+
+    .home-services__list {
+        display: grid;
+        gap: 0.8125rem;
+        list-style: none;
+        margin-bottom: 1.625rem;
+        margin-top: 1.375rem;
+        padding: 0;
+    }
+
+    .home-services__list li {
+        align-items: center;
+        color: var(--color-sage-dark);
+        display: flex;
+        font-size: 0.9rem;
+        gap: 0.6875rem;
+    }
+
+    .home-services__panel {
+        --heading-color: var(--color-pine);
+        background: #FFFFFF;
+        border-radius: var(--radius-card-lg);
+        box-shadow: var(--shadow-panel);
+        padding: clamp(1.625rem, calc(1.29rem + 1.67vw), 2.625rem);
+    }
+
+    .home-services__panel + .home-services__panel {
+        margin-top: 1.625rem;
+    }
+
+    .home-services__panel-body {
+        align-items: center;
+        display: grid;
+        gap: 2.125rem;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+    }
+
+    .home-services__panel-copy h3 {
+        margin-bottom: 0.875rem;
+    }
+
+    .home-services__panel-eyebrow {
+        margin-bottom: 0.75rem;
+    }
+
+    .home-services__panel-media {
+        align-self: stretch;
+        background-color: var(--color-jade-light);
+        background-position: center;
+        background-size: cover;
+        border-radius: var(--radius-card);
+        min-height: 15rem;
+    }
+
+    .home-services__panel-text {
+        color: var(--color-sage);
+        font-size: 0.97rem;
+        font-weight: 400;
+        line-height: 1.95;
+        margin-bottom: 0;
+    }
+
+    .home-services__tab {
+        align-items: center;
+        background: #FFFFFF;
+        border: 0.0625rem solid var(--color-stone);
+        border-radius: var(--radius-card);
+        color: var(--color-pine-light);
+        display: flex;
+        gap: 1rem;
+        padding: 1.25rem 1.375rem;
+        text-align: left;
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            border-color var(--duration-fast) var(--ease-out),
+            box-shadow var(--duration-fast) var(--ease-out),
+            transform var(--duration-fast) var(--ease-out);
+        width: 100%;
+    }
+
+    .home-services__tab:active {
+        transform: translateX(0.125rem);
+    }
+
+    .home-services__tab:hover {
+        transform: translateX(0.25rem);
+    }
+
+    .home-services__tab[aria-selected='true'] {
+        background: var(--color-jade);
+        border-color: var(--color-jade);
+        box-shadow: var(--shadow-jade);
+        color: #FFFFFF;
+    }
+
+    .home-services__tab-label {
+        font-family: var(--font-display);
+        font-size: 1.125rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+    }
+
+    .home-services__tab[aria-selected='true'] .home-services__tab-number {
+        color: #FFFFFF;
+    }
+
+    .home-services__tab-subtitle {
+        color: var(--color-sage);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+    }
+
+    .home-services__tab[aria-selected='true'] .home-services__tab-subtitle {
+        color: #FFFFFF;
+    }
+
+    .home-services__tab-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3125rem;
+    }
+
+    .home-services__tabs {
+        display: none;
+        flex-direction: column;
+        gap: 0.875rem;
+    }
+
+    .home-services[data-enhanced] .home-services__panel + .home-services__panel {
+        margin-top: 0;
+    }
+
+    .home-services[data-enhanced] .home-services__panel:not([data-active]) {
+        display: none;
+    }
+
+    .home-services[data-enhanced] .home-services__tabs {
+        display: flex;
+    }
+
+    @media (max-width: 1024px) {
+        .home-services__layout {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .home-services__tabs {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .home-services[data-enhanced] .home-services__tab {
+            width: auto;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .home-services__panel-body {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+    }
+</style>
+
+<script>
+    import { registerPageScript } from '@lib/utils';
+
+    function initHomeServices(signal: AbortSignal) {
+        const section = document.querySelector<HTMLElement>('.home-services');
+
+        if (!section) return;
+
+        const panels = Array.from(section.querySelectorAll<HTMLElement>('[data-panel]'));
+        const tabs = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+
+        if (!tabs.length || !panels.length) return;
+
+        section.dataset.enhanced = '';
+
+        function activate(id: string, shouldFocus: boolean) {
+            tabs.forEach((tab) => {
+                const isSelected = tab.dataset.tab === id;
+
+                tab.setAttribute('aria-selected', String(isSelected));
+                tab.tabIndex = isSelected ? 0 : -1;
+
+                if (isSelected && shouldFocus) tab.focus();
+            });
+
+            panels.forEach(panel => panel.toggleAttribute('data-active', panel.dataset.panel === id));
+        }
+
+        function handleKeydown(event: KeyboardEvent) {
+            const OFFSETS: Record<string, number> = { ArrowDown: 1, ArrowLeft: -1, ArrowRight: 1, ArrowUp: -1 };
+
+            const offset = OFFSETS[event.key];
+
+            if (!offset) return;
+
+            event.preventDefault();
+
+            const currentIndex = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
+            const nextIndex = (currentIndex + offset + tabs.length) % tabs.length;
+
+            activate(tabs[nextIndex].dataset.tab ?? '', true);
+        }
+
+        tabs.forEach((tab) => {
+            tab.addEventListener('click', () => activate(tab.dataset.tab ?? '', false), { signal });
+            tab.addEventListener('keydown', handleKeydown, { signal });
+        });
+    }
+
+    registerPageScript(initHomeServices);
+</script>

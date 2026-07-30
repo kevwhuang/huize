@@ -1,0 +1,153 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { NEWS_COMPANY, NEWS_INDUSTRY } from '@lib/constants';
+
+const COMPANY_LABEL = '公司新闻';
+const INDUSTRY_LABEL = '行业新闻';
+
+const items = [
+    ...NEWS_COMPANY.map(item => ({ category: COMPANY_LABEL, date: item.date, summary: item.summary, title: item.title })),
+    ...NEWS_INDUSTRY.map(item => ({ category: INDUSTRY_LABEL, date: item.date, summary: item.summary, title: item.title })),
+].sort((left, right) => right.date.localeCompare(left.date));
+
+const years = items.map(item => Number.parseInt(item.date.slice(0, 4), 10));
+
+const firstYear = Math.min(...years);
+const lastYear = Math.max(...years);
+---
+
+<section
+    class="news-index section"
+    aria-labelledby="news-index-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow="All Updates"
+            headingId="news-index-title"
+        >
+            全部动态
+            <Fragment slot="text">
+                <p>公司新闻与行业新闻共 {items.length} 条，覆盖 {firstYear} 至 {lastYear} 年，按发布时间倒序排列。</p>
+            </Fragment>
+        </SectionHead>
+
+        <ol
+            class="news-index__list"
+            data-scroll="up"
+            data-scroll-stagger
+        >
+            {items.map(item => (
+                <li>
+                    <article class="news-index__item">
+                        <p class="news-index__rail">
+                            <time
+                                class="label"
+                                datetime={item.date}
+                            >
+                                {item.date.replace(/-/g, '.')}
+                            </time>
+                            <span class:list={['tag', { 'news-index__tag--industry': item.category === INDUSTRY_LABEL }]}>
+                                {item.category}
+                            </span>
+                        </p>
+                        <div class="news-index__body">
+                            <h3 class="news-index__title">
+                                <Fragment set:html={item.title} />
+                            </h3>
+                            <p class="news-index__summary">{item.summary}</p>
+                        </div>
+                    </article>
+                </li>
+            ))}
+        </ol>
+
+        <nav
+            class="news-index__actions"
+            aria-label="新闻分类"
+            data-scroll="up"
+        >
+            <a
+                class="link-more"
+                href="/news/company"
+            >
+                查看全部公司新闻
+            </a>
+            <a
+                class="link-more"
+                href="/news/industry"
+            >
+                查看全部行业新闻
+            </a>
+        </nav>
+    </div>
+</section>
+
+<style>
+    .news-index__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 2.5rem;
+        margin-top: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+    }
+
+    .news-index__actions .link-more {
+        min-height: 2.75rem;
+    }
+
+    .news-index__body {
+        padding-bottom: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+    }
+
+    .news-index__item {
+        border-top: var(--border-soft);
+        display: grid;
+        gap: clamp(0.75rem, calc(0.33rem + 2.08vw), 2.25rem);
+        grid-template-columns: 10.5rem minmax(0, 1fr);
+        padding-top: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+    }
+
+    .news-index__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .news-index__rail {
+        align-items: start;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6875rem;
+        margin-bottom: 0;
+    }
+
+    .news-index__summary {
+        color: var(--color-sage);
+        font-size: 0.9rem;
+        line-height: 1.9;
+        margin-bottom: 0;
+        max-width: var(--measure-prose);
+    }
+
+    .news-index__tag--industry {
+        background: #FFFFFF;
+        box-shadow: inset 0 0 0 0.0625rem var(--color-sand);
+        color: var(--color-gold);
+    }
+
+    .news-index__title {
+        font-size: clamp(1.0625rem, calc(1.01rem + 0.26vw), 1.1875rem);
+        margin-bottom: 0.625rem;
+    }
+
+    @media (max-width: 1024px) {
+        .news-index__item {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .news-index__rail {
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+    }
+</style>

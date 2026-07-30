@@ -1,0 +1,182 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { NEWS_COMPANY } from '@lib/constants';
+
+const [lead, ...rest] = NEWS_COMPANY;
+
+const years = NEWS_COMPANY.map(item => Number.parseInt(item.date.slice(0, 4), 10));
+
+const firstYear = Math.min(...years);
+const lastYear = Math.max(...years);
+---
+
+<section
+    class="news-company section"
+    aria-labelledby="news-company-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow="Company"
+            headingId="news-company-title"
+        >
+            企业动态
+            <Fragment slot="text">
+                <p>共 {NEWS_COMPANY.length} 条企业动态，覆盖 {firstYear} 至 {lastYear} 年。</p>
+            </Fragment>
+        </SectionHead>
+
+        <article class="news-company__lead">
+            <div data-scroll="left">
+                <p class="news-company__meta">
+                    <span class="tag">最新动态</span>
+                    <time
+                        class="label"
+                        datetime={lead.date}
+                    >
+                        {lead.date.replace(/-/g, '.')}
+                    </time>
+                </p>
+                <h3 class="news-company__lead-title">
+                    <Fragment set:html={lead.title} />
+                </h3>
+                <p class="news-company__lead-summary">{lead.summary}</p>
+            </div>
+            <div
+                class="news-company__lead-media"
+                aria-hidden="true"
+                data-scroll="right"
+                style={`background-image:url('${lead.image}')`}
+            />
+        </article>
+
+        <ol
+            class="news-company__grid"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {rest.map(item => (
+                <li>
+                    <article class="card card--flush news-company__card">
+                        <span
+                            class="news-company__photo"
+                            aria-hidden="true"
+                            style={`background-image:url('${item.image}')`}
+                        />
+                        <div class="news-company__body">
+                            <time
+                                class="label"
+                                datetime={item.date}
+                            >
+                                {item.date.replace(/-/g, '.')}
+                            </time>
+                            <h3 class="news-company__title">
+                                <Fragment set:html={item.title} />
+                            </h3>
+                            <p class="news-company__summary">{item.summary}</p>
+                        </div>
+                    </article>
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
+
+<style>
+    .news-company__body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+
+    .news-company__card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .news-company__grid {
+        display: grid;
+        gap: clamp(1.25rem, calc(1.04rem + 1.04vw), 1.75rem);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .news-company__lead {
+        align-items: center;
+        display: grid;
+        gap: clamp(2rem, calc(1.17rem + 4.17vw), 4rem);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+        margin-bottom: clamp(3rem, calc(2.17rem + 4.17vw), 5rem);
+    }
+
+    .news-company__lead-media {
+        background-color: var(--color-jade-light);
+        background-position: center;
+        background-size: cover;
+        border-radius: var(--radius-card-lg);
+        box-shadow: var(--shadow-lift);
+        min-height: clamp(13rem, calc(8.5rem + 22.5vw), 22rem);
+    }
+
+    .news-company__lead-summary {
+        color: var(--color-sage);
+        font-size: var(--text-lead);
+        line-height: 2;
+        margin-bottom: 0;
+        max-width: var(--measure-prose);
+    }
+
+    .news-company__lead-title {
+        margin-bottom: 0.75rem;
+    }
+
+    .news-company__meta {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.875rem;
+        margin-bottom: 1.125rem;
+    }
+
+    .news-company__photo {
+        background-color: var(--color-jade-light);
+        background-position: center;
+        background-size: cover;
+        display: block;
+        height: 10.625rem;
+    }
+
+    .news-company__summary {
+        color: var(--color-sage);
+        font-size: 0.84rem;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    .news-company__title {
+        font-size: 1.0625rem;
+        line-height: 1.55;
+        margin-bottom: 0.625rem;
+        margin-top: 0.875rem;
+    }
+
+    @media (max-width: 1024px) {
+        .news-company__grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .news-company__lead {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .news-company__grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+    }
+</style>

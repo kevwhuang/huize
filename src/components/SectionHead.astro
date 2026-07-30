@@ -1,0 +1,26 @@
+---
+interface Props {
+    eyebrow: string;
+    headingId: string;
+    isCentered?: boolean;
+    isOnDark?: boolean;
+}
+
+const { eyebrow, headingId, isCentered = false, isOnDark = false } = Astro.props;
+---
+
+<header
+    class:list={['section-head', { 'section-head--center': isCentered }]}
+    data-scroll
+>
+    <p
+        class:list={['eyebrow', { 'eyebrow--center': isCentered, 'eyebrow--on-dark': isOnDark }]}
+        lang="en"
+    >
+        {eyebrow}
+    </p>
+    <h2 id={headingId}>
+        <slot />
+    </h2>
+    <slot name="text" />
+</header>

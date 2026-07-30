@@ -1,27 +1,22 @@
 ---
+import ContactPanel from '@sections/ContactPanel.astro';
+import HomeAbout from '@sections/HomeAbout.astro';
+import HomeHero from '@sections/HomeHero.astro';
+import HomeNetwork from '@sections/HomeNetwork.astro';
+import HomeNews from '@sections/HomeNews.astro';
+import HomeServices from '@sections/HomeServices.astro';
 import Layout from '@/Layout.astro';
-import About from '@sections/About.astro';
-import Contact from '@sections/Contact.astro';
-import Footer from '@sections/Footer.astro';
-import Hero from '@sections/Hero.astro';
-import Navbar from '@sections/Navbar.astro';
-import Network from '@sections/Network.astro';
-import News from '@sections/News.astro';
-import Services from '@sections/Services.astro';
+import { LINKS } from '@lib/constants';
 ---
 
 <Layout
-    description="惠泽健康是从事康复和护理整合照料的专业平台,提供全流程、一站式的养老服务和健康管理服务。服务热线：021-5453-0907"
-    title={'专业从事康养/养老/护理/健康管理 \u2014 惠泽健康'}
+    description={`惠泽健康是从事康复和护理整合照料的专业平台，提供全流程、一站式的养老服务和健康管理服务。全国服务热线：${LINKS.hotline}`}
+    title="专业从事康养/养老/护理/健康管理 — 惠泽健康"
 >
-    <Navbar />
-    <main class="flex-1">
-        <Hero />
-        <About />
-        <Services />
-        <News />
-        <Network />
-        <Contact />
-    </main>
-    <Footer />
+    <HomeHero />
+    <HomeAbout />
+    <HomeServices />
+    <HomeNews />
+    <HomeNetwork />
+    <ContactPanel />
 </Layout>

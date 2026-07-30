@@ -1,0 +1,136 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { NEWS_COMPANY } from '@lib/constants';
+
+const FEATURED_COUNT = 4;
+
+const items = NEWS_COMPANY.slice(0, FEATURED_COUNT);
+---
+
+<section
+    class="home-news section"
+    aria-labelledby="home-news-title"
+>
+    <div class="shell">
+        <div class="home-news__head">
+            <SectionHead
+                eyebrow="News Center"
+                headingId="home-news-title"
+            >
+                新闻中心
+                <Fragment slot="text">
+                    <p>了解惠泽的最新动态与行业洞察</p>
+                </Fragment>
+            </SectionHead>
+            <a
+                class="link-more home-news__more"
+                data-scroll
+                href="/news/company"
+            >
+                查看全部公司新闻
+            </a>
+        </div>
+
+        <ul
+            class="home-news__grid"
+            data-scroll="up"
+            data-scroll-stagger
+        >
+            {items.map(item => (
+                <li>
+                    <article class="card card--flush home-news__card">
+                        <span
+                            class="home-news__photo"
+                            aria-hidden="true"
+                            style={`background-image:url('${item.image}')`}
+                        />
+                        <div class="home-news__body">
+                            <span class="tag home-news__tag">公司新闻</span>
+                            <h3>{item.title}</h3>
+                            <p class="home-news__summary">{item.summary}</p>
+                            <time
+                                class="home-news__date"
+                                datetime={item.date}
+                            >
+                                {item.date.replace(/-/g, '.')}
+                            </time>
+                        </div>
+                    </article>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .home-news__body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 1.375rem;
+    }
+
+    .home-news__body h3 {
+        font-size: 1.0625rem;
+        line-height: 1.55;
+        margin-bottom: 0.625rem;
+        margin-top: 0.875rem;
+    }
+
+    .home-news__card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .home-news__date {
+        color: var(--color-sage);
+        font-family: var(--font-label);
+        font-size: 0.8125rem;
+        letter-spacing: 0.08em;
+        margin-top: auto;
+        padding-top: 1rem;
+    }
+
+    .home-news__grid {
+        display: grid;
+        gap: 1.625rem;
+        grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .home-news__head {
+        align-items: end;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+        justify-content: space-between;
+    }
+
+    .home-news__head .section-head {
+        margin-bottom: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+    }
+
+    .home-news__more {
+        margin-bottom: clamp(1.75rem, calc(1.5rem + 1.25vw), 2.375rem);
+    }
+
+    .home-news__photo {
+        background-color: var(--color-jade-light);
+        background-position: center;
+        background-size: cover;
+        display: block;
+        height: 10.625rem;
+    }
+
+    .home-news__summary {
+        color: var(--color-sage);
+        font-size: 0.84rem;
+        line-height: 1.7;
+    }
+
+    .home-news__tag {
+        align-self: start;
+    }
+</style>

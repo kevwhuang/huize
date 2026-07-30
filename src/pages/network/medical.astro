@@ -1,28 +1,18 @@
 ---
+import CtaBanner from '@sections/CtaBanner.astro';
 import Layout from '@/Layout.astro';
-import Footer from '@sections/Footer.astro';
-import Navbar from '@sections/Navbar.astro';
+import NetworkMedicalTiers from '@sections/NetworkMedicalTiers.astro';
 import PageHero from '@sections/PageHero.astro';
-import Subpage from '@sections/Subpage.astro';
-
-const CARDS = [
-    { description: '专注脑卒中与骨科康复的专业康复医疗机构。', title: '专科康复医院' },
-    { description: '对接三级及以上优质医院资源，保障诊疗质量。', title: '三级及以上医院' },
-    { description: '百余家合作医疗机构，共建全国医疗服务网络。', title: '100+ 合作机构' },
-];
 ---
 
 <Layout
-    description="专科康复医院，三级及以上医院，全国医疗列表。聚焦脑卒中与骨科康复。"
-    title={'医疗机构 \u2014 惠泽健康'}
+    description="惠泽医疗机构网络涵盖专科康复医院、三级及以上医院与二级及以上医院，覆盖全国11000家二级及以上公立医院，聚焦脑卒中、骨科等刚需领域。"
+    title="医疗机构 — 惠泽健康"
 >
-    <Navbar />
-    <main class="flex-1">
-        <PageHero section="Service Network · Medical" title="医疗机构" />
-        <Subpage
-            cards={CARDS}
-            lead="专科康复医院，三级及以上医院，全国医疗列表。聚焦脑卒中、骨科等刚需领域，提供专业康复医疗服务。"
-        />
-    </main>
-    <Footer />
+    <PageHero
+        eyebrow="Medical Network"
+        title="医疗机构"
+    />
+    <NetworkMedicalTiers />
+    <CtaBanner />
 </Layout>

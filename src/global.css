@@ -1,64 +1,109 @@
 @import 'tailwindcss';
 
 @theme {
-    --color-ash: #9aa8a3;
-    --color-cedar: #1a2e29;
+    --color-cedar: #1A2E29;
     --color-cloud: #F8FBFA;
-    --color-coral: #C0563F;
+    --color-coral: #A8402A;
     --color-dew: #FAFCFB;
-    --color-fog: #758380;
     --color-forest: #073029;
-    --color-gold: #B5893F;
+    --color-gold: #96631E;
     --color-gold-light: #C9A24B;
-    --color-haze: #6b7a74;
     --color-ivory: #E9F1EE;
     --color-jade: #0E7C6B;
-    --color-jade-10: #0E7C6B1a;
+    --color-jade-10: #0E7C6B1A;
     --color-jade-20: #0E7C6B33;
-    --color-jade-30: #0E7C6B4d;
-    --color-jade-85: #0E7C6Bd9;
     --color-jade-deep: #0A6457;
     --color-jade-light: #12907D;
     --color-laurel: #D9ECE5;
     --color-mint: #EEF6F3;
     --color-mist: #F1F8F5;
-    --color-moss: #2c3e39;
-    --color-moss-light: #2c423b;
+    --color-moss: #2C3E39;
     --color-pine: #0A3A33;
     --color-pine-light: #0A4A42;
-    --color-reef: #9ed3c6;
+    --color-reef: #9ED3C6;
     --color-sage: #55645F;
-    --color-sage-dark: #3a534c;
-    --color-sage-light: #667570;
-    --color-sage-pale: #C2D2CC;
+    --color-sage-dark: #3A534C;
     --color-sand: #D5E5DF;
     --color-shell: #E1ECE8;
     --color-silk: #EAF1EE;
     --color-slate: #16241F;
     --color-snow: #EEF4F2;
     --color-stone: #E4ECE9;
-    --color-teal: #0A2E29;
+    --color-veil-06: #073A330F;
+    --color-veil-10: #073A331A;
+    --color-veil-12: #073A331F;
+    --color-veil-80: #073A33CC;
+    --color-white-08: #FFFFFF14;
+    --color-white-12: #FFFFFF1F;
+    --color-white-45: #FFFFFF73;
+    --color-white-55: #FFFFFF8C;
+    --color-white-70: #FFFFFFB3;
+    --color-white-90: #FFFFFFE6;
+    --color-white-92: #FFFFFFEB;
     --color-willow: #DDEBE6;
     --font-display: 'Noto Serif SC', serif;
-    --font-label: 'Jost', sans-serif;
+    --font-label: 'Jost', 'Noto Sans SC', sans-serif;
     --font-sans: 'Noto Sans SC', sans-serif;
+    --radius-card: 1.125rem;
+    --radius-card-lg: 1.375rem;
+    --radius-card-sm: 0.6875rem;
+    --radius-pill: 62.5rem;
+    --shadow-card: 0 0.5rem 1.5rem #073A330D;
+    --shadow-jade: 0 0.875rem 1.875rem #0E7C6B42;
+    --shadow-lift: 0 1.625rem 3.125rem #073A3321;
+    --shadow-panel: 0 1.375rem 3.125rem #073A3333;
+    --spacing-header: 4.625rem;
+    --text-display: clamp(2.6rem, calc(2.05rem + 2.75vw), 4.25rem);
+    --text-h2: clamp(1.9rem, calc(1.63rem + 1.33vw), 2.7rem);
+    --text-h3: clamp(1.25rem, calc(1.17rem + 0.42vw), 1.5rem);
+    --text-lead: clamp(0.97rem, calc(0.93rem + 0.2vw), 1.09rem);
 }
 
 :root {
-    --duration-fast: 200ms;
-    --duration-base: 300ms;
-    --duration-slow: 500ms;
-    --duration-reveal: 900ms;
-    --duration-carousel: 1200ms;
+    --border-soft: 0.0625rem solid var(--color-silk);
+    --duration-base: 0.3s;
+    --duration-carousel: 1.2s;
+    --duration-count: 1.7s;
+    --duration-fast: 0.2s;
+    --duration-reveal: 0.9s;
     --ease-out: cubic-bezier(0.22, 0.7, 0.2, 1);
-    --shell: 1260px;
+    --gutter: clamp(1.25rem, calc(0.58rem + 3.33vw), 3.25rem);
+    --measure-prose: 47.5rem;
+    --reveal-offset: 3.5rem;
+    --reveal-step: 0.1s;
+    --shell: 78.75rem;
 }
 
 a,
 button,
 label,
-select {
+select,
+summary {
     cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+    color: var(--heading-color, var(--color-pine));
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    line-height: 1.32;
+    margin-bottom: 0.5em;
+    text-wrap: balance;
+}
+
+h1 {
+    font-size: var(--text-display);
+}
+
+h2 {
+    font-size: var(--text-h2);
+}
+
+h3 {
+    font-size: var(--text-h3);
 }
 
 html {
@@ -69,8 +114,14 @@ html[data-astro-transition] {
     scroll-behavior: auto;
 }
 
+p {
+    margin-bottom: 1em;
+    text-wrap: pretty;
+}
+
 :disabled {
     cursor: not-allowed;
+    opacity: 0.5;
 }
 
 :focus {
@@ -78,17 +129,22 @@ html[data-astro-transition] {
 }
 
 :focus-visible:not(input, select, textarea) {
-    border-radius: 2px;
-    outline: 2px solid var(--color-jade-85);
-    outline-offset: 2px;
+    border-radius: 0.125rem;
+    outline: 0.1875rem solid var(--color-jade);
+    outline-offset: 0.1875rem;
 }
 
 ::placeholder {
+    color: var(--color-sage);
     user-select: none;
 }
 
 ::selection {
     background: var(--color-jade-20);
+}
+
+[id] {
+    scroll-margin-top: calc(var(--spacing-header) + 1rem);
 }
 
 @media (prefers-reduced-motion: reduce) {

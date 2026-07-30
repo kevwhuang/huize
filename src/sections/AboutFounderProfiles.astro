@@ -1,0 +1,146 @@
+---
+const FOUNDERS = [
+    {
+        credentials: [
+            '1989年中科大毕业赴美留学获博士学位',
+            '普拉格能源（PLUG.US）联合创始人',
+            '重庆合展原股东、董事',
+            '绿康股份原股东、董事、CEO',
+            '清华五道口金融CEO首期',
+        ],
+        english: 'Founder & Chairman',
+        initial: '黄',
+        name: '黄文华',
+        role: '创始人、董事长',
+    },
+    {
+        credentials: [
+            '美国通用电气GE中国和全球高管',
+            '德太投资TPG中国运营合伙人',
+            '清华五道口金融EMBA，金融博士',
+            '清华五道口上海同学会副会长',
+            '清华大健康联盟副理事长',
+        ],
+        english: 'Founder & General Manager',
+        initial: '张',
+        name: '张雯',
+        role: '创始人、总经理',
+    },
+];
+---
+
+<section
+    class="about-founder section"
+    aria-labelledby="about-founder-title"
+>
+    <div class="shell">
+        <div
+            class="section-head"
+            data-scroll
+        >
+            <h2 id="about-founder-title">三十年积累，<br />从跨国企业到康养实业</h2>
+            <p>
+                惠泽健康创始人都有30年以上的工作经验，包括管理大型跨国企业，创立公司并成功上市等。
+            </p>
+        </div>
+
+        <ul class="about-founder__list">
+            {FOUNDERS.map((founder, index) => (
+                <li
+                    class="about-founder__item"
+                    data-scroll={index === 0 ? 'left' : 'right'}
+                >
+                    <article class="about-founder__card card">
+                        <p
+                            class="about-founder__mark"
+                            aria-hidden="true"
+                        >{founder.initial}
+                        </p>
+                        <div>
+                            <h3 class="about-founder__name">{founder.name}</h3>
+                            <p class="about-founder__role">{founder.role}</p>
+                            <p
+                                class="label"
+                                aria-hidden="true"
+                                lang="en"
+                            >{founder.english}
+                            </p>
+                        </div>
+                        <ul class="about-founder__credentials">
+                            {founder.credentials.map(credential => (
+                                <li>{credential}</li>
+                            ))}
+                        </ul>
+                    </article>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .about-founder__card {
+        display: grid;
+        gap: 1.5rem;
+        height: 100%;
+        position: relative;
+    }
+
+    .about-founder__credentials {
+        display: grid;
+        gap: 0.875rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-founder__credentials li {
+        border-left: 0.125rem solid var(--color-laurel);
+        color: var(--color-sage);
+        font-size: 0.9rem;
+        line-height: 1.8;
+        padding-left: 1rem;
+    }
+
+    .about-founder__list {
+        display: grid;
+        gap: clamp(1.5rem, calc(1.08rem + 2.08vw), 2.5rem);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-founder__mark {
+        color: var(--color-mint);
+        font-family: var(--font-display);
+        font-size: 7rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 0;
+        pointer-events: none;
+        position: absolute;
+        right: 1.25rem;
+        top: 0.5rem;
+        user-select: none;
+    }
+
+    .about-founder__name {
+        font-size: var(--text-h3);
+        margin-bottom: 0.375rem;
+        position: relative;
+    }
+
+    .about-founder__role {
+        color: var(--color-jade);
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+        position: relative;
+    }
+
+    @media (max-width: 768px) {
+
+        .about-founder__list {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>
