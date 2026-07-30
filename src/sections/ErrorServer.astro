@@ -3,20 +3,20 @@
 ---
 
 <section
-    aria-labelledby="notfound-title"
-    class="notfound"
+    aria-labelledby="error-server-title"
+    class="errorserver"
 >
     <h1
-        class="notfound__code"
-        id="notfound-title"
-    >404
+        id="error-server-title"
+        class="errorserver__code"
+    >500
     </h1>
-    <p class="notfound__text">您访问的页面不存在</p>
-    <a class="notfound__link" href="/">返回首页</a>
+    <p class="errorserver__text">服务器出现错误，请稍后再试</p>
+    <a class="errorserver__link" href="/">返回首页</a>
 </section>
 
 <style>
-    .notfound {
+    .errorserver {
         align-items: center;
         display: grid;
         justify-items: center;
@@ -24,7 +24,7 @@
         padding: 80px 20px;
     }
 
-    .notfound__code {
+    .errorserver__code {
         color: var(--color-pine);
         font-family: var(--font-display);
         font-size: clamp(4rem, 10vw, 8rem);
@@ -32,13 +32,13 @@
         margin-bottom: 16px;
     }
 
-    .notfound__text {
+    .errorserver__text {
         color: var(--color-sage);
         font-size: 18px;
         margin-bottom: 32px;
     }
 
-    .notfound__link {
+    .errorserver__link {
         background: var(--color-jade);
         border-radius: 12px;
         color: #ffffff;
@@ -48,12 +48,12 @@
         transition: background var(--duration-fast), transform var(--duration-fast);
     }
 
-    .notfound__link:hover {
+    .errorserver__link:hover {
         background: var(--color-jade-deep);
         transform: translateY(-2px);
     }
 
-    .notfound__link:active {
+    .errorserver__link:active {
         transform: translateY(0);
     }
 </style>

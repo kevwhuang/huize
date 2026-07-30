@@ -14,6 +14,7 @@
     --color-ivory: #E9F1EE;
     --color-jade: #0E7C6B;
     --color-jade-10: #0E7C6B1a;
+    --color-jade-20: #0E7C6B33;
     --color-jade-30: #0E7C6B4d;
     --color-jade-85: #0E7C6Bd9;
     --color-jade-deep: #0A6457;
@@ -53,11 +54,30 @@
     --shell: 1260px;
 }
 
+a,
+button,
+label,
+select {
+    cursor: pointer;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html[data-astro-transition] {
+    scroll-behavior: auto;
+}
+
+:disabled {
+    cursor: not-allowed;
+}
+
 :focus {
     outline: none;
 }
 
-:focus-visible:not(input):not(textarea):not(select) {
+:focus-visible:not(input, select, textarea) {
     border-radius: 2px;
     outline: 2px solid var(--color-jade-85);
     outline-offset: 2px;
@@ -68,17 +88,18 @@
 }
 
 ::selection {
-    background: var(--color-jade);
-    color: #ffffff;
+    background: var(--color-jade-20);
 }
 
 @media (prefers-reduced-motion: reduce) {
     *,
-    *::before,
-    *::after {
+    *::after,
+    *::before {
+        animation-delay: 0s !important;
         animation-duration: 0.01s !important;
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
+        transition-delay: 0s !important;
         transition-duration: 0.01s !important;
     }
 }

@@ -1,18 +1,20 @@
 ---
-import ErrorNotFound from '@sections/ErrorNotFound.astro';
+import ErrorServer from '@sections/ErrorServer.astro';
 import Footer from '@sections/Footer.astro';
 import Layout from '@/Layout.astro';
 import Navbar from '@sections/Navbar.astro';
+
+export const prerender = false;
 ---
 
 <Layout
-    description="您访问的页面不存在。"
+    description="服务器出现错误，请稍后再试。"
     noindex
-    title={'Page Not Found \u2014 惠泽健康'}
+    title={'Server Error \u2014 惠泽健康'}
 >
     <Navbar />
     <main class="flex-1">
-        <ErrorNotFound />
+        <ErrorServer />
     </main>
     <Footer />
 </Layout>
