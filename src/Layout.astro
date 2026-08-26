@@ -1,11 +1,6 @@
 ---
-import '@fontsource/jost/400.css';
-import '@fontsource/jost/500.css';
-import '@fontsource/jost/600.css';
-import '@fontsource/noto-sans-sc/400.css';
-import '@fontsource/noto-sans-sc/500.css';
-import '@fontsource/noto-serif-sc/700.css';
 import { ClientRouter } from 'astro:transitions';
+import { Font } from 'astro:assets';
 
 import '@/global.css';
 import '@/styles.css';
@@ -91,9 +86,12 @@ const structuredData = {
         <meta content={ogImageUrl} name="twitter:image" />
         <meta content={title} name="twitter:title" />
         <script is:inline set:html={JSON.stringify(structuredData)} type="application/ld+json" />
+        <Font cssVariable="--font-jost" preload />
+        <Font cssVariable="--font-noto-sans-sc" preload />
+        <Font cssVariable="--font-noto-serif-sc" preload />
         <ClientRouter />
     </head>
-    <body class="flex flex-col overflow-x-clip min-h-svh bg-cloud antialiased font-sans text-slate">
+    <body class="flex flex-col overflow-x-clip min-h-svh bg-cloud antialiased text-slate">
         <Navbar />
         <main class="flex flex-1 flex-col">
             <slot />

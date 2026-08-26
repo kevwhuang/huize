@@ -41,9 +41,9 @@
     --color-white-90: #FFFFFFE6;
     --color-white-92: #FFFFFFEB;
     --color-willow: #DDEBE6;
-    --font-display: 'Noto Serif SC', serif;
-    --font-label: 'Jost', 'Noto Sans SC', sans-serif;
-    --font-sans: 'Noto Sans SC', sans-serif;
+    --font-display: var(--font-noto-serif-sc);
+    --font-label: var(--font-jost), var(--font-noto-sans-sc);
+    --font-sans: var(--font-noto-sans-sc);
     --radius-card: 1.125rem;
     --radius-card-lg: 1.375rem;
     --radius-card-sm: 0.6875rem;
