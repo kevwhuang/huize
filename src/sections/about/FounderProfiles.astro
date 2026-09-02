@@ -1,0 +1,156 @@
+---
+import { getEditId, getSection } from '@lib/database';
+
+const founder = await getSection('about-founder');
+
+const founders = founder.groups?.founders ?? [];
+const headingLines = (founder.heading ?? '').split('\n');
+---
+
+<section
+    class="about-founder section"
+    aria-labelledby="about-founder-title"
+>
+    <div class="shell">
+        <header
+            class="section-head"
+            data-scroll
+        >
+            <h2
+                id="about-founder-title"
+                data-edit="sections/about-founder.heading"
+                data-edit-id={getEditId('sections/about-founder.heading')}
+            >
+                {headingLines.map((line, index) => (index > 0 ? <Fragment><br />{line}</Fragment> : line))}
+            </h2>
+            <p
+                data-edit="sections/about-founder.lead"
+                data-edit-id={getEditId('sections/about-founder.lead')}
+            >
+                {founder.lead}
+            </p>
+        </header>
+        <ul
+            class="about-founder__list"
+            data-scroll
+            data-scroll-stagger
+        >
+            {founders.map((profile, index) => (
+                <li>
+                    <article class="about-founder__card card">
+                        <div
+                            class="about-founder__portrait"
+                            aria-hidden="true"
+                        >
+                            <span class="about-founder__mark">{profile.note}</span>
+                        </div>
+                        <div class="about-founder__body">
+                            <header class="about-founder__identity">
+                                <h3 class="about-founder__name">{profile.title}</h3>
+                                <p class="about-founder__role">{profile.label}</p>
+                                <p
+                                    class="label"
+                                    aria-hidden="true"
+                                    lang="en"
+                                >
+                                    {profile.english}
+                                </p>
+                            </header>
+                            <ul class="about-founder__credentials">
+                                {(profile.bullets ?? []).map((credential, position) => (
+                                    <li
+                                        data-edit={`sections/about-founder.groups.founders.${index}.bullets.${position}`}
+                                        data-edit-id={getEditId(`sections/about-founder.groups.founders.${index}.bullets.${position}`)}
+                                    >
+                                        {credential}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </article>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .about-founder__body {
+        display: grid;
+        flex: 1 1 20rem;
+        gap: 1.5rem;
+        min-width: 0;
+    }
+
+    .about-founder__card {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-grid);
+    }
+
+    .about-founder__credentials {
+        display: grid;
+        gap: 0.875rem 1.75rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-founder__credentials li {
+        border-left: 0.125rem solid var(--color-laurel);
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        line-height: 1.9;
+        padding-left: 1rem;
+    }
+
+    .about-founder__identity {
+        display: grid;
+        gap: 0.375rem;
+        justify-items: start;
+    }
+
+    .about-founder__list {
+        display: grid;
+        gap: var(--space-grid);
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-founder__mark {
+        color: var(--color-jade);
+        font-family: var(--font-display);
+        font-size: clamp(3.25rem, calc(2.83rem + 2.08vw), 4.5rem);
+        font-weight: 700;
+        line-height: 1;
+        user-select: none;
+    }
+
+    .about-founder__name {
+        font-size: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+        margin-bottom: 0;
+    }
+
+    .about-founder__portrait {
+        align-items: center;
+        aspect-ratio: 3 / 4;
+        background:
+            radial-gradient(circle at 50% 40%, var(--color-white-45), transparent 60%),
+            linear-gradient(160deg, var(--color-laurel), var(--color-mint));
+        border: var(--border-soft);
+        border-radius: var(--radius-card);
+        box-shadow: inset 0 0 0 0.375rem var(--color-white-45);
+        display: flex;
+        flex: none;
+        justify-content: center;
+        overflow: clip;
+        width: clamp(11rem, 22vw, 15rem);
+    }
+
+    .about-founder__role {
+        color: var(--color-jade);
+        font-size: var(--text-small);
+        font-weight: 500;
+    }
+</style>

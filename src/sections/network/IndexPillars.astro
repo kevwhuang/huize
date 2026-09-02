@@ -1,0 +1,150 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getBases, getEditId, getSection, getSite } from '@lib/database';
+
+const BASES_PATH = '/network/bases';
+
+const bases = await getBases();
+const section = await getSection('network-pillars');
+const site = await getSite();
+
+const headingLines = (section.heading ?? '').split('\n');
+
+const counts: Record<string, number> = {
+    [BASES_PATH]: bases.length,
+    '/network/cities': site.totalCities,
+    '/network/elderly-care': site.totalInstitutions,
+    '/network/medical': site.publicHospitals,
+};
+
+const pillars = (section.groups?.pillars ?? []).map(pillar => ({
+    collection: pillar.href === BASES_PATH ? 'bases' : undefined,
+    countTo: counts[pillar.href ?? ''],
+    description: pillar.text,
+    number: pillar.number,
+    path: pillar.href,
+    title: pillar.title,
+    unit: pillar.label,
+}));
+---
+
+<section
+    class="network-pillars section"
+    aria-labelledby="network-pillars-title"
+>
+    <div class="shell">
+        <SectionHead
+            editKey="sections/network-pillars.heading"
+            eyebrow={section.eyebrow ?? ''}
+            headingId="network-pillars-title"
+        >
+            {headingLines.map((line, index) => (index > 0 ? <Fragment><br />{line}</Fragment> : line))}
+            <Fragment slot="text">
+                <p
+                    data-edit="sections/network-pillars.lead"
+                    data-edit-id={getEditId('sections/network-pillars.lead')}
+                >
+                    {section.lead}
+                </p>
+            </Fragment>
+        </SectionHead>
+        <ol
+            class="network-pillars__list"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {pillars.map(pillar => (
+                <li>
+                    <a
+                        class="card card--hover network-pillars__card"
+                        href={pillar.path}
+                    >
+                        <span
+                            class="network-pillars__number numeral numeral--gold"
+                            aria-hidden="true"
+                        >
+                            {pillar.number}
+                        </span>
+                        <span class="network-pillars__figure">
+                            <span
+                                class="network-pillars__value stat"
+                                data-count-to={pillar.countTo}
+                                data-edit-count={pillar.collection}
+                                data-edit-count-total={pillar.collection && pillar.countTo}
+                            >
+                                {pillar.countTo}
+                            </span>{' '}
+                            <span class="network-pillars__unit">{pillar.unit}</span>
+                        </span>
+                        <h3>{pillar.title}</h3>
+                        <p class="network-pillars__text">{pillar.description}</p>
+                        <span class="link-more">查看详情</span>
+                    </a>
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
+
+<style>
+    .network-pillars__card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+    }
+
+    .network-pillars__card:hover .link-more {
+        gap: 0.875rem;
+    }
+
+    .network-pillars__card .link-more {
+        align-self: start;
+        margin-top: auto;
+        padding-top: 1.25rem;
+    }
+
+    .network-pillars__card h3 {
+        margin-bottom: 0.625rem;
+    }
+
+    .network-pillars__figure {
+        align-items: baseline;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.875rem;
+    }
+
+    .network-pillars__list {
+        display: grid;
+        gap: clamp(1.125rem, calc(0.88rem + 1.25vw), 1.875rem);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .network-pillars__number {
+        --inset-corner: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+        position: absolute;
+        right: var(--inset-corner);
+        top: var(--inset-corner);
+    }
+
+    .network-pillars__text {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        line-height: 1.9;
+    }
+
+    .network-pillars__unit {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+    }
+
+    @media (max-width: 768px) {
+        .network-pillars__list {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

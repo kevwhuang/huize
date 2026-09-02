@@ -4,23 +4,29 @@ import { Font } from 'astro:assets';
 
 import '@/global.css';
 import '@/styles.css';
-import Footer from '@sections/Footer.astro';
-import Navbar from '@sections/Navbar.astro';
-import { ROUTES } from '@lib/constants';
+import Footer from '@sections/shared/Footer.astro';
+import Navbar from '@sections/shared/Navbar.astro';
+import { BRAND, ROUTES } from '@lib/constants';
 
 interface Props {
     description: string;
     noindex?: boolean;
+    preloadImage?: string;
     title: string;
 }
 
+const EditorControls = import.meta.env.DEV ? (await import('@sections/shared/EditorControls.astro')).default : null;
 const canonicalUrl = new URL(Astro.routePattern, Astro.site);
-const currentRoute = ROUTES.flatMap(route => [route, ...(route.children ?? [])]).find(route => route.path === Astro.routePattern);
-const { description, noindex, title } = Astro.props;
+
+const currentRoute = ROUTES
+    .flatMap(route => [...(route.children ?? []), route])
+    .find(route => route.path === Astro.routePattern);
+
+const { description, noindex, preloadImage, title } = Astro.props;
 const ogImageUrl = `${Astro.site}og.png`;
 const parentRoute = ROUTES.find(route => route.children?.some(child => child.path === Astro.routePattern));
 
-const ancestorRoutes = parentRoute && parentRoute !== currentRoute ? [parentRoute] : [];
+const ancestorRoutes = parentRoute && parentRoute.path !== currentRoute?.path ? [parentRoute] : [];
 
 const breadcrumbRoutes = currentRoute && currentRoute !== ROUTES[0] ? [ROUTES[0], ...ancestorRoutes, currentRoute] : [];
 
@@ -54,7 +60,7 @@ const structuredData = {
                 'name': 'Wayne Huang',
             },
             'inLanguage': 'zh-CN',
-            'name': '惠泽健康',
+            'name': BRAND.zh,
             'url': Astro.site,
         },
     ],
@@ -65,38 +71,51 @@ const structuredData = {
 <html lang="zh-CN">
     <head>
         <meta charset="utf-8" />
+        {preloadImage && (
+            <link
+                as="image"
+                fetchpriority="high"
+                href={preloadImage}
+                rel="preload"
+            />
+        )}
         <title>{title}</title>
         <meta content="Wayne Huang" name="author" />
         <meta content={description} name="description" />
         <meta content={noindex ? 'noindex, nofollow' : 'index, follow'} name="robots" />
-        <meta content="#0A3A33" name="theme-color" />
+        <meta content="#0a3a33" name="theme-color" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
         <link href={canonicalUrl} rel="canonical" />
         <link href="/favicon.ico" rel="icon" type="image/x-icon" />
         <meta content={description} property="og:description" />
         <meta content={ogImageUrl} property="og:image" />
+        <meta content={BRAND.zh} property="og:image:alt" />
+        <meta content="630" property="og:image:height" />
+        <meta content="1200" property="og:image:width" />
         <meta content="zh_CN" property="og:locale" />
-        <meta content="惠泽健康" property="og:site_name" />
+        <meta content={BRAND.zh} property="og:site_name" />
         <meta content={title} property="og:title" />
         <meta content="website" property="og:type" />
         <meta content={canonicalUrl} property="og:url" />
         <meta content="summary_large_image" name="twitter:card" />
         <meta content={description} name="twitter:description" />
         <meta content={ogImageUrl} name="twitter:image" />
+        <meta content={BRAND.zh} name="twitter:image:alt" />
         <meta content={title} name="twitter:title" />
         <script is:inline set:html={JSON.stringify(structuredData)} type="application/ld+json" />
         <Font cssVariable="--font-jost" preload />
-        <Font cssVariable="--font-noto-sans-sc" preload />
-        <Font cssVariable="--font-noto-serif-sc" preload />
+        <Font cssVariable="--font-noto-sans-sc" />
+        <Font cssVariable="--font-noto-serif-sc" />
         <ClientRouter />
     </head>
-    <body class="flex flex-col overflow-x-clip min-h-svh bg-cloud antialiased text-slate">
+    <body class="flex flex-col overflow-x-clip min-h-svh antialiased bg-cloud text-slate">
         <Navbar />
         <main class="flex flex-1 flex-col">
             <slot />
         </main>
         <Footer />
+        {EditorControls && <EditorControls />}
     </body>
 </html>
 

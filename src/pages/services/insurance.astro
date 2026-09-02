@@ -1,20 +1,20 @@
 ---
-import CtaBanner from '@sections/CtaBanner.astro';
+import CtaBanner from '@sections/shared/CtaBanner.astro';
+import InsuranceClients from '@sections/services/InsuranceClients.astro';
+import InsuranceValue from '@sections/services/InsuranceValue.astro';
 import Layout from '@/Layout.astro';
-import PageHero from '@sections/PageHero.astro';
-import ServicesInsuranceClients from '@sections/ServicesInsuranceClients.astro';
-import ServicesInsuranceValue from '@sections/ServicesInsuranceValue.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('services-insurance');
 ---
 
 <Layout
-    description="商保公司健康增值服务。无论寿险、健康险还是车险，惠泽为保险公司提供就医绿通、院内护理、术后康复、全球药械与普药购药等一站式健康增值服务。"
-    title="保险服务 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Insurance"
-        title="保险服务"
-    />
-    <ServicesInsuranceValue />
-    <ServicesInsuranceClients />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <InsuranceValue />
+    <InsuranceClients />
     <CtaBanner />
 </Layout>

@@ -1,20 +1,20 @@
 ---
-import CtaBanner from '@sections/CtaBanner.astro';
+import CtaBanner from '@sections/shared/CtaBanner.astro';
+import ElderlyCareProvinces from '@sections/network/ElderlyCareProvinces.astro';
+import ElderlyCareStats from '@sections/network/ElderlyCareStats.astro';
 import Layout from '@/Layout.astro';
-import NetworkElderlyCareProvinces from '@sections/NetworkElderlyCareProvinces.astro';
-import NetworkElderlyCareStats from '@sections/NetworkElderlyCareStats.astro';
-import PageHero from '@sections/PageHero.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('network-elderly-care');
 ---
 
 <Layout
-    description="惠泽从40000多家机构中甄选出2000家服务质量优、市场口碑好、软硬件配套完整的养老与护理机构，分布于全国29个省级行政区。"
-    title="养老机构 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Elderly Care"
-        title="养老机构"
-    />
-    <NetworkElderlyCareStats />
-    <NetworkElderlyCareProvinces />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <ElderlyCareStats />
+    <ElderlyCareProvinces />
     <CtaBanner />
 </Layout>

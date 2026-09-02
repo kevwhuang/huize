@@ -1,0 +1,10 @@
+{
+    "cities": 3,
+    "institutions": 14,
+    "name": "宁夏",
+    "sample": [
+        "银川",
+        "吴忠",
+        "中卫"
+    ]
+}

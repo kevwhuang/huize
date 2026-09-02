@@ -1,0 +1,355 @@
+<div
+    class="editor-panel z-200"
+    hidden
+>
+    <button
+        class="editor-panel__toggle"
+        aria-label="管理模式"
+        aria-pressed="false"
+        data-editor="toggle"
+        type="button"
+    >
+        &#9998;
+        <span
+            class="editor-panel__badge"
+            aria-hidden="true"
+            data-editor="badge"
+            hidden
+        />
+    </button>
+    <div
+        class="editor-panel__cluster"
+        data-editor="cluster"
+        hidden
+        inert
+    >
+        <button
+            class="editor-panel__action"
+            aria-label="保存全部修改"
+            data-editor="accept"
+            type="button"
+        >
+            &check;
+        </button>
+        <button
+            class="editor-panel__action editor-panel__action--danger"
+            aria-label="放弃全部修改"
+            data-editor="cancel"
+            type="button"
+        >
+            &#10005;
+        </button>
+        <button
+            class="editor-panel__action editor-panel__action--arrow"
+            aria-label="撤销上一步"
+            data-editor="undo"
+            type="button"
+        >
+            &#8634;
+        </button>
+        <button
+            class="editor-panel__action editor-panel__action--arrow"
+            aria-label="重做下一步"
+            data-editor="redo"
+            type="button"
+        >
+            &#8635;
+        </button>
+    </div>
+    <p
+        class="sr-only"
+        aria-live="polite"
+        data-editor="status"
+    />
+</div>
+
+<div class="editor-controls z-200">
+    <button
+        class="editor-controls__control editor-controls__control--add z-1"
+        aria-label="新增卡片"
+        data-editor="add"
+        hidden
+        type="button"
+    >
+        &#65291;
+    </button>
+    <button
+        class="editor-controls__control editor-controls__control--danger"
+        aria-label="删除此卡片"
+        data-editor="delete"
+        hidden
+        type="button"
+    >
+        &#10007;
+    </button>
+    <span
+        class="editor-controls__floater"
+        aria-hidden="true"
+        data-editor="floater"
+        hidden
+    >
+        <span
+            class="editor-controls__line"
+            data-editor="floater-key"
+        />
+        <span
+            class="editor-controls__line editor-controls__line--dim"
+            data-editor="floater-id"
+        />
+    </span>
+</div>
+
+<style>
+    .editor-controls {
+        inset: 0;
+        pointer-events: none;
+        position: fixed;
+    }
+
+    .editor-controls__control {
+        align-items: center;
+        background: var(--color-jade);
+        border: none;
+        border-radius: 50%;
+        box-shadow: var(--shadow-jade);
+        color: var(--color-white);
+        display: flex;
+        font-size: 1rem;
+        height: 2.5rem;
+        justify-content: center;
+        line-height: 1;
+        pointer-events: auto;
+        position: absolute;
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            transform var(--duration-fast) var(--ease-out);
+        user-select: none;
+        width: 2.5rem;
+    }
+
+    .editor-controls__control:active {
+        transform: translateY(0);
+    }
+
+    .editor-controls__control:hover {
+        background: var(--color-jade-deep);
+        transform: translateY(-0.125rem);
+    }
+
+    .editor-controls__control::after {
+        content: '';
+        inset: -0.25rem;
+        position: absolute;
+    }
+
+    .editor-controls__control--danger {
+        background: var(--color-coral);
+    }
+
+    .editor-controls__control--danger:hover {
+        background: var(--color-coral-deep);
+    }
+
+    .editor-controls__floater {
+        background: color-mix(in srgb, var(--color-pine) 94%, transparent);
+        border-radius: 0.375rem;
+        box-shadow: var(--shadow-card);
+        color: var(--color-white);
+        display: grid;
+        max-width: min(24rem, calc(100vw - 1rem));
+        padding: 0.3125rem 0.5625rem;
+        position: absolute;
+    }
+
+    .editor-controls__line {
+        font-family: var(--font-label);
+        font-size: 0.625rem;
+        line-height: 1.5;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .editor-controls__line--dim {
+        opacity: 0.72;
+    }
+
+    .editor-panel {
+        inset-block-start: 0.5rem;
+        inset-inline-start: 0.5rem;
+        position: fixed;
+    }
+
+    .editor-panel--editing .editor-panel__toggle {
+        background: var(--editor-accent);
+        box-shadow:
+            0 0 0 0.125rem var(--color-cloud),
+            0 0 0 0.25rem var(--editor-accent),
+            var(--shadow-jade);
+        color: var(--color-white);
+    }
+
+    .editor-panel:focus-within .editor-panel__cluster,
+    .editor-panel:hover .editor-panel__cluster {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .editor-panel__action {
+        align-items: center;
+        background: var(--color-white);
+        border: none;
+        border-radius: 50%;
+        box-shadow:
+            0 0 0 0.0625rem var(--color-silk),
+            var(--shadow-card);
+        color: var(--color-jade);
+        display: flex;
+        flex-shrink: 0;
+        font-family: var(--font-label);
+        font-size: 1rem;
+        height: 2.5rem;
+        justify-content: center;
+        line-height: 1;
+        position: relative;
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            color var(--duration-fast) var(--ease-out),
+            opacity var(--duration-fast) var(--ease-out);
+        user-select: none;
+        width: 2.5rem;
+    }
+
+    .editor-panel__action:active {
+        opacity: 0.8;
+    }
+
+    .editor-panel__action:hover:not(:disabled) {
+        background: var(--color-jade);
+        color: var(--color-white);
+    }
+
+    .editor-panel__action::after {
+        content: '';
+        inset: -0.25rem;
+        position: absolute;
+    }
+
+    .editor-panel__action--arrow {
+        font-size: 1.25rem;
+        padding-block-end: 0.1875rem;
+    }
+
+    .editor-panel__action--danger {
+        color: var(--color-coral);
+    }
+
+    .editor-panel__action--danger:hover:not(:disabled) {
+        background: var(--color-coral);
+        color: var(--color-white);
+    }
+
+    .editor-panel__badge {
+        align-items: center;
+        background: var(--editor-accent);
+        border-radius: var(--radius-pill);
+        box-shadow: 0 0 0 0.125rem var(--color-white);
+        color: var(--color-white);
+        display: flex;
+        font-size: 0.625rem;
+        font-weight: 600;
+        height: 1.0625rem;
+        inset-block-start: -0.25rem;
+        inset-inline-end: -0.25rem;
+        justify-content: center;
+        line-height: 1;
+        min-width: 1.0625rem;
+        padding-inline: 0.1875rem;
+        position: absolute;
+        transition: background var(--duration-fast) var(--ease-out);
+    }
+
+    .editor-panel__cluster {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        inset-block-start: 100%;
+        inset-inline-start: 0;
+        opacity: 0;
+        padding-block-start: 0.5rem;
+        position: absolute;
+        transition:
+            opacity var(--duration-fast) var(--ease-out),
+            visibility var(--duration-fast) var(--ease-out);
+        visibility: hidden;
+    }
+
+    .editor-panel__toggle {
+        --editor-accent: var(--color-jade);
+        --editor-accent-hover: var(--color-jade-deep);
+        align-items: center;
+        background: var(--color-white);
+        border: none;
+        border-radius: 50%;
+        box-shadow:
+            0 0 0 0.125rem var(--editor-accent),
+            var(--shadow-card);
+        color: var(--editor-accent);
+        display: flex;
+        font-family: var(--font-label);
+        font-size: 1rem;
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        height: 2.5rem;
+        justify-content: center;
+        line-height: 1;
+        position: relative;
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            box-shadow var(--duration-fast) var(--ease-out),
+            color var(--duration-fast) var(--ease-out),
+            opacity var(--duration-fast) var(--ease-out);
+        user-select: none;
+        width: 2.5rem;
+    }
+
+    .editor-panel__toggle:active {
+        opacity: 0.8;
+    }
+
+    .editor-panel__toggle:hover {
+        --editor-accent: var(--editor-accent-hover);
+    }
+
+    .editor-panel__toggle::after {
+        content: '';
+        inset: -0.125rem;
+        position: absolute;
+    }
+
+    .editor-panel__toggle--confirm {
+        --editor-accent: var(--color-coral);
+        --editor-accent-hover: var(--color-coral-deep);
+        background: var(--color-coral);
+        color: var(--color-white);
+    }
+
+    .editor-panel__toggle--dirty {
+        --editor-accent: var(--color-crimson);
+        --editor-accent-hover: color-mix(in srgb, var(--color-crimson) 85%, var(--color-slate));
+    }
+
+    .editor-controls__control[hidden],
+    .editor-controls__floater[hidden],
+    .editor-panel__badge[hidden],
+    .editor-panel__cluster[hidden] {
+        display: none;
+    }
+</style>
+
+<script>
+    import { initEditor } from '@lib/editor';
+    import { registerPageScript } from '@lib/utils';
+
+    registerPageScript(initEditor);
+</script>

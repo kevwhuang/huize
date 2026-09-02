@@ -1,12 +1,15 @@
 ---
+import { getEditId } from '@lib/database';
+
 interface Props {
+    editKey?: string;
     eyebrow: string;
     headingId: string;
     isCentered?: boolean;
     isOnDark?: boolean;
 }
 
-const { eyebrow, headingId, isCentered = false, isOnDark = false } = Astro.props;
+const { editKey, eyebrow, headingId, isCentered = false, isOnDark = false } = Astro.props;
 ---
 
 <header
@@ -19,8 +22,26 @@ const { eyebrow, headingId, isCentered = false, isOnDark = false } = Astro.props
     >
         {eyebrow}
     </p>
-    <h2 id={headingId}>
+    <h2
+        id={headingId}
+        data-edit={editKey}
+        data-edit-id={editKey && getEditId(editKey)}
+    >
         <slot />
     </h2>
     <slot name="text" />
 </header>
+
+<style>
+    .eyebrow--center::after {
+        background: currentColor;
+        content: '';
+        height: 0.125rem;
+        width: 1.875rem;
+    }
+
+    .section-head--center {
+        margin-inline: auto;
+        text-align: center;
+    }
+</style>

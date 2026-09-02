@@ -1,0 +1,17 @@
+{
+    "bullets": [
+        "旅居康养疗愈",
+        "全国机构养老",
+        "社区日间照护",
+        "专业居家护理"
+    ],
+    "english": "Wellness",
+    "headline": "全国性养老服务提供商",
+    "id": "wellness",
+    "image": "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1000&q=80",
+    "label": "康养服务",
+    "number": "01",
+    "path": "/services/wellness",
+    "subtitle": "旅居康养 · 全国养老",
+    "summary": "旅居康养疗愈，全国养老服务。依托遍布全国的康养基地与养老机构网络，提供多场景的专业照护。"
+}

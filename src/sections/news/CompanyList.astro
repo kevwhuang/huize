@@ -1,0 +1,258 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getNews, getSection } from '@lib/database';
+
+const PHOTO_WIDTHS = [400, 800, 1_200];
+
+const entries = await getNews();
+const section = await getSection('news-company-list');
+
+const news = entries.filter(entry => entry.data.category === 'company');
+
+const [intro] = section.groups?.lead ?? [];
+const [lead, ...rest] = news;
+
+const cards = rest.map(({ data: { image = '', ...item }, id }) => ({
+    ...item,
+    id,
+    image,
+    srcset: PHOTO_WIDTHS.map(width => `${image.replace(/w=\d+/, `w=${width}`)} ${width}w`).join(', '),
+}));
+---
+
+<section
+    class="news-company section"
+    aria-labelledby="news-company-title"
+>
+    <div class="shell">
+        <SectionHead
+            editKey="sections/news-company-list.heading"
+            eyebrow={section.eyebrow ?? ''}
+            headingId="news-company-title"
+        >
+            {section.heading}
+            <Fragment slot="text">
+                <p>
+                    <span
+                        data-edit="sections/news-company-list.groups.lead.0.text"
+                        data-edit-id={getEditId('sections/news-company-list.groups.lead.0.text')}
+                    >
+                        {intro?.text}
+                    </span>{' '}
+                    <span data-edit-count="news">{news.length}</span>{' '}
+                    <span
+                        data-edit="sections/news-company-list.groups.lead.0.suffix"
+                        data-edit-id={getEditId('sections/news-company-list.groups.lead.0.suffix')}
+                    >
+                        {intro?.suffix}
+                    </span>
+                </p>
+            </Fragment>
+        </SectionHead>
+        <article
+            class="news-company__lead"
+            data-edit-item={`news/${lead.id}`}
+            data-edit-item-id={getEditId(`news/${lead.id}`)}
+        >
+            <div data-scroll="left">
+                <p class="news-company__meta">
+                    <span
+                        class="tag"
+                        data-edit="sections/news-company-list.badge"
+                        data-edit-id={getEditId('sections/news-company-list.badge')}
+                    >
+                        {section.badge}
+                    </span>
+                    <time
+                        class="label"
+                        datetime={lead.data.date}
+                    >
+                        {lead.data.date.replace(/-/g, '.')}
+                    </time>
+                </p>
+                <h3
+                    class="news-company__lead-title"
+                    data-edit={`news/${lead.id}.title`}
+                    data-edit-id={getEditId(`news/${lead.id}.title`)}
+                >
+                    {lead.data.title}
+                </h3>
+                <p
+                    class="news-company__lead-summary"
+                    data-edit={`news/${lead.id}.summary`}
+                    data-edit-id={getEditId(`news/${lead.id}.summary`)}
+                >
+                    {lead.data.summary}
+                </p>
+            </div>
+            <div
+                class="news-company__lead-media"
+                aria-hidden="true"
+                data-scroll="right"
+                style={`background-image:url('${lead.data.image}')`}
+            />
+        </article>
+        <ol
+            class="news-company__grid"
+            data-edit-list="news"
+            data-edit-scope="company"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {cards.map(({ id, srcset, ...item }) => (
+                <li
+                    data-edit-item={`news/${id}`}
+                    data-edit-item-id={getEditId(`news/${id}`)}
+                >
+                    <article class="card card--flush news-company__card">
+                        <span
+                            class="news-company__photo"
+                            aria-hidden="true"
+                        >
+                            <img
+                                alt=""
+                                decoding="async"
+                                loading="lazy"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 23rem"
+                                src={item.image}
+                                srcset={srcset}
+                            />
+                        </span>
+                        <div class="news-company__body">
+                            <time
+                                class="label news-company__date"
+                                datetime={item.date}
+                            >
+                                {item.date.replace(/-/g, '.')}
+                            </time>
+                            <h3
+                                class="news-company__title"
+                                data-edit={`news/${id}.title`}
+                                data-edit-id={getEditId(`news/${id}.title`)}
+                            >
+                                {item.title}
+                            </h3>
+                            <p
+                                class="news-company__summary"
+                                data-edit={`news/${id}.summary`}
+                                data-edit-id={getEditId(`news/${id}.summary`)}
+                            >
+                                {item.summary}
+                            </p>
+                        </div>
+                    </article>
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
+
+<style>
+    .news-company__body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+
+    .news-company__card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .news-company__date {
+        margin-bottom: 0.875rem;
+    }
+
+    .news-company__grid {
+        display: grid;
+        gap: clamp(1.25rem, calc(1.08rem + 0.83vw), 1.75rem);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .news-company__lead {
+        align-items: center;
+        display: grid;
+        gap: clamp(2rem, calc(1.33rem + 3.33vw), 4rem);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+        margin-bottom: clamp(3rem, calc(2.33rem + 3.33vw), 5rem);
+    }
+
+    .news-company__lead-media {
+        background-color: var(--color-jade-light);
+        background-position: center;
+        background-size: cover;
+        border-radius: var(--radius-card-lg);
+        box-shadow: var(--shadow-lift);
+        min-height: clamp(13rem, calc(10rem + 15vw), 22rem);
+    }
+
+    .news-company__lead-summary {
+        color: var(--color-sage);
+        font-size: var(--text-lead);
+        line-height: 2;
+        margin-bottom: 0;
+        max-width: var(--measure-prose);
+    }
+
+    .news-company__lead-title {
+        margin-bottom: 0.75rem;
+    }
+
+    .news-company__meta {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.875rem;
+        margin-bottom: 1.125rem;
+    }
+
+    .news-company__photo {
+        background-color: var(--color-jade-light);
+        display: block;
+        height: 10.625rem;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .news-company__photo img {
+        height: 100%;
+        inset: 0;
+        object-fit: cover;
+        position: absolute;
+        width: 100%;
+    }
+
+    .news-company__summary {
+        color: var(--color-sage);
+        font-size: var(--text-meta);
+        line-height: 1.9;
+        margin-bottom: 0;
+    }
+
+    .news-company__title {
+        font-size: var(--text-lead);
+        line-height: 1.55;
+        margin-bottom: 0.625rem;
+    }
+
+    @media (max-width: 1024px) {
+        .news-company__grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .news-company__lead {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .news-company__grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

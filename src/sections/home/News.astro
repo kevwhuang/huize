@@ -1,0 +1,193 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getNews, getSection } from '@lib/database';
+
+const FEATURED_COUNT = 4;
+const PHOTO_WIDTHS = [400, 640, 800];
+
+const homeNews = await getSection('home-news');
+const news = await getNews();
+
+const items = news
+    .filter(entry => entry.data.category === 'company')
+    .slice(0, FEATURED_COUNT)
+    .map(({ data: { image = '', ...item }, id }) => ({
+        ...item,
+        id,
+        image,
+        srcset: PHOTO_WIDTHS.map(width => `${image.replace(/w=\d+/, `w=${width}`)} ${width}w`).join(', '),
+    }));
+---
+
+<section
+    class="home-news section"
+    aria-labelledby="home-news-title"
+>
+    <div class="shell">
+        <div class="home-news__head">
+            <SectionHead
+                editKey="sections/home-news.heading"
+                eyebrow={homeNews.eyebrow ?? ''}
+                headingId="home-news-title"
+            >
+                {homeNews.heading}
+                <Fragment slot="text">
+                    <p
+                        data-edit="sections/home-news.lead"
+                        data-edit-id={getEditId('sections/home-news.lead')}
+                    >
+                        {homeNews.lead}
+                    </p>
+                </Fragment>
+            </SectionHead>
+            <a
+                class="home-news__more link-more"
+                data-scroll
+                href="/news/company"
+            >
+                查看全部公司新闻
+            </a>
+        </div>
+        <ul
+            class="home-news__grid"
+            data-edit-list="news"
+            data-edit-scope="home"
+            data-scroll="up"
+            data-scroll-stagger
+        >
+            {items.map(({ id, srcset, ...item }) => (
+                <li
+                    data-edit-item={`news/${id}`}
+                    data-edit-item-id={getEditId(`news/${id}`)}
+                >
+                    <article class="card card--flush home-news__card">
+                        <span
+                            class="home-news__photo"
+                            aria-hidden="true"
+                        >
+                            <img
+                                alt=""
+                                decoding="async"
+                                loading="lazy"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 20rem"
+                                src={item.image}
+                                srcset={srcset}
+                            />
+                        </span>
+                        <div class="home-news__body">
+                            <span class="home-news__tag tag">{homeNews.badge}</span>
+                            <h3
+                                data-edit={`news/${id}.title`}
+                                data-edit-id={getEditId(`news/${id}.title`)}
+                            >
+                                {item.title}
+                            </h3>
+                            <p
+                                class="home-news__summary"
+                                data-edit={`news/${id}.summary`}
+                                data-edit-id={getEditId(`news/${id}.summary`)}
+                            >
+                                {item.summary}
+                            </p>
+                            <time
+                                class="home-news__date"
+                                datetime={item.date}
+                            >
+                                {item.date.replace(/-/g, '.')}
+                            </time>
+                        </div>
+                    </article>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .home-news__body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 1.375rem;
+    }
+
+    .home-news__body h3 {
+        font-size: var(--text-lead);
+        line-height: 1.55;
+        margin-bottom: 0.625rem;
+    }
+
+    .home-news__card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .home-news__date {
+        color: var(--color-sage);
+        font-family: var(--font-label);
+        font-size: var(--text-meta);
+        letter-spacing: 0.08em;
+        margin-top: auto;
+        padding-top: 1rem;
+    }
+
+    .home-news__grid {
+        display: grid;
+        gap: 1.625rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .home-news__head {
+        align-items: end;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+        justify-content: space-between;
+    }
+
+    .home-news__more {
+        margin-bottom: clamp(1.75rem, calc(1.54rem + 1.04vw), 2.375rem);
+    }
+
+    .home-news__photo {
+        background-color: var(--color-jade-light);
+        display: block;
+        height: 10.625rem;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .home-news__photo img {
+        height: 100%;
+        inset: 0;
+        object-fit: cover;
+        position: absolute;
+        width: 100%;
+    }
+
+    .home-news__summary {
+        color: var(--color-sage);
+        font-size: var(--text-meta);
+        line-height: 1.9;
+    }
+
+    .home-news__tag {
+        align-self: start;
+        margin-bottom: 0.875rem;
+    }
+
+    @media (max-width: 1024px) {
+        .home-news__grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .home-news__grid {
+            grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
+        }
+    }
+</style>

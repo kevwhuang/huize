@@ -1,0 +1,169 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getSection, getSite } from '@lib/database';
+
+const TRACK_LINK_LABELS = ['查看康养基地', '查看养老网络'];
+
+const { eyebrow = '', groups, heading, lead } = await getSection('services-wellness-offer');
+const site = await getSite();
+
+const tracks = (groups?.tracks ?? []).map((track, index) => ({
+    ...track,
+    linkLabel: TRACK_LINK_LABELS[index],
+    tags: index === 0
+        ? site.baseThemes.map((theme, position) => ({ key: `site/main.baseThemes.${position}`, label: theme }))
+        : (track.tags ?? []).map((tag, position) => ({
+                key: `sections/services-wellness-offer.groups.tracks.${index}.tags.${position}`,
+                label: tag,
+            })),
+}));
+---
+
+<section
+    class="section section--tint services-wellness-offer"
+    aria-labelledby="services-wellness-offer-title"
+>
+    <div class="shell">
+        <SectionHead
+            editKey="sections/services-wellness-offer.heading"
+            eyebrow={eyebrow}
+            headingId="services-wellness-offer-title"
+            isCentered
+        >
+            {heading}
+            <Fragment slot="text">
+                <p
+                    data-edit="sections/services-wellness-offer.lead"
+                    data-edit-id={getEditId('sections/services-wellness-offer.lead')}
+                >
+                    {lead}
+                </p>
+            </Fragment>
+        </SectionHead>
+        <ul class="services-wellness-offer__tracks">
+            {tracks.map((track, index) => (
+                <li data-scroll={index === 0 ? 'left' : 'right'}>
+                    <article class:list={['services-wellness-offer__panel', { 'services-wellness-offer__panel--dark': index === 1 }]}>
+                        <p class="services-wellness-offer__meta">
+                            <span
+                                class="numeral"
+                                data-edit={`sections/services-wellness-offer.groups.tracks.${index}.number`}
+                                data-edit-id={getEditId(`sections/services-wellness-offer.groups.tracks.${index}.number`)}
+                            >
+                                {track.number}
+                            </span>
+                            <span
+                                class="label label--gold"
+                                lang="en"
+                            >
+                                {track.english}
+                            </span>
+                        </p>
+                        <h3>{track.title}</h3>
+                        <p
+                            class="services-wellness-offer__text"
+                            data-edit={`sections/services-wellness-offer.groups.tracks.${index}.text`}
+                            data-edit-id={getEditId(`sections/services-wellness-offer.groups.tracks.${index}.text`)}
+                        >
+                            {track.text}
+                        </p>
+                        <ul class="services-wellness-offer__tags">
+                            {track.tags.map(tag => (
+                                <li
+                                    class:list={['tag', { 'tag--on-dark': index === 1 }]}
+                                    data-edit={tag.key}
+                                    data-edit-id={getEditId(tag.key)}
+                                >
+                                    {tag.label}
+                                </li>
+                            ))}
+                        </ul>
+                        <a
+                            class="link-more"
+                            href={track.href}
+                        >
+                            {track.linkLabel}
+                        </a>
+                    </article>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .services-wellness-offer__meta {
+        align-items: center;
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 0.875rem;
+    }
+
+    .services-wellness-offer__panel {
+        background: var(--color-white);
+        border: 0.0625rem solid var(--color-shell);
+        border-radius: var(--radius-card-lg);
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: var(--pad-panel);
+    }
+
+    .services-wellness-offer__panel--dark {
+        background: var(--color-pine);
+        border-color: var(--color-pine);
+        box-shadow: var(--shadow-panel);
+    }
+
+    .services-wellness-offer__panel--dark h3 {
+        color: var(--color-white);
+    }
+
+    .services-wellness-offer__panel--dark .label {
+        color: var(--color-gold-light);
+    }
+
+    .services-wellness-offer__panel--dark .link-more {
+        color: var(--color-reef);
+    }
+
+    .services-wellness-offer__panel--dark .numeral {
+        color: var(--color-white-70);
+    }
+
+    .services-wellness-offer__panel--dark .services-wellness-offer__text {
+        color: var(--color-white-70);
+    }
+
+    .services-wellness-offer__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        list-style: none;
+        margin-bottom: 1.375rem;
+        margin-top: auto;
+        padding: 0;
+    }
+
+    .services-wellness-offer__text {
+        color: var(--color-sage);
+        font-size: var(--text-small);
+        line-height: 1.9;
+        margin-bottom: 1.5rem;
+    }
+
+    .services-wellness-offer__tracks {
+        display: grid;
+        gap: var(--space-grid);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    @media (max-width: 1024px) {
+        .services-wellness-offer__tracks {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

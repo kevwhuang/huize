@@ -1,16 +1,16 @@
 ---
+import IndexFeed from '@sections/news/IndexFeed.astro';
 import Layout from '@/Layout.astro';
-import NewsIndexFeed from '@sections/NewsIndexFeed.astro';
-import PageHero from '@sections/PageHero.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('news');
 ---
 
 <Layout
-    description="惠泽健康新闻中心：企业动态、战略合作与康复康养行业研究报告。"
-    title="新闻中心 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="News Center"
-        title="新闻中心"
-    />
-    <NewsIndexFeed />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <IndexFeed />
 </Layout>

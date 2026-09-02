@@ -1,0 +1,165 @@
+---
+import Arrow from '@components/icons/Arrow.astro';
+import Check from '@components/icons/Check.astro';
+import Globe from '@components/icons/Globe.astro';
+import Heart from '@components/icons/Heart.astro';
+import SectionHead from '@components/SectionHead.astro';
+import Shield from '@components/icons/Shield.astro';
+import { getEditId, getSection } from '@lib/database';
+
+const ICONS: Record<string, typeof Arrow> = {
+    arrow: Arrow,
+    check: Check,
+    globe: Globe,
+    heart: Heart,
+    shield: Shield,
+};
+
+const { eyebrow = '', groups, heading, lead, paragraphs = [], tags = [] } = await getSection('services-insurance-value');
+
+const offerings = (groups?.offerings ?? []).map(offering => ({ ...offering, Icon: ICONS[offering.icon ?? ''] }));
+---
+
+<section
+    class="section services-insurance-value"
+    aria-labelledby="services-insurance-value-title"
+>
+    <div class="services-insurance-value__grid shell">
+        <div data-scroll="left">
+            <SectionHead
+                editKey="sections/services-insurance-value.heading"
+                eyebrow={eyebrow}
+                headingId="services-insurance-value-title"
+            >
+                {heading}
+                <Fragment slot="text">
+                    <p
+                        data-edit="sections/services-insurance-value.lead"
+                        data-edit-id={getEditId('sections/services-insurance-value.lead')}
+                    >
+                        {lead}
+                    </p>
+                </Fragment>
+            </SectionHead>
+            <ul class="services-insurance-value__lines">
+                {tags.map((tag, index) => (
+                    <li
+                        class="tag"
+                        data-edit={`sections/services-insurance-value.tags.${index}`}
+                        data-edit-id={getEditId(`sections/services-insurance-value.tags.${index}`)}
+                    >
+                        {tag}
+                    </li>
+                ))}
+            </ul>
+            <div class="prose">
+                {paragraphs.map((paragraph, index) => (
+                    <p
+                        data-edit={`sections/services-insurance-value.paragraphs.${index}`}
+                        data-edit-id={getEditId(`sections/services-insurance-value.paragraphs.${index}`)}
+                    >
+                        {paragraph}
+                    </p>
+                ))}
+            </div>
+        </div>
+        <ul
+            class="services-insurance-value__offerings"
+            data-scroll="right"
+            data-scroll-stagger
+        >
+            {offerings.map(({ Icon, text, title }, index) => (
+                <li class="services-insurance-value__offering">
+                    <span
+                        class="services-insurance-value__icon"
+                        aria-hidden="true"
+                    >
+                        <Icon size={16} strokeWidth={2} />
+                    </span>
+                    <div class="services-insurance-value__body">
+                        <h3>{title}</h3>
+                        <p
+                            class="services-insurance-value__text"
+                            data-edit={`sections/services-insurance-value.groups.offerings.${index}.text`}
+                            data-edit-id={getEditId(`sections/services-insurance-value.groups.offerings.${index}.text`)}
+                        >
+                            {text}
+                        </p>
+                    </div>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .services-insurance-value__body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+        min-width: 0;
+    }
+
+    .services-insurance-value__body h3 {
+        font-size: var(--text-lead);
+        margin-bottom: 0;
+    }
+
+    .services-insurance-value__grid {
+        display: grid;
+        gap: var(--space-split);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    }
+
+    .services-insurance-value__icon {
+        align-items: center;
+        background: var(--color-mint);
+        border-radius: 50%;
+        color: var(--color-jade);
+        display: flex;
+        flex-shrink: 0;
+        height: 2.25rem;
+        justify-content: center;
+        width: 2.25rem;
+    }
+
+    .services-insurance-value__lines {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        list-style: none;
+        margin-bottom: 1.75rem;
+        padding: 0;
+    }
+
+    .services-insurance-value__offering {
+        align-items: start;
+        background: var(--color-white);
+        border: var(--border-soft);
+        border-radius: var(--radius-card-sm);
+        box-shadow: var(--shadow-card);
+        display: flex;
+        gap: 1rem;
+        padding: 1.125rem 1.25rem;
+    }
+
+    .services-insurance-value__offerings {
+        display: grid;
+        gap: 0.875rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .services-insurance-value__text {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        line-height: 1.9;
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 1024px) {
+        .services-insurance-value__grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

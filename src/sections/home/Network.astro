@@ -1,0 +1,301 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getSection, getSite } from '@lib/database';
+
+const homeNetwork = await getSection('home-network');
+const site = await getSite();
+
+const headingLines = (homeNetwork.heading ?? '').split('\n');
+
+const tagValues: Record<string, string> = {
+    '{baseThemes}': site.baseThemes.join(' \u00B7 '),
+    '{publicHospitals}': `${site.publicHospitals} ${homeNetwork.badge ?? ''}`,
+};
+
+const panels = (homeNetwork.groups?.panels ?? []).map((panel, index) => ({
+    ...panel,
+    tags: (panel.tags ?? []).map((tag, position) => ({
+        key: tagValues[tag] ? undefined : `sections/home-network.groups.panels.${index}.tags.${position}`,
+        label: tagValues[tag] ?? tag,
+    })),
+}));
+---
+
+<section
+    class="home-network section section--tint"
+    aria-labelledby="home-network-title"
+>
+    <div class="home-network__grid shell">
+        <div data-scroll="left">
+            <SectionHead
+                editKey="sections/home-network.heading"
+                eyebrow={homeNetwork.eyebrow ?? ''}
+                headingId="home-network-title"
+            >
+                {headingLines.map((line, index) => (index > 0 ? <Fragment><br />{line}</Fragment> : line))}
+            </SectionHead>
+            <p
+                class="home-network__text"
+                data-edit="sections/home-network.lead"
+                data-edit-id={getEditId('sections/home-network.lead')}
+            >
+                {homeNetwork.lead}
+            </p>
+            <div class="home-network__media">
+                <div
+                    class="home-network__photo"
+                    aria-hidden="true"
+                />
+                <div
+                    class="home-network__scrim"
+                    aria-hidden="true"
+                />
+                <p class="home-network__caption label">
+                    <span>{homeNetwork.caption}</span>{' '}
+                    <span lang="en">{homeNetwork.note}</span>
+                </p>
+            </div>
+        </div>
+        <ul
+            class="home-network__list"
+            data-scroll="right"
+            data-scroll-stagger
+        >
+            {panels.map((panel, index) => (
+                <li>
+                    <details
+                        class="home-network__panel"
+                        name="home-network"
+                    >
+                        <summary>
+                            <div class="home-network__summary-text">
+                                <span class="home-network__number numeral">{panel.number}</span>
+                                <h3 class="home-network__title">{panel.title}</h3>
+                            </div>
+                            <span
+                                class="home-network__toggle"
+                                aria-hidden="true"
+                            />
+                        </summary>
+                        <div class="home-network__body">
+                            <p
+                                data-edit={`sections/home-network.groups.panels.${index}.text`}
+                                data-edit-id={getEditId(`sections/home-network.groups.panels.${index}.text`)}
+                            >
+                                {panel.text}
+                            </p>
+                            <ul class="home-network__tags">
+                                {panel.tags.map(tag => (
+                                    <li
+                                        class="tag"
+                                        data-edit={tag.key}
+                                        data-edit-id={tag.key && getEditId(tag.key)}
+                                    >
+                                        {tag.label}
+                                    </li>
+                                ))}
+                            </ul>
+                            <a
+                                class="link-more"
+                                href={panel.href}
+                            >
+                                查看更多
+                            </a>
+                        </div>
+                    </details>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .home-network__body {
+        padding: 0 1.625rem 1.625rem;
+    }
+
+    .home-network__body p {
+        color: var(--color-sage);
+        font-size: var(--text-small);
+        font-weight: 400;
+        line-height: 1.9;
+        margin-bottom: 1rem;
+    }
+
+    .home-network__caption {
+        background: var(--color-pine);
+        border-radius: var(--radius-card-sm);
+        bottom: 1rem;
+        color: var(--color-white);
+        left: 1.125rem;
+        margin-bottom: 0;
+        padding: 0.375rem 0.75rem;
+        position: absolute;
+    }
+
+    .home-network__grid {
+        align-items: center;
+        display: grid;
+        gap: var(--space-split);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    }
+
+    .home-network__list {
+        background: var(--color-white);
+        border: 0.0625rem solid var(--color-shell);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-card);
+        display: grid;
+        list-style: none;
+        overflow: clip;
+        padding: 0;
+    }
+
+    .home-network__list > li + li {
+        border-top: 0.0625rem solid var(--color-shell);
+    }
+
+    .home-network__media {
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-lift);
+        min-height: 14.375rem;
+        overflow: clip;
+        position: relative;
+    }
+
+    .home-network__number {
+        transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .home-network__panel {
+        interpolate-size: allow-keywords;
+        overflow: clip;
+    }
+
+    .home-network__panel::details-content {
+        height: 0;
+        overflow: clip;
+        transition:
+            content-visibility var(--duration-base) allow-discrete,
+            height var(--duration-base) var(--ease-out);
+    }
+
+    .home-network__panel[open] .home-network__number {
+        color: var(--color-jade);
+    }
+
+    .home-network__panel[open] .home-network__toggle {
+        rotate: 45deg;
+    }
+
+    .home-network__panel[open]::details-content {
+        height: auto;
+    }
+
+    .home-network__panel summary {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        list-style: none;
+        padding: 1.5rem 1.625rem;
+        transition: background var(--duration-fast) var(--ease-out);
+        user-select: none;
+    }
+
+    .home-network__panel summary:active {
+        background: var(--color-snow);
+    }
+
+    .home-network__panel summary:focus-visible {
+        border-radius: var(--radius-card);
+        outline-offset: -0.375rem;
+    }
+
+    .home-network__panel summary:hover {
+        background: var(--color-mist);
+    }
+
+    .home-network__photo {
+        background-color: var(--color-pine);
+        background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80');
+        background-position: center;
+        background-size: cover;
+        inset: 0;
+        position: absolute;
+    }
+
+    .home-network__scrim {
+        background: linear-gradient(160deg, var(--color-veil-10) 35%, var(--color-veil-80));
+        inset: 0;
+        position: absolute;
+    }
+
+    .home-network__summary-text {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .home-network__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        list-style: none;
+        margin-bottom: 1.125rem;
+        padding: 0;
+    }
+
+    .home-network__text {
+        color: var(--color-sage);
+        font-weight: 400;
+        line-height: 2;
+        margin-bottom: 1.875rem;
+    }
+
+    .home-network__title {
+        font-size: var(--text-lead);
+        margin-bottom: 0;
+    }
+
+    .home-network__toggle {
+        flex-shrink: 0;
+        height: 1.125rem;
+        position: relative;
+        transition: rotate var(--duration-base) var(--ease-out);
+        width: 1.125rem;
+    }
+
+    .home-network__toggle::after,
+    .home-network__toggle::before {
+        background: var(--color-jade);
+        content: '';
+        position: absolute;
+    }
+
+    .home-network__toggle::after {
+        height: 1.125rem;
+        left: 0.5rem;
+        top: 0;
+        width: 0.125rem;
+    }
+
+    .home-network__toggle::before {
+        height: 0.125rem;
+        left: 0;
+        top: 0.5rem;
+        width: 1.125rem;
+    }
+
+    @media (max-width: 1024px) {
+        .home-network__grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .home-network__panel::details-content {
+            transition: none;
+        }
+    }
+</style>

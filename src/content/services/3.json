@@ -1,0 +1,17 @@
+{
+    "bullets": [
+        "健康增值服务",
+        "理赔协助支持",
+        "老人商业医疗保险",
+        "企业团体方案"
+    ],
+    "english": "Insurance",
+    "headline": "商保公司健康增值服务",
+    "id": "insurance",
+    "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80",
+    "label": "保险服务",
+    "number": "03",
+    "path": "/services/insurance",
+    "subtitle": "一站式健康增值",
+    "summary": "一站式健康增值服务。为保险与企业客户提供健康管理、理赔协助与定制化增值方案。"
+}

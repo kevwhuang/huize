@@ -1,20 +1,20 @@
 ---
-import CtaBanner from '@sections/CtaBanner.astro';
+import CtaBanner from '@sections/shared/CtaBanner.astro';
 import Layout from '@/Layout.astro';
-import PageHero from '@sections/PageHero.astro';
-import ServicesPremiumFormulary from '@sections/ServicesPremiumFormulary.astro';
-import ServicesPremiumIntro from '@sections/ServicesPremiumIntro.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import PremiumFormulary from '@sections/services/PremiumFormulary.astro';
+import PremiumIntro from '@sections/services/PremiumIntro.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('services-premium');
 ---
 
 <Layout
-    description="高端定制健管服务。惠泽协助尊贵的客户个性化定制基因、细胞、免疫干预和海外医疗服务，并提供国内100种、海外60种特药清单的信息与对接服务。"
-    title="高端定制 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Premium"
-        title="高端定制"
-    />
-    <ServicesPremiumIntro />
-    <ServicesPremiumFormulary />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <PremiumIntro />
+    <PremiumFormulary />
     <CtaBanner />
 </Layout>

@@ -1,0 +1,29 @@
+{
+    "eyebrow": "Formulary",
+    "groups": {
+        "lists": [
+            {
+                "english": "Domestic",
+                "note": "国内 100 种特药清单",
+                "number": "01",
+                "suffix": "种",
+                "title": "国内特药清单",
+                "value": "100"
+            },
+            {
+                "english": "Overseas",
+                "note": "海外 60 种特药清单",
+                "number": "02",
+                "suffix": "种",
+                "title": "海外特药清单",
+                "value": "60"
+            }
+        ]
+    },
+    "heading": "特药清单",
+    "lead": "惠泽整理了国内与海外两份特药清单，为有需要的家庭提供药品信息与对接服务。",
+    "paragraphs": [
+        "清单明细与适用范围请致电全国服务热线",
+        "咨询，专属顾问将为您提供一对一的全流程服务。"
+    ]
+}

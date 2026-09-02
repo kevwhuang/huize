@@ -1,0 +1,400 @@
+---
+import Check from '@components/icons/Check.astro';
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getSection, getServices } from '@lib/database';
+
+const homeServices = await getSection('home-services');
+const services = await getServices();
+---
+
+<section
+    class="home-services section section--dark"
+    aria-labelledby="home-services-title"
+>
+    <div
+        class="glow home-services__glow"
+        aria-hidden="true"
+    />
+    <div class="shell">
+        <SectionHead
+            editKey="sections/home-services.heading"
+            eyebrow={homeServices.eyebrow ?? ''}
+            headingId="home-services-title"
+            isCentered
+            isOnDark
+        >
+            {homeServices.heading}
+            <Fragment slot="text">
+                <p
+                    data-edit="sections/home-services.lead"
+                    data-edit-id={getEditId('sections/home-services.lead')}
+                >
+                    {homeServices.lead}
+                </p>
+            </Fragment>
+        </SectionHead>
+        <div class="home-services__layout">
+            <div
+                class="home-services__tabs"
+                aria-label="服务类别"
+                aria-orientation="vertical"
+                data-scroll="left"
+                data-scroll-stagger
+                role="tablist"
+            >
+                {services.map(({ data: service, id }, index) => (
+                    <button
+                        id={`home-services-tab-${service.id}`}
+                        class="home-services__tab"
+                        aria-controls={`home-services-panel-${service.id}`}
+                        aria-selected={index === 0 ? 'true' : 'false'}
+                        data-tab={service.id}
+                        role="tab"
+                        tabindex={index === 0 ? undefined : '-1'}
+                        type="button"
+                    >
+                        <span class="home-services__tab-number numeral">{service.number}</span>
+                        <span class="home-services__tab-text">
+                            <span class="home-services__tab-label">{service.label}</span>
+                            <span
+                                class="home-services__tab-subtitle"
+                                data-edit-view={`services/${id}.subtitle`}
+                            >
+                                {service.subtitle}
+                            </span>
+                        </span>
+                    </button>
+                ))}
+            </div>
+            <div data-scroll="right">
+                {services.map(({ data: service, id }, index) => (
+                    <article
+                        id={`home-services-panel-${service.id}`}
+                        class="home-services__panel"
+                        aria-labelledby={`home-services-tab-${service.id}`}
+                        data-active={index === 0 ? '' : undefined}
+                        data-panel={service.id}
+                        role="tabpanel"
+                        tabindex="0"
+                    >
+                        <div class="home-services__panel-body">
+                            <div class="home-services__panel-copy">
+                                <p
+                                    class="home-services__panel-eyebrow label label--gold"
+                                    lang="en"
+                                >
+                                    {service.number} / {service.english}
+                                </p>
+                                <h3>{service.label}</h3>
+                                <p
+                                    class="home-services__panel-text"
+                                    data-edit={`services/${id}.summary`}
+                                    data-edit-id={getEditId(`services/${id}.summary`)}
+                                >
+                                    {service.summary}
+                                </p>
+                                <ul class="home-services__list">
+                                    {service.bullets.map((bullet, bulletIndex) => (
+                                        <li>
+                                            <span
+                                                class="check"
+                                                aria-hidden="true"
+                                            >
+                                                <Check size={12} strokeWidth={3} />
+                                            </span>
+                                            <span
+                                                data-edit={`services/${id}.bullets.${bulletIndex}`}
+                                                data-edit-id={getEditId(`services/${id}.bullets.${bulletIndex}`)}
+                                            >
+                                                {bullet}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <a
+                                    class="link-more"
+                                    href={service.path}
+                                >
+                                    查看更多
+                                </a>
+                            </div>
+                            <div
+                                class="home-services__panel-media"
+                                aria-hidden="true"
+                                style={`background-image:url('${service.image}')`}
+                            />
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .home-services {
+        overflow: clip;
+    }
+
+    .home-services__glow {
+        left: -5.625rem;
+        top: -5.625rem;
+    }
+
+    .home-services__layout {
+        align-items: start;
+        display: grid;
+        gap: 1.625rem;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    }
+
+    .home-services__list {
+        display: grid;
+        gap: 0.75rem;
+        list-style: none;
+        margin-bottom: 1.625rem;
+        padding: 0;
+    }
+
+    .home-services__list li {
+        align-items: center;
+        color: var(--color-sage-dark);
+        display: flex;
+        font-size: 0.875rem;
+        gap: 0.75rem;
+    }
+
+    .home-services__panel {
+        --heading-color: var(--color-pine);
+        background: var(--color-white);
+        border-radius: var(--radius-card-lg);
+        box-shadow: var(--shadow-panel);
+        padding: var(--pad-panel);
+    }
+
+    .home-services__panel:not(:last-child) {
+        margin-bottom: 1.625rem;
+    }
+
+    .home-services__panel-body {
+        align-items: center;
+        display: grid;
+        gap: 2.125rem;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
+    }
+
+    .home-services__panel-copy h3 {
+        margin-bottom: 0.875rem;
+    }
+
+    .home-services__panel-eyebrow {
+        margin-bottom: 0.75rem;
+    }
+
+    .home-services__panel-media {
+        align-self: stretch;
+        background-color: var(--color-jade-light);
+        background-position: center;
+        background-size: cover;
+        border-radius: var(--radius-card);
+        min-height: 15rem;
+    }
+
+    .home-services__panel-text {
+        color: var(--color-sage);
+        font-size: var(--text-small);
+        font-weight: 400;
+        line-height: 1.9;
+        margin-bottom: 1.375rem;
+    }
+
+    .home-services__tab {
+        align-items: center;
+        background: var(--color-white);
+        border: var(--border-soft);
+        border-radius: var(--radius-card);
+        color: var(--color-pine-light);
+        display: flex;
+        gap: 1rem;
+        padding: 1.25rem 1.375rem;
+        text-align: left;
+        transition:
+            background var(--duration-fast) var(--ease-out),
+            border-color var(--duration-fast) var(--ease-out),
+            box-shadow var(--duration-fast) var(--ease-out),
+            color var(--duration-fast) var(--ease-out),
+            transform var(--duration-fast) var(--ease-out);
+        user-select: none;
+        width: 100%;
+    }
+
+    .home-services__tab:active {
+        transform: translateX(0.125rem);
+    }
+
+    .home-services__tab:hover {
+        background: var(--color-mint);
+        transform: translateX(0.25rem);
+    }
+
+    .home-services__tab[aria-selected='true'] {
+        background: var(--color-jade);
+        border-color: var(--color-jade);
+        box-shadow: var(--shadow-jade);
+        color: var(--color-white);
+    }
+
+    .home-services__tab-label {
+        font-family: var(--font-display);
+        font-size: var(--text-lead);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+    }
+
+    .home-services__tab-number {
+        transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .home-services__tab[aria-selected='true'] .home-services__tab-number {
+        color: var(--color-white);
+    }
+
+    .home-services__tab-subtitle {
+        color: var(--color-sage);
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+        transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .home-services__tab[aria-selected='true'] .home-services__tab-subtitle {
+        color: var(--color-white);
+    }
+
+    .home-services__tab-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+    }
+
+    .home-services__tabs {
+        display: none;
+        flex-direction: column;
+        gap: 0.875rem;
+    }
+
+    .home-services[data-enhanced] .home-services__panel:not(:last-child) {
+        margin-bottom: 0;
+    }
+
+    .home-services[data-enhanced] .home-services__panel:not([data-active]) {
+        display: none;
+    }
+
+    .home-services[data-enhanced] .home-services__panel[data-active] {
+        animation: home-services__panel-in var(--duration-base) var(--ease-out) both;
+    }
+
+    .home-services[data-enhanced] .home-services__tabs {
+        display: flex;
+    }
+
+    @media (max-width: 1024px) {
+        .home-services__layout {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .home-services__tabs {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .home-services[data-enhanced] .home-services__tab {
+            flex: 1 1 auto;
+            width: auto;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .home-services__panel-body {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    @keyframes home-services__panel-in {
+        from {
+            opacity: 0;
+            transform: translateY(0.5rem);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+</style>
+
+<script>
+    import { registerPageScript } from '@lib/utils';
+
+    const MOBILE_QUERY = '(max-width: 1024px)';
+    const OFFSETS: Record<string, number> = { ArrowDown: 1, ArrowLeft: -1, ArrowRight: 1, ArrowUp: -1 };
+
+    const mobileQuery = window.matchMedia(MOBILE_QUERY);
+
+    let tablist: HTMLElement | null = null;
+
+    function initServicesTabs(signal: AbortSignal) {
+        const section = document.querySelector<HTMLElement>('.home-services');
+
+        tablist = section?.querySelector<HTMLElement>('.home-services__tabs') ?? null;
+        syncOrientation();
+
+        if (!section) return;
+
+        const panels = Array.from(section.querySelectorAll<HTMLElement>('[data-panel]'));
+        const tabs = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+
+        if (!panels.length || !tabs.length) return;
+
+        section.dataset.enhanced = '';
+
+        function activate(id: string, shouldFocus: boolean) {
+            tabs.forEach((tab) => {
+                const isSelected = tab.dataset.tab === id;
+
+                tab.setAttribute('aria-selected', String(isSelected));
+                tab.tabIndex = isSelected ? 0 : -1;
+
+                if (isSelected && shouldFocus) tab.focus();
+            });
+
+            panels.forEach(panel => panel.toggleAttribute('data-active', panel.dataset.panel === id));
+        }
+
+        function handleKeydown(event: KeyboardEvent) {
+            const offset = OFFSETS[event.key];
+
+            if (!offset) return;
+
+            event.preventDefault();
+
+            const currentIndex = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
+
+            const nextIndex = (currentIndex + offset + tabs.length) % tabs.length;
+
+            activate(tabs[nextIndex].dataset.tab ?? '', true);
+        }
+
+        tabs.forEach((tab) => {
+            tab.addEventListener('click', () => activate(tab.dataset.tab ?? '', false), { signal });
+            tab.addEventListener('keydown', handleKeydown, { signal });
+        });
+    }
+
+    function syncOrientation() {
+        tablist?.setAttribute('aria-orientation', mobileQuery.matches ? 'horizontal' : 'vertical');
+    }
+
+    mobileQuery.addEventListener('change', syncOrientation);
+    registerPageScript(initServicesTabs);
+</script>

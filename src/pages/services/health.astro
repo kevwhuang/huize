@@ -1,20 +1,20 @@
 ---
-import CtaBanner from '@sections/CtaBanner.astro';
+import CtaBanner from '@sections/shared/CtaBanner.astro';
+import HealthIntro from '@sections/services/HealthIntro.astro';
+import HealthPrograms from '@sections/services/HealthPrograms.astro';
 import Layout from '@/Layout.astro';
-import PageHero from '@sections/PageHero.astro';
-import ServicesHealthIntro from '@sections/ServicesHealthIntro.astro';
-import ServicesHealthPrograms from '@sections/ServicesHealthPrograms.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('services-health');
 ---
 
 <Layout
-    description="一站式健康管理服务。惠泽提供就医绿通、康复护理与折扣购药，覆盖全国500个城市、11000家二级及以上公立医院。"
-    title="健康管理 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Health Management"
-        title="健康管理"
-    />
-    <ServicesHealthIntro />
-    <ServicesHealthPrograms />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <HealthIntro />
+    <HealthPrograms />
     <CtaBanner />
 </Layout>

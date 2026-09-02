@@ -1,17 +1,16 @@
 ---
-import ContactPanel from '@sections/ContactPanel.astro';
+import ContactPanel from '@sections/shared/ContactPanel.astro';
 import Layout from '@/Layout.astro';
-import PageHero from '@sections/PageHero.astro';
-import { LINKS } from '@lib/constants';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('about-contact');
 ---
 
 <Layout
-    description={`欢迎垂询惠泽的康养与健康管理服务。全国服务热线 ${LINKS.hotline}，上海总部 ${LINKS.shanghai}，地址：${LINKS.address}。`}
-    title="联系我们 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Contact Us"
-        title="联系我们"
-    />
+    <PageHero eyebrow={eyebrow} title={heading} />
     <ContactPanel />
 </Layout>

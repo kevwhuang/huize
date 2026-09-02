@@ -1,18 +1,18 @@
 ---
-import AboutSubsidiariesBrands from '@sections/AboutSubsidiariesBrands.astro';
-import CtaBanner from '@sections/CtaBanner.astro';
+import CtaBanner from '@sections/shared/CtaBanner.astro';
 import Layout from '@/Layout.astro';
-import PageHero from '@sections/PageHero.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import SubsidiariesBrands from '@sections/about/SubsidiariesBrands.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('about-subsidiaries');
 ---
 
 <Layout
-    description="惠泽旗下拥有合展与绿康两大品牌共43家实体机构，分布在重庆、浙江、江苏、广东与江西，总床位15000张。"
-    title="旗下机构 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Our Institutions"
-        title="旗下机构"
-    />
-    <AboutSubsidiariesBrands />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <SubsidiariesBrands />
     <CtaBanner />
 </Layout>

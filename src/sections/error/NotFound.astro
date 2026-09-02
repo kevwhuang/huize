@@ -1,0 +1,97 @@
+---
+import { LINKS, ROUTES } from '@lib/constants';
+import { getSection } from '@lib/database';
+
+const SECTION_ROUTES = ROUTES.filter(route => route.path !== '/');
+
+const notFound = await getSection('error-not-found');
+
+const [lead, closing] = notFound.paragraphs ?? [];
+---
+
+<section
+    class="error-page section"
+    aria-labelledby="error-not-found-title"
+>
+    <div class="shell">
+        <div
+            class="error-page__head"
+            data-scroll
+            data-scroll-stagger
+        >
+            <p
+                class="error-page__code"
+                aria-hidden="true"
+            >
+                {notFound.badge}
+            </p>
+            <h1 id="error-not-found-title">{notFound.heading}</h1>
+            <p class="error-page__text">
+                {lead}
+                <a href={LINKS.hotlineHref}>{LINKS.hotline}</a>
+                {closing}
+            </p>
+            <a
+                class="button button--large button--primary"
+                href="/"
+            >
+                返回首页
+            </a>
+        </div>
+        <ul
+            class="error-page__grid"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {SECTION_ROUTES.map(route => (
+                <li>
+                    <a
+                        class="card card--hover error-page__card"
+                        href={route.path}
+                    >
+                        <h2>{route.label}</h2>
+                        <p>{(route.children ?? []).map(child => child.label).join(' \u00B7 ')}</p>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .error-page__card {
+        display: block;
+        height: 100%;
+    }
+
+    .error-page__card h2 {
+        font-size: var(--text-h3);
+        margin-bottom: 0.5rem;
+    }
+
+    .error-page__card p {
+        color: var(--color-sage);
+        font-size: var(--text-meta);
+        line-height: 1.7;
+    }
+
+    .error-page__grid {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    @media (max-width: 1024px) {
+        .error-page__grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .error-page__grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

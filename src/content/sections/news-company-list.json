@@ -1,0 +1,13 @@
+{
+    "badge": "最新动态",
+    "eyebrow": "Company",
+    "groups": {
+        "lead": [
+            {
+                "suffix": "条企业动态，覆盖2021至2024年。",
+                "text": "共"
+            }
+        ]
+    },
+    "heading": "企业动态"
+}

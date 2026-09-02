@@ -1,16 +1,16 @@
 ---
+import IndexPillars from '@sections/network/IndexPillars.astro';
 import Layout from '@/Layout.astro';
-import NetworkIndexPillars from '@sections/NetworkIndexPillars.astro';
-import PageHero from '@sections/PageHero.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('network');
 ---
 
 <Layout
-    description="惠泽服务网络覆盖全国500个城市，依托21个康养疗愈基地、2000家甄选养老机构与11000家二级及以上公立医院，累计服务超过1000万人次。"
-    title="服务网络 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Service Network"
-        title="服务网络"
-    />
-    <NetworkIndexPillars />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <IndexPillars />
 </Layout>

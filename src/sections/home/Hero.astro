@@ -1,0 +1,363 @@
+---
+import { getEditId, getSection } from '@lib/database';
+
+const homeHero = await getSection('home-hero');
+
+const headingLines = (homeHero.heading ?? '').split('\n');
+const { slides = [], stats = [] } = homeHero.groups ?? {};
+---
+
+<section
+    class="home-hero"
+    aria-labelledby="home-hero-title"
+>
+    <div
+        class="glow home-hero__glow"
+        aria-hidden="true"
+    />
+    <div class="home-hero__inner shell">
+        <div
+            class="home-hero__content"
+            data-scroll="left"
+            data-scroll-stagger
+        >
+            <p class="home-hero__badge">
+                <span
+                    class="home-hero__badge-dot"
+                    aria-hidden="true"
+                />
+                <span
+                    data-edit="sections/home-hero.badge"
+                    data-edit-id={getEditId('sections/home-hero.badge')}
+                >
+                    {homeHero.badge}
+                </span>
+                <span
+                    data-edit="sections/home-hero.note"
+                    data-edit-id={getEditId('sections/home-hero.note')}
+                    lang="en"
+                >
+                    {homeHero.note}
+                </span>
+            </p>
+            <h1 id="home-hero-title">
+                {headingLines.map((line, index) => (index > 0 ? <Fragment><br />{line}</Fragment> : line))}
+            </h1>
+            <p
+                class="home-hero__lead"
+                data-edit="sections/home-hero.lead"
+                data-edit-id={getEditId('sections/home-hero.lead')}
+            >
+                {homeHero.lead}
+            </p>
+            <div class="home-hero__actions">
+                <a
+                    class="button button--large button--primary"
+                    href="/about/contact"
+                >
+                    立即咨询
+                </a>
+                <a
+                    class="button button--ghost button--large"
+                    href="/services"
+                >
+                    探索服务体系
+                </a>
+            </div>
+            <dl
+                class="home-hero__stats"
+                data-scroll="scale"
+                data-scroll-stagger
+            >
+                {stats.map(stat => (
+                    <div class="home-hero__stat">
+                        <dt class="home-hero__stat-label">{stat.label}</dt>
+                        <dd
+                            class="home-hero__stat-value stat"
+                            data-count-to={stat.value}
+                            data-suffix={stat.suffix}
+                        >
+                            {stat.value}{stat.suffix}
+                        </dd>
+                    </div>
+                ))}
+            </dl>
+        </div>
+        <div
+            class="home-hero__media"
+            data-scroll="right"
+        >
+            <div
+                class="home-hero__frame"
+                aria-hidden="true"
+            >
+                {slides.map((slide, index) => (
+                    <div
+                        class="home-hero__slide"
+                        data-active={index === 0 ? '' : undefined}
+                        data-caption={slide.label}
+                        data-image={index === 0 ? undefined : slide.image}
+                        style={index === 0 ? `background-image:url('${slide.image}')` : undefined}
+                    />
+                ))}
+                <div class="home-hero__scrim" />
+                <p class="home-hero__caption label">{slides[0].label}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .home-hero {
+        background: linear-gradient(180deg, var(--color-mist) 0%, var(--color-cloud) 100%);
+        overflow: clip;
+        position: relative;
+    }
+
+    .home-hero__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.875rem;
+        margin-bottom: 2.875rem;
+    }
+
+    .home-hero__badge {
+        align-items: center;
+        background: var(--color-white);
+        border: 0.0625rem solid var(--color-willow);
+        border-radius: var(--radius-pill);
+        box-shadow: var(--shadow-card);
+        color: var(--color-pine-light);
+        display: inline-flex;
+        font-family: var(--font-label);
+        font-size: 0.6875rem;
+        font-weight: 500;
+        gap: 0.625rem;
+        letter-spacing: 0.22em;
+        margin-bottom: 1.625rem;
+        padding: 0.5rem 1rem;
+        text-transform: uppercase;
+    }
+
+    .home-hero__badge-dot {
+        background: var(--color-gold);
+        border-radius: 50%;
+        height: 0.5rem;
+        width: 0.5rem;
+    }
+
+    .home-hero__caption {
+        background: var(--color-pine);
+        border-radius: var(--radius-card-sm);
+        bottom: 1.25rem;
+        color: var(--color-white);
+        left: 1.25rem;
+        margin-bottom: 0;
+        padding: 0.375rem 0.75rem;
+        position: absolute;
+    }
+
+    .home-hero__content {
+        min-width: 0;
+    }
+
+    .home-hero__frame {
+        border-radius: var(--radius-card-lg);
+        box-shadow: var(--shadow-lift);
+        inset: 0;
+        overflow: clip;
+        position: absolute;
+    }
+
+    .home-hero__glow {
+        background: radial-gradient(circle, var(--color-jade-10), transparent 70%);
+        right: -6.25rem;
+        top: -7.5rem;
+    }
+
+    .home-hero__inner {
+        align-items: center;
+        display: grid;
+        gap: clamp(2.25rem, calc(1.67rem + 2.92vw), 4rem);
+        grid-template-columns: minmax(0, 1fr) clamp(25rem, calc(-13rem + 59.5vw), 34.5rem);
+        padding-block: clamp(3rem, calc(2rem + 5vw), 6rem);
+        position: relative;
+    }
+
+    .home-hero__lead {
+        color: var(--color-sage);
+        font-size: var(--text-lead);
+        font-weight: 400;
+        line-height: 1.95;
+        margin-bottom: 2.125rem;
+        max-width: var(--measure-lead);
+    }
+
+    .home-hero__media {
+        align-self: stretch;
+        min-height: clamp(22.5rem, 42vw, 32.5rem);
+        min-width: 0;
+        position: relative;
+    }
+
+    .home-hero__scrim {
+        background: linear-gradient(160deg, var(--color-veil-10) 35%, var(--color-veil-80));
+        inset: 0;
+        position: absolute;
+    }
+
+    .home-hero__slide {
+        background-color: var(--color-pine);
+        background-position: center;
+        background-size: cover;
+        inset: 0;
+        opacity: 0;
+        position: absolute;
+        transition: opacity var(--duration-carousel) var(--ease-out);
+    }
+
+    .home-hero__slide[data-active] {
+        opacity: 1;
+    }
+
+    .home-hero__stat {
+        background: var(--color-white);
+        border: var(--border-soft);
+        border-radius: var(--radius-card-sm);
+        box-shadow: var(--shadow-card);
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 0.625rem;
+        padding: 1.25rem 1.125rem;
+    }
+
+    .home-hero__stat-label {
+        color: var(--color-sage);
+        font-size: var(--text-meta);
+        letter-spacing: 0.04em;
+    }
+
+    .home-hero__stat-value {
+        font-size: clamp(1.35rem, calc(1.3rem + 0.25vw), 1.5rem);
+        white-space: nowrap;
+    }
+
+    .home-hero__stats {
+        display: grid;
+        gap: 0.875rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 38.75rem;
+    }
+
+    @media (max-width: 1024px) {
+        .home-hero__inner {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .home-hero__media {
+            align-self: start;
+            aspect-ratio: 16 / 10;
+            min-height: 20rem;
+        }
+
+        .home-hero__stats {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            max-width: none;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .home-hero__media {
+            aspect-ratio: auto;
+            min-height: clamp(18.75rem, calc(11.15rem + 38vw), 29.5rem);
+        }
+
+        .home-hero__stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>
+
+<script>
+    import { REDUCED_MOTION_QUERY } from '@lib/constants';
+    import { registerPageScript } from '@lib/utils';
+
+    const SLIDE_INTERVAL = 4_200;
+
+    const reducedMotionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+
+    function initHeroCarousel(signal: AbortSignal) {
+        const section = document.querySelector<HTMLElement>('.home-hero');
+
+        if (!section) return;
+
+        const caption = section.querySelector<HTMLElement>('.home-hero__caption');
+        const frame = section.querySelector<HTMLElement>('.home-hero__frame');
+        const slides = Array.from(section.querySelectorAll<HTMLElement>('.home-hero__slide'));
+
+        if (!frame || !slides.length) return;
+
+        let currentIndex = 0;
+        let isPaused = false;
+        let timer: ReturnType<typeof setInterval> | undefined;
+
+        function show(index: number) {
+            currentIndex = index;
+
+            slides.forEach((slide, position) => slide.toggleAttribute('data-active', position === index));
+
+            if (caption) caption.textContent = slides[index].dataset.caption ?? '';
+        }
+
+        function start() {
+            stop();
+
+            timer = setInterval(() => {
+                if (!isPaused) show((currentIndex + 1) % slides.length);
+            }, SLIDE_INTERVAL);
+        }
+
+        function stop() {
+            clearInterval(timer);
+            timer = undefined;
+        }
+
+        function sync() {
+            stop();
+            show(0);
+
+            if (reducedMotionQuery.matches) return;
+
+            slides.forEach((slide) => {
+                const { image } = slide.dataset;
+
+                if (image) slide.style.backgroundImage = `url('${image}')`;
+            });
+
+            start();
+        }
+
+        sync();
+
+        frame.addEventListener('mouseenter', () => {
+            isPaused = true;
+        }, { signal });
+
+        frame.addEventListener('mouseleave', () => {
+            isPaused = false;
+        }, { signal });
+
+        section.addEventListener('focusin', () => {
+            isPaused = true;
+        }, { signal });
+
+        section.addEventListener('focusout', (event) => {
+            if (!(event.relatedTarget instanceof Node) || !section.contains(event.relatedTarget)) isPaused = false;
+        }, { signal });
+
+        reducedMotionQuery.addEventListener('change', sync, { signal });
+        signal.addEventListener('abort', stop);
+    }
+
+    registerPageScript(initHeroCarousel);
+</script>

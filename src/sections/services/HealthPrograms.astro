@@ -1,0 +1,131 @@
+---
+import Check from '@components/icons/Check.astro';
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getSection } from '@lib/database';
+
+const { eyebrow = '', groups, heading, lead } = await getSection('services-health-programs');
+
+const programs = groups?.programs ?? [];
+---
+
+<section
+    class="section section--tint services-health-programs"
+    aria-labelledby="services-health-programs-title"
+>
+    <div class="shell">
+        <SectionHead
+            editKey="sections/services-health-programs.heading"
+            eyebrow={eyebrow}
+            headingId="services-health-programs-title"
+        >
+            {heading}
+            <Fragment slot="text">
+                <p
+                    data-edit="sections/services-health-programs.lead"
+                    data-edit-id={getEditId('sections/services-health-programs.lead')}
+                >
+                    {lead}
+                </p>
+            </Fragment>
+        </SectionHead>
+        <ul
+            class="services-health-programs__list"
+            data-scroll="scale"
+            data-scroll-stagger="0.2"
+        >
+            {programs.map((program, index) => (
+                <li>
+                    <article class="card services-health-programs__card">
+                        <p class="services-health-programs__meta">
+                            <span
+                                class="numeral"
+                                data-edit={`sections/services-health-programs.groups.programs.${index}.number`}
+                                data-edit-id={getEditId(`sections/services-health-programs.groups.programs.${index}.number`)}
+                            >
+                                {program.number}
+                            </span>
+                            <span
+                                class="label label--gold"
+                                lang="en"
+                            >
+                                {program.english}
+                            </span>
+                        </p>
+                        <h3>{program.title}</h3>
+                        <ul class="services-health-programs__items">
+                            {(program.bullets ?? []).map((bullet, position) => (
+                                <li>
+                                    <span
+                                        class="check services-health-programs__check"
+                                        aria-hidden="true"
+                                    >
+                                        <Check size={12} strokeWidth={3} />
+                                    </span>
+                                    <span
+                                        data-edit={`sections/services-health-programs.groups.programs.${index}.bullets.${position}`}
+                                        data-edit-id={getEditId(`sections/services-health-programs.groups.programs.${index}.bullets.${position}`)}
+                                    >
+                                        {bullet}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </article>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .services-health-programs__card {
+        display: grid;
+        gap: 1rem;
+        height: 100%;
+    }
+
+    .services-health-programs__card h3 {
+        margin-bottom: 0;
+    }
+
+    .services-health-programs__check {
+        translate: 0 0.125rem;
+    }
+
+    .services-health-programs__items {
+        display: grid;
+        gap: 0.75rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .services-health-programs__items li {
+        align-items: start;
+        color: var(--color-sage);
+        display: flex;
+        font-size: 0.875rem;
+        gap: 0.75rem;
+        line-height: 1.9;
+    }
+
+    .services-health-programs__list {
+        display: grid;
+        gap: var(--space-grid);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .services-health-programs__meta {
+        align-items: center;
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 1024px) {
+        .services-health-programs__list {
+            grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        }
+    }
+</style>

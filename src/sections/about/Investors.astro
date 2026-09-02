@@ -1,0 +1,93 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getInvestors, getSection } from '@lib/database';
+
+const investors = await getInvestors();
+const section = await getSection('about-investors');
+---
+
+<section
+    class="about-investors section"
+    aria-labelledby="about-investors-title"
+>
+    <div class="shell">
+        <SectionHead
+            editKey="sections/about-investors.heading"
+            eyebrow={section.eyebrow ?? ''}
+            headingId="about-investors-title"
+        >
+            {section.heading}
+        </SectionHead>
+        <ul
+            class="about-investors__list"
+            data-edit-list="investors"
+            data-scroll="scale"
+            data-scroll-stagger="0.2"
+        >
+            {investors.map(investor => (
+                <li
+                    data-edit-item={`investors/${investor.id}`}
+                    data-edit-item-id={getEditId(`investors/${investor.id}`)}
+                >
+                    <article class="about-investors__card card">
+                        <h3
+                            data-edit={`investors/${investor.id}.name`}
+                            data-edit-id={getEditId(`investors/${investor.id}.name`)}
+                        >
+                            {investor.data.name}
+                        </h3>
+                        <ul class="about-investors__facts">
+                            {investor.data.facts.map((fact, index) => (
+                                <li
+                                    data-edit={`investors/${investor.id}.facts.${index}`}
+                                    data-edit-id={getEditId(`investors/${investor.id}.facts.${index}`)}
+                                >
+                                    {fact}
+                                </li>
+                            ))}
+                        </ul>
+                    </article>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .about-investors__card {
+        height: 100%;
+    }
+
+    .about-investors__card h3 {
+        margin-bottom: 1.25rem;
+    }
+
+    .about-investors__facts {
+        display: grid;
+        gap: 0.875rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-investors__facts li {
+        border-left: 0.125rem solid var(--color-laurel);
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        line-height: 1.9;
+        padding-left: 1rem;
+    }
+
+    .about-investors__list {
+        display: grid;
+        gap: var(--space-grid);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    @media (max-width: 768px) {
+        .about-investors__list {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

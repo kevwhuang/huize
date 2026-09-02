@@ -1,0 +1,17 @@
+{
+    "bullets": [
+        "免疫与细胞治疗",
+        "全球特药器械",
+        "海外医疗对接",
+        "专属健康管家"
+    ],
+    "english": "Premium",
+    "headline": "高端定制健管服务",
+    "id": "premium",
+    "image": "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&q=80",
+    "label": "高端定制",
+    "number": "04",
+    "path": "/services/premium",
+    "subtitle": "免疫 · 细胞 · 海外医疗",
+    "summary": "免疫、细胞、特药、海外医疗。为高净值家庭提供前沿医疗与全球优质医疗资源对接。"
+}

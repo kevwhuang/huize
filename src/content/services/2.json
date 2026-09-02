@@ -1,0 +1,17 @@
+{
+    "bullets": [
+        "就医绿色通道",
+        "院内护理 · 居家护理",
+        "上门康复 · 远程评估",
+        "护工到家 · 社区康复"
+    ],
+    "english": "Health",
+    "headline": "一站式健康管理服务",
+    "id": "health",
+    "image": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80",
+    "label": "健康管理",
+    "number": "02",
+    "path": "/services/health",
+    "subtitle": "诊疗 · 护理 · 康复",
+    "summary": "绿通、诊疗、护理、康复、购药一体化。聚焦脑卒中、骨科等刚需领域，提供住院—社区—居家三级康复服务。"
+}

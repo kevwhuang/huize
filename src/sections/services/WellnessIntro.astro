@@ -1,0 +1,111 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getSection } from '@lib/database';
+
+const { eyebrow = '', groups, heading, lead, paragraphs = [] } = await getSection('services-wellness-intro');
+
+const figures = groups?.figures ?? [];
+---
+
+<section
+    class="section services-wellness-intro"
+    aria-labelledby="services-wellness-intro-title"
+>
+    <div class="services-wellness-intro__grid shell">
+        <div data-scroll="left">
+            <SectionHead
+                editKey="sections/services-wellness-intro.heading"
+                eyebrow={eyebrow}
+                headingId="services-wellness-intro-title"
+            >
+                {heading}
+                <Fragment slot="text">
+                    <p
+                        data-edit="sections/services-wellness-intro.lead"
+                        data-edit-id={getEditId('sections/services-wellness-intro.lead')}
+                    >
+                        {lead}
+                    </p>
+                </Fragment>
+            </SectionHead>
+            <div class="prose">
+                {paragraphs.map((paragraph, index) => (
+                    <p
+                        data-edit={`sections/services-wellness-intro.paragraphs.${index}`}
+                        data-edit-id={getEditId(`sections/services-wellness-intro.paragraphs.${index}`)}
+                    >
+                        {paragraph}
+                    </p>
+                ))}
+            </div>
+        </div>
+        <ul
+            class="services-wellness-intro__figures"
+            data-scroll="right"
+            data-scroll-stagger
+        >
+            {figures.map((figure, index) => (
+                <li class="card services-wellness-intro__figure">
+                    <p
+                        class="stat"
+                        data-edit={`sections/services-wellness-intro.groups.figures.${index}.value`}
+                        data-edit-id={getEditId(`sections/services-wellness-intro.groups.figures.${index}.value`)}
+                    >
+                        {figure.value}
+                    </p>
+                    <p class="services-wellness-intro__label">{figure.label}</p>
+                    <p
+                        class="services-wellness-intro__note"
+                        data-edit={`sections/services-wellness-intro.groups.figures.${index}.note`}
+                        data-edit-id={getEditId(`sections/services-wellness-intro.groups.figures.${index}.note`)}
+                    >
+                        {figure.note}
+                    </p>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .services-wellness-intro__figure {
+        display: grid;
+        gap: 0.375rem;
+    }
+
+    .services-wellness-intro__figures {
+        display: grid;
+        gap: 1.125rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .services-wellness-intro__grid {
+        align-items: center;
+        display: grid;
+        gap: var(--space-split);
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    }
+
+    .services-wellness-intro__label {
+        color: var(--color-pine);
+        font-size: var(--text-small);
+        font-weight: 500;
+    }
+
+    .services-wellness-intro__note {
+        color: var(--color-sage);
+        font-size: var(--text-meta);
+        letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 1024px) {
+        .services-wellness-intro__figures {
+            grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        }
+
+        .services-wellness-intro__grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

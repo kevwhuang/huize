@@ -1,16 +1,16 @@
 ---
+import CitiesRegions from '@sections/network/CitiesRegions.astro';
 import Layout from '@/Layout.astro';
-import NetworkCitiesRegions from '@sections/NetworkCitiesRegions.astro';
-import PageHero from '@sections/PageHero.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('network-cities');
 ---
 
 <Layout
-    description="惠泽服务城市覆盖七大区域、31个省级行政区，共530个城市（市辖区范围内，不含下辖县、县级市）。"
-    title="服务城市 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="City Coverage"
-        title="服务城市"
-    />
-    <NetworkCitiesRegions />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <CitiesRegions />
 </Layout>

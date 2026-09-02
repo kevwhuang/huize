@@ -1,22 +1,26 @@
 ---
-import ContactPanel from '@sections/ContactPanel.astro';
-import HomeAbout from '@sections/HomeAbout.astro';
-import HomeHero from '@sections/HomeHero.astro';
-import HomeNetwork from '@sections/HomeNetwork.astro';
-import HomeNews from '@sections/HomeNews.astro';
-import HomeServices from '@sections/HomeServices.astro';
+import About from '@sections/home/About.astro';
+import ContactPanel from '@sections/shared/ContactPanel.astro';
+import Hero from '@sections/home/Hero.astro';
 import Layout from '@/Layout.astro';
-import { LINKS } from '@lib/constants';
+import Network from '@sections/home/Network.astro';
+import News from '@sections/home/News.astro';
+import Services from '@sections/home/Services.astro';
+import { getPage, getSection } from '@lib/database';
+
+const { description, title } = await getPage('home');
+const homeHero = await getSection('home-hero');
 ---
 
 <Layout
-    description={`惠泽健康是从事康复和护理整合照料的专业平台，提供全流程、一站式的养老服务和健康管理服务。全国服务热线：${LINKS.hotline}`}
-    title="专业从事康养/养老/护理/健康管理 — 惠泽健康"
+    description={description}
+    preloadImage={homeHero.groups?.slides?.[0]?.image}
+    title={title}
 >
-    <HomeHero />
-    <HomeAbout />
-    <HomeServices />
-    <HomeNews />
-    <HomeNetwork />
+    <Hero />
+    <About />
+    <Services />
+    <News />
+    <Network />
     <ContactPanel />
 </Layout>

@@ -1,0 +1,11 @@
+{
+    "baseThemes": [
+        "温泉",
+        "雨林",
+        "海滩",
+        "湿地"
+    ],
+    "publicHospitals": 11000,
+    "totalCities": 530,
+    "totalInstitutions": 2000
+}

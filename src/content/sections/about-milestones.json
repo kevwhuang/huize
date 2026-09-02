@@ -1,0 +1,41 @@
+{
+    "eyebrow": "Milestones",
+    "groups": {
+        "milestones": [
+            {
+                "label": "实体机构",
+                "suffix": "+",
+                "value": "40"
+            },
+            {
+                "label": "总床位数",
+                "suffix": "",
+                "value": "15000"
+            },
+            {
+                "label": "机构分布城市",
+                "suffix": "",
+                "value": "18"
+            },
+            {
+                "label": "服务城市",
+                "suffix": "",
+                "value": "530"
+            },
+            {
+                "label": "累计服务人次",
+                "suffix": "万+",
+                "value": "1000"
+            }
+        ],
+        "start": [
+            {
+                "label": "深耕康养起点",
+                "suffix": "年起",
+                "value": "2012"
+            }
+        ]
+    },
+    "heading": "十余年实体运营，康养与医疗网络遍布全国",
+    "lead": "从2012年起，创始团队在全国各地运营管理实体医疗机构、康复机构和养老连锁机构。"
+}

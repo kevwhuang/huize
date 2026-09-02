@@ -1,0 +1,48 @@
+{
+    "badge": "数字健康科技平台",
+    "groups": {
+        "slides": [
+            {
+                "image": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1000&q=80",
+                "label": "长者照护 · Elderly Care"
+            },
+            {
+                "image": "https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?auto=format&fit=crop&w=1000&q=80",
+                "label": "康养疗愈 · Wellness"
+            },
+            {
+                "image": "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1000&q=80",
+                "label": "专业医护 · Healthcare"
+            },
+            {
+                "image": "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1000&q=80",
+                "label": "自然康养 · Nature"
+            }
+        ],
+        "stats": [
+            {
+                "label": "实体机构",
+                "suffix": "+",
+                "value": "40"
+            },
+            {
+                "label": "合作机构",
+                "suffix": "+",
+                "value": "100"
+            },
+            {
+                "label": "服务人次",
+                "suffix": "万+",
+                "value": "1000"
+            },
+            {
+                "label": "服务城市",
+                "suffix": "",
+                "value": "530"
+            }
+        ]
+    },
+    "heading": "全流程一站式\n康养与健康管理",
+    "lead": "惠泽链接保险、企业、个人客户与康养、医疗、服务机构，打通上下游供需，为刚需家庭提供住院—社区—居家的三级康复与照护服务。",
+    "note": "· Digital Health"
+}

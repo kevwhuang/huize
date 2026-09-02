@@ -1,16 +1,16 @@
 ---
-import AboutFounderProfiles from '@sections/AboutFounderProfiles.astro';
+import FounderProfiles from '@sections/about/FounderProfiles.astro';
 import Layout from '@/Layout.astro';
-import PageHero from '@sections/PageHero.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('about-founder');
 ---
 
 <Layout
-    description="惠泽健康创始人黄文华、张雯均有30年以上的工作经验，包括管理大型跨国企业，创立公司并成功上市等。"
-    title="创始人 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Founders"
-        title="创始人"
-    />
-    <AboutFounderProfiles />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <FounderProfiles />
 </Layout>

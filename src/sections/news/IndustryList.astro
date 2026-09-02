@@ -1,0 +1,143 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getNews, getSection } from '@lib/database';
+
+const ORDINAL_PAD = 2;
+
+const entries = await getNews();
+const section = await getSection('news-industry-list');
+
+const news = entries.filter(entry => entry.data.category === 'industry');
+
+const [intro] = section.groups?.lead ?? [];
+---
+
+<section
+    class="news-industry section section--tint"
+    aria-labelledby="news-industry-title"
+>
+    <div class="shell">
+        <SectionHead
+            editKey="sections/news-industry-list.heading"
+            eyebrow={section.eyebrow ?? ''}
+            headingId="news-industry-title"
+        >
+            {section.heading}
+            <Fragment slot="text">
+                <p>
+                    <span
+                        data-edit="sections/news-industry-list.groups.lead.0.text"
+                        data-edit-id={getEditId('sections/news-industry-list.groups.lead.0.text')}
+                    >
+                        {intro?.text}
+                    </span>{' '}
+                    <span data-edit-count="news">{news.length}</span>{' '}
+                    <span
+                        data-edit="sections/news-industry-list.groups.lead.0.suffix"
+                        data-edit-id={getEditId('sections/news-industry-list.groups.lead.0.suffix')}
+                    >
+                        {intro?.suffix}
+                    </span>
+                </p>
+            </Fragment>
+        </SectionHead>
+        <ol
+            class="news-industry__list"
+            data-edit-list="news"
+            data-edit-scope="industry"
+            data-scroll="up"
+            data-scroll-stagger
+        >
+            {news.map((item, index) => (
+                <li
+                    class="news-industry__item"
+                    data-edit-item={`news/${item.id}`}
+                    data-edit-item-id={getEditId(`news/${item.id}`)}
+                >
+                    <p
+                        class="news-industry__ordinal numeral numeral--gold"
+                        aria-hidden="true"
+                    >
+                        {String(index + 1).padStart(ORDINAL_PAD, '0')}
+                    </p>
+                    <article class="news-industry__body">
+                        <time
+                            class="label news-industry__date"
+                            datetime={item.data.date}
+                        >
+                            {item.data.date.replace(/-/g, '.')}
+                        </time>
+                        <h3
+                            class="news-industry__title"
+                            data-edit={`news/${item.id}.title`}
+                            data-edit-id={getEditId(`news/${item.id}.title`)}
+                        >
+                            {item.data.title}
+                        </h3>
+                        <p
+                            class="news-industry__summary"
+                            data-edit={`news/${item.id}.summary`}
+                            data-edit-id={getEditId(`news/${item.id}.summary`)}
+                        >
+                            {item.data.summary}
+                        </p>
+                    </article>
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
+
+<style>
+    .news-industry {
+        --pad-row: clamp(1.5rem, calc(1.25rem + 1.25vw), 2.25rem);
+    }
+
+    .news-industry__body {
+        padding-bottom: var(--pad-row);
+    }
+
+    .news-industry__date {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .news-industry__item {
+        border-top: 0.0625rem solid var(--color-sand);
+        display: grid;
+        gap: clamp(0.5rem, 2.5vw, 2rem);
+        grid-template-columns: 4.5rem minmax(0, 1fr);
+        padding-top: var(--pad-row);
+    }
+
+    .news-industry__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .news-industry__ordinal {
+        font-size: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+        line-height: 1;
+        margin-bottom: 0;
+    }
+
+    .news-industry__summary {
+        color: var(--color-sage);
+        font-size: var(--text-small);
+        line-height: 1.9;
+        margin-bottom: 0;
+        max-width: var(--measure-prose);
+    }
+
+    .news-industry__title {
+        font-size: clamp(1.15rem, calc(1.07rem + 0.42vw), 1.4rem);
+        margin-bottom: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+        .news-industry__item {
+            grid-template-columns: 3rem minmax(0, 1fr);
+        }
+    }
+</style>

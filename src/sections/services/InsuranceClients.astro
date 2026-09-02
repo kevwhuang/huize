@@ -1,0 +1,138 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getSection } from '@lib/database';
+
+const { eyebrow = '', groups, heading, lead, note } = await getSection('services-insurance-clients');
+
+const clients = groups?.clients ?? [];
+---
+
+<section
+    class="section section--dark services-insurance-clients"
+    aria-labelledby="services-insurance-clients-title"
+>
+    <div
+        class="glow services-insurance-clients__glow"
+        aria-hidden="true"
+    />
+    <div class="services-insurance-clients__inner shell">
+        <SectionHead
+            editKey="sections/services-insurance-clients.heading"
+            eyebrow={eyebrow}
+            headingId="services-insurance-clients-title"
+            isCentered
+            isOnDark
+        >
+            {heading}
+            <Fragment slot="text">
+                <p
+                    data-edit="sections/services-insurance-clients.lead"
+                    data-edit-id={getEditId('sections/services-insurance-clients.lead')}
+                >
+                    {lead}
+                </p>
+            </Fragment>
+        </SectionHead>
+        <ul
+            class="services-insurance-clients__list"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {clients.map((client, index) => (
+                <li
+                    class="services-insurance-clients__item"
+                    data-edit={`sections/services-insurance-clients.groups.clients.${index}.label`}
+                    data-edit-id={getEditId(`sections/services-insurance-clients.groups.clients.${index}.label`)}
+                >
+                    {client.label}
+                </li>
+            ))}
+        </ul>
+        <p
+            class="services-insurance-clients__note"
+            data-scroll
+        >
+            <span
+                data-edit="sections/services-insurance-clients.note"
+                data-edit-id={getEditId('sections/services-insurance-clients.note')}
+            >
+                {note}
+            </span>
+            <a href="/news/company">查看合作详情</a>
+        </p>
+    </div>
+</section>
+
+<style>
+    .services-insurance-clients {
+        overflow: clip;
+    }
+
+    .services-insurance-clients__glow {
+        right: -8.75rem;
+        top: -10rem;
+    }
+
+    .services-insurance-clients__inner {
+        position: relative;
+    }
+
+    .services-insurance-clients__item {
+        align-items: center;
+        background: var(--color-white-10);
+        border: 0.0625rem solid var(--color-white-15);
+        border-radius: var(--radius-card-sm);
+        color: var(--color-white);
+        display: flex;
+        font-family: var(--font-display);
+        font-size: clamp(1rem, calc(0.92rem + 0.42vw), 1.25rem);
+        font-weight: 700;
+        justify-content: center;
+        letter-spacing: 0.06em;
+        min-height: 5.5rem;
+        padding: 1.25rem 1rem;
+        text-align: center;
+    }
+
+    .services-insurance-clients__list {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        list-style: none;
+        margin-bottom: 2.25rem;
+        padding: 0;
+    }
+
+    .services-insurance-clients__note {
+        color: var(--color-white-70);
+        font-size: 0.875rem;
+        line-height: 1.9;
+        margin-bottom: 0;
+        margin-inline: auto;
+        max-width: var(--measure-prose);
+        text-align: center;
+    }
+
+    .services-insurance-clients__note a {
+        color: var(--color-reef);
+        font-weight: 500;
+        transition:
+            color var(--duration-fast) var(--ease-out),
+            opacity var(--duration-fast) var(--ease-out);
+        white-space: nowrap;
+    }
+
+    .services-insurance-clients__note a:active {
+        opacity: 0.8;
+    }
+
+    .services-insurance-clients__note a:hover {
+        color: var(--color-white);
+    }
+
+    @media (max-width: 1024px) {
+        .services-insurance-clients__list {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>

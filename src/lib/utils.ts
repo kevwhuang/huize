@@ -1,10 +1,3 @@
-export function initInertControls(selector: string, signal: AbortSignal): void {
-    document.querySelectorAll(selector).forEach((control) => {
-        control.addEventListener('auxclick', event => event.preventDefault(), { signal });
-        control.addEventListener('click', event => event.preventDefault(), { signal });
-    });
-}
-
 export function registerPageScript(init: (signal: AbortSignal) => void): void {
     let controller: AbortController | undefined;
 

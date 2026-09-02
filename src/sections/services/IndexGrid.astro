@@ -1,0 +1,180 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getSection, getServices } from '@lib/database';
+
+const EAGER_CARDS = 2;
+const PHOTO_WIDTHS = [640, 1_000, 1_440];
+
+const { eyebrow = '', heading = '', lead } = await getSection('services-index');
+const services = await getServices();
+
+const headingLines = heading.split('\n');
+
+const cards = services.map(({ data: service, id }, index) => ({
+    ...service,
+    id,
+    isEager: index < EAGER_CARDS,
+    srcset: PHOTO_WIDTHS.map(width => `${service.image.replace(/w=\d+/, `w=${width}`)} ${width}w`).join(', '),
+}));
+---
+
+<section
+    class="section services-index"
+    aria-labelledby="services-index-title"
+>
+    <div class="shell">
+        <SectionHead
+            editKey="sections/services-index.heading"
+            eyebrow={eyebrow}
+            headingId="services-index-title"
+        >
+            {headingLines.map((line, index) => (index > 0 ? <Fragment><br />{line}</Fragment> : line))}
+            <Fragment slot="text">
+                <p
+                    data-edit="sections/services-index.lead"
+                    data-edit-id={getEditId('sections/services-index.lead')}
+                >
+                    {lead}
+                </p>
+            </Fragment>
+        </SectionHead>
+        <ul
+            class="services-index__list"
+            data-scroll="scale"
+            data-scroll-stagger="0.2"
+        >
+            {cards.map(({ id, isEager, srcset, ...service }) => (
+                <li>
+                    <a
+                        class="card card--flush card--hover services-index__card"
+                        href={service.path}
+                    >
+                        <span
+                            class="services-index__photo"
+                            aria-hidden="true"
+                        >
+                            <img
+                                alt=""
+                                decoding="async"
+                                loading={isEager ? 'eager' : 'lazy'}
+                                sizes="(max-width: 1024px) 100vw, 36rem"
+                                src={service.image}
+                                srcset={srcset}
+                            />
+                        </span>
+                        <div class="services-index__body">
+                            <p class="services-index__meta">
+                                <span
+                                    class="numeral"
+                                    data-edit-view={`services/${id}.number`}
+                                >
+                                    {service.number}
+                                </span>
+                                <span
+                                    class="label label--gold"
+                                    lang="en"
+                                >
+                                    {service.english}
+                                </span>
+                            </p>
+                            <h3>{service.label}</h3>
+                            <p
+                                class="services-index__headline"
+                                data-edit-view={`services/${id}.headline`}
+                            >
+                                {service.headline}
+                            </p>
+                            <p
+                                class="services-index__summary"
+                                data-edit-view={`services/${id}.summary`}
+                            >
+                                {service.summary}
+                            </p>
+                            <span class="link-more services-index__link">查看详情</span>
+                        </div>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .services-index__body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: clamp(1.375rem, calc(1.21rem + 0.83vw), 1.875rem);
+    }
+
+    .services-index__body h3 {
+        margin-bottom: 0.5rem;
+    }
+
+    .services-index__card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .services-index__card:hover .link-more {
+        gap: 0.875rem;
+    }
+
+    .services-index__headline {
+        color: var(--color-pine-light);
+        font-size: var(--text-small);
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        margin-bottom: 0.625rem;
+    }
+
+    .services-index__link {
+        margin-top: auto;
+        padding-top: 1.25rem;
+    }
+
+    .services-index__list {
+        display: grid;
+        gap: var(--space-grid);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .services-index__meta {
+        align-items: center;
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .services-index__photo {
+        background-color: var(--color-jade-light);
+        display: block;
+        height: clamp(9rem, calc(7.67rem + 6.67vw), 13rem);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .services-index__photo img {
+        height: 100%;
+        inset: 0;
+        object-fit: cover;
+        position: absolute;
+        width: 100%;
+    }
+
+    .services-index__summary {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        line-height: 1.9;
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 1024px) {
+        .services-index__list {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

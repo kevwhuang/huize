@@ -1,0 +1,32 @@
+{
+    "groups": {
+        "creed": [
+            {
+                "english": "Vision",
+                "label": "愿景",
+                "number": "01",
+                "text": "打造中国领先的健康科技平台"
+            },
+            {
+                "english": "Mission",
+                "label": "使命",
+                "number": "02",
+                "text": "让人人享有健康品质生活"
+            }
+        ],
+        "values": [
+            {
+                "english": "Values",
+                "label": "价值观",
+                "number": "03"
+            }
+        ]
+    },
+    "heading": "惠泽的愿景、使命与价值观",
+    "tags": [
+        "专业",
+        "诚信",
+        "开放",
+        "协作"
+    ]
+}

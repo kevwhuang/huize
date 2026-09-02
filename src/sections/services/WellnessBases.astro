@@ -1,0 +1,179 @@
+---
+import MapPin from '@components/icons/MapPin.astro';
+import SectionHead from '@components/SectionHead.astro';
+import { getBases, getEditId, getSection, getSite } from '@lib/database';
+
+const { eyebrow = '', heading, lead } = await getSection('services-wellness-bases');
+const bases = await getBases();
+const site = await getSite();
+---
+
+<section
+    class="section section--dark services-wellness-bases"
+    aria-labelledby="services-wellness-bases-title"
+>
+    <div
+        class="glow services-wellness-bases__glow"
+        aria-hidden="true"
+    />
+    <div class="services-wellness-bases__inner shell">
+        <div class="services-wellness-bases__head">
+            <SectionHead
+                eyebrow={eyebrow}
+                headingId="services-wellness-bases-title"
+                isOnDark
+            >
+                <span data-edit-count="bases">{bases.length}</span>{' '}
+                {heading}
+                <Fragment slot="text">
+                    <p
+                        data-edit="sections/services-wellness-bases.lead"
+                        data-edit-id={getEditId('sections/services-wellness-bases.lead')}
+                    >
+                        {lead}
+                    </p>
+                </Fragment>
+            </SectionHead>
+            <ul
+                class="services-wellness-bases__themes"
+                data-scroll
+            >
+                {site.baseThemes.map((theme, index) => (
+                    <li
+                        class="tag tag--on-dark"
+                        data-edit={`site/main.baseThemes.${index}`}
+                        data-edit-id={getEditId(`site/main.baseThemes.${index}`)}
+                    >
+                        {theme}
+                    </li>
+                ))}
+            </ul>
+        </div>
+        <ul
+            class="services-wellness-bases__grid"
+            data-edit-list="bases"
+            data-edit-scope="all"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {bases.map(({ data: base, id }) => (
+                <li
+                    class="services-wellness-bases__item"
+                    data-edit-item={`bases/${id}`}
+                    data-edit-item-id={getEditId(`bases/${id}`)}
+                >
+                    <span
+                        class="services-wellness-bases__pin"
+                        aria-hidden="true"
+                    >
+                        <MapPin size={12} strokeWidth={2} />
+                    </span>
+                    <span class="services-wellness-bases__text">
+                        <span
+                            class="services-wellness-bases__name"
+                            data-edit={`bases/${id}.name`}
+                            data-edit-id={getEditId(`bases/${id}.name`)}
+                        >
+                            {base.name}
+                        </span>
+                        <span
+                            class="services-wellness-bases__region"
+                            data-edit={`bases/${id}.region`}
+                            data-edit-id={getEditId(`bases/${id}.region`)}
+                        >
+                            {base.region}
+                        </span>
+                    </span>
+                </li>
+            ))}
+        </ul>
+        <a
+            class="link-more services-wellness-bases__link"
+            data-scroll
+            href="/network/bases"
+        >
+            查看全部康养基地
+        </a>
+    </div>
+</section>
+
+<style>
+    .services-wellness-bases {
+        overflow: clip;
+    }
+
+    .services-wellness-bases__glow {
+        left: -7.5rem;
+        top: -8.75rem;
+    }
+
+    .services-wellness-bases__grid {
+        display: grid;
+        gap: 0.875rem;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        list-style: none;
+        margin-bottom: 2.25rem;
+        padding: 0;
+    }
+
+    .services-wellness-bases__head {
+        margin-bottom: clamp(2rem, calc(1.58rem + 2.08vw), 3.25rem);
+    }
+
+    .services-wellness-bases__inner {
+        position: relative;
+    }
+
+    .services-wellness-bases__item {
+        align-items: center;
+        background: var(--color-white-10);
+        border: 0.0625rem solid var(--color-white-15);
+        border-radius: var(--radius-card-sm);
+        display: flex;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+    }
+
+    .services-wellness-bases__link {
+        color: var(--color-reef);
+    }
+
+    .services-wellness-bases__name {
+        color: var(--color-white);
+        font-size: var(--text-small);
+        letter-spacing: 0.02em;
+    }
+
+    .services-wellness-bases__pin {
+        align-items: center;
+        background: var(--color-white-15);
+        border-radius: 50%;
+        color: var(--color-reef);
+        display: flex;
+        flex-shrink: 0;
+        height: 1.75rem;
+        justify-content: center;
+        width: 1.75rem;
+    }
+
+    .services-wellness-bases__region {
+        color: var(--color-white-70);
+        font-size: var(--text-meta);
+        letter-spacing: 0.04em;
+    }
+
+    .services-wellness-bases__text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        min-width: 0;
+    }
+
+    .services-wellness-bases__themes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0;
+    }
+</style>

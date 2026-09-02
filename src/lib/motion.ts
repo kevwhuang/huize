@@ -5,27 +5,27 @@ import { REDUCED_MOTION_QUERY } from '@lib/constants';
 
 type ScrolledListener = (isScrolled: boolean) => void;
 
-const COUNT_DURATION = readSeconds('--duration-count', 1.7);
 const MS_PER_SECOND = 1_000;
-const PERCENT_SCALE = 100;
 const REVEAL_BLUR = 6;
-const REVEAL_DURATION = readSeconds('--duration-reveal', 0.9);
 const REVEAL_EASE = 'power3.out';
-const REVEAL_OFFSET = readPixels('--reveal-offset', 56);
 const REVEAL_PROPERTIES = ['filter', 'scale', 'transform', 'transition', 'translate'];
+const REVEAL_ROOT_MARGIN = '99999px 0px -15% 0px';
 const REVEAL_SCALE = 0.92;
-const REVEAL_STAGGER = readSeconds('--reveal-step', 0.1);
-const REVEAL_START_RATIO = 0.88;
+const REVEAL_SPAN = 0.7;
+const REVEAL_START = 'top 85%';
 const ROOT_FONT_SIZE_FALLBACK = 16;
 const SCROLLED_OFFSET = 14;
 
-const REVEAL_ROOT_OVERSCAN = 99_999;
-const REVEAL_ROOT_MARGIN = `${REVEAL_ROOT_OVERSCAN}px 0px -${PERCENT_SCALE - REVEAL_START_RATIO * PERCENT_SCALE}% 0px`;
-const REVEAL_START = `top ${REVEAL_START_RATIO * PERCENT_SCALE}%`;
+const countDuration = readSeconds('--duration-count', 1.7);
+const reducedMotionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+const revealDuration = readSeconds('--duration-reveal', 0.9);
+const revealOffset = readPixels('--reveal-offset', 56);
+const revealStagger = readSeconds('--reveal-step', 0.1);
+const scrolledListeners = new Set<ScrolledListener>();
 
-const REVEAL_TO: gsap.TweenVars = {
+const revealToState: gsap.TweenVars = {
     clearProps: 'filter,transform,transition',
-    duration: REVEAL_DURATION,
+    duration: revealDuration,
     ease: REVEAL_EASE,
     filter: 'blur(0px)',
     opacity: 1,
@@ -34,9 +34,8 @@ const REVEAL_TO: gsap.TweenVars = {
     y: 0,
 };
 
-const reducedMotionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
-const scrolledListeners = new Set<ScrolledListener>();
-
+let horizontalOffset = revealOffset;
+let initializedBody: HTMLElement | null = null;
 let motionTweens: gsap.core.Animation[] = [];
 let revealObservers: IntersectionObserver[] = [];
 
@@ -44,18 +43,17 @@ function animateCount(element: HTMLElement, prefersReducedMotion: boolean) {
     const counter = { value: 0 };
     const prefix = element.dataset.prefix ?? '';
     const suffix = element.dataset.suffix ?? '';
-    const target = Number.parseInt(element.dataset.countTo ?? '0', 10);
 
     function format(value: number) {
         return prefix + Math.round(value) + suffix;
     }
 
-    const finalText = format(target);
+    function readTarget() {
+        return Number.parseInt(element.dataset.countTo ?? '0', 10);
+    }
 
-    // The markup server-renders the real figure so the page reads correctly without JS. Guard on an
-    // explicit marker rather than on the text, or that correct initial value would cancel the count.
     if (element.dataset.counted !== undefined || prefersReducedMotion) {
-        element.textContent = finalText;
+        element.textContent = format(readTarget());
 
         return;
     }
@@ -63,21 +61,21 @@ function animateCount(element: HTMLElement, prefersReducedMotion: boolean) {
     element.dataset.counted = '';
 
     motionTweens.push(gsap.to(counter, {
-        duration: COUNT_DURATION,
+        duration: countDuration,
         ease: REVEAL_EASE,
         onUpdate: () => {
-            element.textContent = format(counter.value);
+            element.textContent = format(counter.value * readTarget());
         },
         scrollTrigger: {
             once: true,
             start: REVEAL_START,
             trigger: element,
         },
-        value: target,
+        value: 1,
     }));
 }
 
-function getRevealFrom(element: HTMLElement): gsap.TweenVars {
+function getRevealFrom(element: HTMLElement) {
     const from: gsap.TweenVars = { filter: `blur(${REVEAL_BLUR}px)`, opacity: 0, transition: 'none' };
     const parent = element.parentElement;
 
@@ -85,20 +83,16 @@ function getRevealFrom(element: HTMLElement): gsap.TweenVars {
 
     switch (direction) {
         case 'down':
-            return { ...from, y: -REVEAL_OFFSET };
+            return { ...from, y: -revealOffset };
         case 'left':
-            return { ...from, x: -REVEAL_OFFSET };
+            return { ...from, x: -horizontalOffset };
         case 'right':
-            return { ...from, x: REVEAL_OFFSET };
+            return { ...from, x: horizontalOffset };
         case 'scale':
             return { ...from, scale: REVEAL_SCALE };
         default:
-            return { ...from, y: REVEAL_OFFSET };
+            return { ...from, y: revealOffset };
     }
-}
-
-function getRevealTargets() {
-    return [...getStaggerParents().flatMap(getStaggerChildren), ...getSingleReveals()];
 }
 
 function getSingleReveals() {
@@ -131,10 +125,6 @@ function handleFocusIn(event: FocusEvent) {
     revealInstantly(hiddenElements);
 }
 
-function hideReveals() {
-    getRevealTargets().forEach(element => gsap.set(element, getRevealFrom(element)));
-}
-
 function initReveals(prefersReducedMotion: boolean) {
     const singleReveals = getSingleReveals();
     const staggerGroups = getStaggerParents().map(parent => ({ children: getStaggerChildren(parent), parent }));
@@ -152,12 +142,16 @@ function initReveals(prefersReducedMotion: boolean) {
     staggerGroups.forEach(({ children, parent }) => {
         const stagger = Number.parseFloat(parent.dataset.scrollStagger ?? '');
 
-        const step = Number.isFinite(stagger) ? stagger : REVEAL_STAGGER;
+        const step = Number.isFinite(stagger) ? stagger : revealStagger;
 
-        revealOnEnter(parent, () => gsap.to(children, { ...REVEAL_TO, stagger: step }));
+        const span = step * Math.max(children.length - 1, 0);
+
+        const staggerVars = span > REVEAL_SPAN ? { amount: REVEAL_SPAN } : step;
+
+        revealOnEnter(parent, () => gsap.to(children, { ...revealToState, stagger: staggerVars }));
     });
 
-    singleReveals.forEach(element => revealOnEnter(element, () => gsap.to(element, { ...REVEAL_TO })));
+    singleReveals.forEach(element => revealOnEnter(element, () => gsap.to(element, { ...revealToState })));
 }
 
 function initScrolled() {
@@ -183,10 +177,19 @@ function isStaggerParent(element: Element | null) {
     return element instanceof HTMLElement && element.dataset.scrollStagger !== undefined;
 }
 
+function readGutter() {
+    const shell = document.querySelector('.shell');
+
+    const gutter = shell ? Number.parseFloat(getComputedStyle(shell).paddingInlineStart) : Number.NaN;
+
+    return Number.isFinite(gutter) ? gutter : revealOffset;
+}
+
 function readPixels(token: string, fallback: number) {
+    const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || ROOT_FONT_SIZE_FALLBACK;
     const value = readToken(token);
 
-    const pixels = value.endsWith('rem') ? Number.parseFloat(value) * getRootFontSize() : Number.parseFloat(value);
+    const pixels = value.endsWith('rem') ? Number.parseFloat(value) * rootFontSize : Number.parseFloat(value);
 
     return Number.isFinite(pixels) ? pixels : fallback;
 }
@@ -199,24 +202,23 @@ function readSeconds(token: string, fallback: number) {
     return Number.isFinite(seconds) ? seconds : fallback;
 }
 
-function getRootFontSize() {
-    return Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || ROOT_FONT_SIZE_FALLBACK;
-}
-
 function readToken(token: string) {
     return getComputedStyle(document.documentElement).getPropertyValue(token).trim();
 }
 
-function refreshAfterAssets() {
-    const pendingImages = [...document.images].filter(image => !image.complete).map(image => image.decode().catch(() => undefined));
+async function refreshAfterAssets() {
+    const pendingImages = [...document.images]
+        .filter(image => !image.complete)
+        .map(image => image.decode().catch(() => undefined));
 
-    Promise.all([document.fonts.ready, ...pendingImages]).then(() => ScrollTrigger.refresh());
+    await Promise.all([document.fonts.ready, ...pendingImages]);
+    ScrollTrigger.refresh();
 }
 
 function revealInstantly(elements: HTMLElement[]) {
     if (!elements.length) return;
 
-    gsap.getTweensOf(elements).forEach(tween => tween.kill());
+    gsap.killTweensOf(elements);
 
     elements.forEach((element) => {
         REVEAL_PROPERTIES.forEach(property => element.style.removeProperty(property));
@@ -236,21 +238,11 @@ function revealOnEnter(trigger: HTMLElement, createTween: () => gsap.core.Tween)
     observer.observe(trigger);
 }
 
-function updateScrolled() {
-    const scrolled = isScrolled();
-
-    scrolledListeners.forEach(listener => listener(scrolled));
-}
-
-document.addEventListener('focusin', handleFocusIn);
-gsap.registerPlugin(ScrollTrigger);
-reducedMotionQuery.addEventListener('change', initMotion);
-
-if (!reducedMotionQuery.matches) hideReveals();
-
-export function initMotion(): void {
+function startMotion() {
     const prefersReducedMotion = reducedMotionQuery.matches;
 
+    horizontalOffset = Math.min(revealOffset, readGutter());
+    initializedBody = document.body;
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     motionTweens.forEach(tween => tween.kill());
     motionTweens = [];
@@ -260,6 +252,28 @@ export function initMotion(): void {
     initReveals(prefersReducedMotion);
     initScrolled();
     refreshAfterAssets();
+}
+
+function updateScrolled() {
+    scrolledListeners.forEach(listener => listener(isScrolled()));
+}
+
+document.addEventListener('focusin', handleFocusIn);
+gsap.registerPlugin(ScrollTrigger);
+reducedMotionQuery.addEventListener('change', startMotion);
+
+startMotion();
+
+export function initMotion(): void {
+    if (initializedBody === document.body) return;
+
+    startMotion();
+}
+
+export function revealEverything(): void {
+    const targets = [...getStaggerParents().flatMap(getStaggerChildren), ...getSingleReveals()];
+
+    revealInstantly(targets.filter(element => element.style.opacity === '0'));
 }
 
 export function watchScrolled(listener: ScrolledListener): void {

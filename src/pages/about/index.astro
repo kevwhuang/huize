@@ -1,24 +1,24 @@
 ---
-import AboutClients from '@sections/AboutClients.astro';
-import AboutInvestors from '@sections/AboutInvestors.astro';
-import AboutMilestones from '@sections/AboutMilestones.astro';
-import AboutStory from '@sections/AboutStory.astro';
-import CtaBanner from '@sections/CtaBanner.astro';
+import Clients from '@sections/about/Clients.astro';
+import CtaBanner from '@sections/shared/CtaBanner.astro';
+import Investors from '@sections/about/Investors.astro';
 import Layout from '@/Layout.astro';
-import PageHero from '@sections/PageHero.astro';
+import Milestones from '@sections/about/Milestones.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import Story from '@sections/about/Story.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('about');
 ---
 
 <Layout
-    description="上海惠泽是一家数字健康科技公司，提供全流程、一站式的养老服务和健康管理服务，链接保险客户、企业客户、个人客户与康养、医疗、服务机构。"
-    title="公司简介 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="About Huize"
-        title="公司简介"
-    />
-    <AboutStory />
-    <AboutMilestones />
-    <AboutClients />
-    <AboutInvestors />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <Story />
+    <Milestones />
+    <Clients />
+    <Investors />
     <CtaBanner />
 </Layout>

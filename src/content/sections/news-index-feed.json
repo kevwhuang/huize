@@ -1,0 +1,22 @@
+{
+    "eyebrow": "All Updates",
+    "groups": {
+        "categories": [
+            {
+                "label": "公司新闻",
+                "value": "company"
+            },
+            {
+                "label": "行业新闻",
+                "value": "industry"
+            }
+        ],
+        "lead": [
+            {
+                "suffix": "条，覆盖2020至2024年，按发布时间倒序排列。",
+                "text": "公司新闻与行业新闻共"
+            }
+        ]
+    },
+    "heading": "全部动态"
+}

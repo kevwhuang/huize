@@ -1,16 +1,16 @@
 ---
+import IndustryList from '@sections/news/IndustryList.astro';
 import Layout from '@/Layout.astro';
-import NewsIndustryList from '@sections/NewsIndustryList.astro';
-import PageHero from '@sections/PageHero.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('news-industry');
 ---
 
 <Layout
-    description="康复、康养与大健康领域的研究报告、行业指南与健康知识。"
-    title="行业新闻 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Industry News"
-        title="行业新闻"
-    />
-    <NewsIndustryList />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <IndustryList />
 </Layout>

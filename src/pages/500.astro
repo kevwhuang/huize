@@ -1,14 +1,17 @@
 ---
-import ErrorServer from '@sections/ErrorServer.astro';
 import Layout from '@/Layout.astro';
+import Server from '@sections/error/Server.astro';
+import { getPage } from '@lib/database';
+
+const { description, title } = await getPage('500');
 
 export const prerender = false;
 ---
 
 <Layout
-    description="服务器出现错误，请稍后再试。"
+    description={description}
     noindex
-    title="服务器错误 — 惠泽健康"
+    title={title}
 >
-    <ErrorServer />
+    <Server />
 </Layout>

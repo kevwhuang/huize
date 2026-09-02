@@ -1,0 +1,110 @@
+---
+import { LINKS } from '@lib/constants';
+import { getEditId, getSection } from '@lib/database';
+
+const server = await getSection('error-server');
+---
+
+<section
+    class="error-page section"
+    aria-labelledby="error-server-title"
+>
+    <div class="shell">
+        <div
+            class="error-page__head"
+            data-scroll
+            data-scroll-stagger
+        >
+            <p
+                class="error-page__code"
+                aria-hidden="true"
+            >
+                {server.badge}
+            </p>
+            <h1 id="error-server-title">{server.heading}</h1>
+            <p
+                class="error-page__text"
+                data-edit="sections/error-server.lead"
+                data-edit-id={getEditId('sections/error-server.lead')}
+            >
+                {server.lead}
+            </p>
+            <div class="error-page__actions">
+                <a
+                    class="button button--large button--primary"
+                    href="/"
+                >
+                    返回首页
+                </a>
+                <a
+                    class="button button--ghost button--large"
+                    href={LINKS.hotlineHref}
+                >
+                    致电 {LINKS.hotline}
+                </a>
+            </div>
+        </div>
+        <dl
+            class="error-page__contact"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            <div class="card">
+                <dt>{LINKS.hotlineLabel}</dt>
+                <dd><a href={LINKS.hotlineHref}>{LINKS.hotline}</a></dd>
+            </div>
+            <div class="card">
+                <dt>{LINKS.shanghaiLabel}</dt>
+                <dd><a href={LINKS.shanghaiHref}>{LINKS.shanghai}</a></dd>
+            </div>
+            <div class="card">
+                <dt>{server.caption}</dt>
+                <dd>{LINKS.address}</dd>
+            </div>
+        </dl>
+    </div>
+</section>
+
+<style>
+    .error-page__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.875rem;
+    }
+
+    .error-page__contact {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    }
+
+    .error-page__contact dd {
+        color: var(--color-pine);
+        font-family: var(--font-display);
+        font-size: var(--text-lead);
+        font-weight: 700;
+    }
+
+    .error-page__contact dd a {
+        transition:
+            color var(--duration-fast) var(--ease-out),
+            opacity var(--duration-fast) var(--ease-out);
+    }
+
+    .error-page__contact dd a:active {
+        opacity: 0.8;
+    }
+
+    .error-page__contact dd a:hover {
+        color: var(--color-jade);
+    }
+
+    .error-page__contact dt {
+        color: var(--color-sage);
+        font-family: var(--font-label);
+        font-size: 0.6875rem;
+        letter-spacing: 0.14em;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+    }
+</style>

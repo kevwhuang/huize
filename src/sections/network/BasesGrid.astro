@@ -1,0 +1,178 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getBases, getEditId, getSection, getSite } from '@lib/database';
+
+const bases = await getBases();
+const section = await getSection('network-bases');
+const site = await getSite();
+
+const [headingCopy] = section.groups?.heading ?? [];
+const [leadCopy] = section.groups?.lead ?? [];
+
+const grouped = new Map<string, typeof bases>();
+
+for (const base of bases) {
+    const entries = grouped.get(base.data.region) ?? [];
+
+    entries.push(base);
+    grouped.set(base.data.region, entries);
+}
+
+const regions = [...grouped]
+    .map(([name, entries]) => ({ entries, name }))
+    .sort((first, second) => second.entries.length - first.entries.length);
+
+const lead = `${leadCopy?.text ?? ''} ${regions.length} ${leadCopy?.suffix ?? ''}`;
+---
+
+<section
+    class="bases section"
+    aria-labelledby="bases-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow={section.eyebrow ?? ''}
+            headingId="bases-title"
+        >
+            <span data-edit-count="bases">{bases.length}</span>{' '}
+            {headingCopy?.suffix}
+            <Fragment slot="text">
+                <p>
+                    {lead}
+                </p>
+            </Fragment>
+        </SectionHead>
+        <ul
+            class="bases__themes"
+            aria-label="基地主题"
+            data-scroll="up"
+            data-scroll-stagger
+        >
+            {site.baseThemes.map((theme, index) => (
+                <li
+                    class="tag"
+                    data-edit={`site/main.baseThemes.${index}`}
+                    data-edit-id={getEditId(`site/main.baseThemes.${index}`)}
+                >
+                    {theme}
+                </li>
+            ))}
+        </ul>
+        <ol class="bases__regions">
+            {regions.map((region, index) => (
+                <li
+                    class="bases__region"
+                    data-edit-scope={region.name}
+                    data-scroll={index % 2 === 0 ? 'left' : 'right'}
+                >
+                    <div class="bases__region-head">
+                        <h3>{region.name}</h3>
+                        <p class="bases__region-count">
+                            <span
+                                data-edit-count="bases"
+                                data-edit-count-scope={region.name}
+                            >
+                                {region.entries.length}
+                            </span>{' '}
+                            <span
+                                data-edit="sections/network-bases.caption"
+                                data-edit-id={getEditId('sections/network-bases.caption')}
+                            >
+                                {section.caption}
+                            </span>
+                        </p>
+                    </div>
+                    <ul
+                        class="bases__list"
+                        data-edit-list="bases"
+                    >
+                        {region.entries.map(base => (
+                            <li
+                                class="bases__item"
+                                data-edit-item={`bases/${base.id}`}
+                                data-edit-item-id={getEditId(`bases/${base.id}`)}
+                            >
+                                <span
+                                    data-edit={`bases/${base.id}.name`}
+                                    data-edit-id={getEditId(`bases/${base.id}.name`)}
+                                >
+                                    {base.data.name}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
+
+<style>
+    .bases__item {
+        background: var(--color-white);
+        border: var(--border-soft);
+        border-radius: var(--radius-card-sm);
+        box-shadow: var(--shadow-card);
+        color: var(--color-pine);
+        font-size: var(--text-small);
+        font-weight: 500;
+        line-height: 1.6;
+        padding: 1rem;
+        transition:
+            border-color var(--duration-fast) var(--ease-out),
+            box-shadow var(--duration-fast) var(--ease-out);
+    }
+
+    .bases__item:hover {
+        border-color: var(--color-laurel);
+        box-shadow: var(--shadow-lift);
+    }
+
+    .bases__list {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .bases__region {
+        align-items: start;
+        display: grid;
+        gap: clamp(1rem, calc(0.58rem + 2.08vw), 2.25rem);
+        grid-template-columns: 11rem minmax(0, 1fr);
+    }
+
+    .bases__region-count {
+        color: var(--color-sage);
+        font-size: var(--text-meta);
+        letter-spacing: 0.04em;
+        margin-bottom: 0;
+    }
+
+    .bases__region-head h3 {
+        margin-bottom: 0.375rem;
+    }
+
+    .bases__regions {
+        display: grid;
+        gap: clamp(2rem, calc(1.5rem + 2.5vw), 3.5rem);
+        list-style: none;
+        padding: 0;
+    }
+
+    .bases__themes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.625rem;
+        list-style: none;
+        margin-bottom: clamp(2.25rem, calc(1.83rem + 2.08vw), 3.5rem);
+        padding: 0;
+    }
+
+    @media (max-width: 1024px) {
+        .bases__region {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>

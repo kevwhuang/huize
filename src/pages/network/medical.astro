@@ -1,18 +1,18 @@
 ---
-import CtaBanner from '@sections/CtaBanner.astro';
+import CtaBanner from '@sections/shared/CtaBanner.astro';
 import Layout from '@/Layout.astro';
-import NetworkMedicalTiers from '@sections/NetworkMedicalTiers.astro';
-import PageHero from '@sections/PageHero.astro';
+import MedicalTiers from '@sections/network/MedicalTiers.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('network-medical');
 ---
 
 <Layout
-    description="惠泽医疗机构网络涵盖专科康复医院、三级及以上医院与二级及以上医院，覆盖全国11000家二级及以上公立医院，聚焦脑卒中、骨科等刚需领域。"
-    title="医疗机构 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Medical Network"
-        title="医疗机构"
-    />
-    <NetworkMedicalTiers />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <MedicalTiers />
     <CtaBanner />
 </Layout>

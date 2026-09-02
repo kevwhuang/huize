@@ -1,0 +1,291 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getRegions, getSection, getSite } from '@lib/database';
+
+const entries = await getRegions();
+const section = await getSection('network-cities');
+const site = await getSite();
+
+const [headingCopy] = section.groups?.heading ?? [];
+const [leadCopy] = section.groups?.lead ?? [];
+
+const heading = `${headingCopy?.text ?? ''} ${site.totalCities} ${headingCopy?.suffix ?? ''}`;
+
+const regions = entries.map(entry => ({
+    cities: entry.data.provinces.reduce((total, province) => total + province.cities.length, 0),
+    id: entry.id,
+    name: entry.data.name,
+    provinces: entry.data.provinces,
+}));
+
+const totalProvinces = regions.reduce((total, region) => total + region.provinces.length, 0);
+
+const lead = `${leadCopy?.text ?? ''}${totalProvinces} ${leadCopy?.suffix ?? ''}`;
+const totalValues = [regions.length, totalProvinces, site.totalCities];
+
+const totals = (section.groups?.totals ?? []).map((total, index) => ({ label: total.label, value: totalValues[index] }));
+---
+
+<section
+    class="cities section"
+    aria-labelledby="cities-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow={section.eyebrow ?? ''}
+            headingId="cities-title"
+        >
+            {heading}
+            <Fragment slot="text">
+                <p>
+                    {lead}
+                </p>
+            </Fragment>
+        </SectionHead>
+        <ul
+            class="cities__totals"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {totals.map(total => (
+                <li class="card cities__total">
+                    <p
+                        class="cities__total-value stat"
+                        data-count-to={total.value}
+                    >
+                        {total.value}
+                    </p>
+                    <p class="cities__total-label">{total.label}</p>
+                </li>
+            ))}
+        </ul>
+        <p
+            class="cities__note"
+            data-edit="sections/network-cities.caption"
+            data-edit-id={getEditId('sections/network-cities.caption')}
+            data-scroll
+        >
+            {section.caption}
+        </p>
+        <ul
+            class="cities__regions"
+            data-scroll="up"
+            data-scroll-stagger
+        >
+            {regions.map(region => (
+                <li>
+                    <details
+                        class="card card--flush cities__region"
+                        name="cities"
+                    >
+                        <summary>
+                            <div class="cities__region-heading">
+                                <h3 class="cities__region-name">{region.name}</h3>
+                                <span class="cities__region-count">{region.provinces.length} 个省级行政区 &middot; {region.cities} 个城市</span>
+                            </div>
+                            <span
+                                class="cities__region-toggle"
+                                aria-hidden="true"
+                            />
+                        </summary>
+                        <dl class="cities__provinces">
+                            {region.provinces.map(province => (
+                                <div class="cities__province">
+                                    <dt>{province.name}</dt>
+                                    <dd>{province.cities.join('、')}</dd>
+                                </div>
+                            ))}
+                        </dl>
+                    </details>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .cities {
+        --pad-inline: clamp(1.125rem, calc(0.96rem + 0.83vw), 1.625rem);
+        --space-stack: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+    }
+
+    .cities__note {
+        background: var(--color-mint);
+        border-left: 0.25rem solid var(--color-jade);
+        border-radius: 0 var(--radius-card-sm) var(--radius-card-sm) 0;
+        color: var(--color-sage-dark);
+        font-size: 0.875rem;
+        line-height: 1.8;
+        margin-bottom: var(--space-stack);
+        padding: 0.875rem 1.125rem;
+    }
+
+    .cities__province {
+        border-top: 0.0625rem solid var(--color-snow);
+        display: grid;
+        gap: 0.5rem 1.5rem;
+        grid-template-columns: 6rem minmax(0, 1fr);
+        padding-block: 1rem;
+    }
+
+    .cities__province dd {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        line-height: 1.9;
+        margin-bottom: 0;
+    }
+
+    .cities__province dt {
+        color: var(--color-pine);
+        font-family: var(--font-display);
+        font-size: var(--text-small);
+        font-weight: 700;
+    }
+
+    .cities__provinces {
+        padding: 0 var(--pad-inline) 1.25rem;
+    }
+
+    .cities__region {
+        interpolate-size: allow-keywords;
+    }
+
+    .cities__region:hover {
+        border-color: var(--color-laurel);
+    }
+
+    .cities__region::details-content {
+        height: 0;
+        overflow: clip;
+        transition:
+            content-visibility var(--duration-base) allow-discrete,
+            height var(--duration-base) var(--ease-out);
+    }
+
+    .cities__region[open] .cities__region-toggle {
+        rotate: 45deg;
+    }
+
+    .cities__region[open]::details-content {
+        height: auto;
+    }
+
+    .cities__region summary {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        list-style: none;
+        padding: 1.25rem var(--pad-inline);
+        transition: background var(--duration-fast) var(--ease-out);
+        user-select: none;
+    }
+
+    .cities__region summary:active {
+        background: var(--color-snow);
+    }
+
+    .cities__region summary:focus-visible {
+        border-radius: var(--radius-card);
+        outline-offset: -0.375rem;
+    }
+
+    .cities__region summary:hover {
+        background: var(--color-mist);
+    }
+
+    .cities__region-count {
+        color: var(--color-sage);
+        font-size: var(--text-meta);
+        letter-spacing: 0.04em;
+    }
+
+    .cities__region-heading {
+        align-items: baseline;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 1rem;
+    }
+
+    .cities__region-name {
+        font-size: var(--text-lead);
+        margin-bottom: 0;
+    }
+
+    .cities__region-toggle {
+        flex-shrink: 0;
+        height: 1rem;
+        position: relative;
+        transition: rotate var(--duration-base) var(--ease-out);
+        width: 1rem;
+    }
+
+    .cities__region-toggle::after,
+    .cities__region-toggle::before {
+        background: var(--color-jade);
+        content: '';
+        position: absolute;
+    }
+
+    .cities__region-toggle::after {
+        height: 1rem;
+        left: 0.4375rem;
+        top: 0;
+        width: 0.125rem;
+    }
+
+    .cities__region-toggle::before {
+        height: 0.125rem;
+        left: 0;
+        top: 0.4375rem;
+        width: 1rem;
+    }
+
+    .cities__regions {
+        display: grid;
+        gap: 0.875rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .cities__total {
+        padding: clamp(1.25rem, calc(0.83rem + 2.08vw), 2.5rem) 1.25rem;
+        text-align: center;
+    }
+
+    .cities__total-label {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        letter-spacing: 0.06em;
+        margin-bottom: 0;
+    }
+
+    .cities__total-value {
+        margin-bottom: 0.5rem;
+    }
+
+    .cities__totals {
+        display: grid;
+        gap: 0.875rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        list-style: none;
+        margin-bottom: var(--space-stack);
+        padding: 0;
+    }
+
+    @media (max-width: 768px) {
+        .cities__province {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .cities__totals {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .cities__region::details-content {
+            transition: none;
+        }
+    }
+</style>

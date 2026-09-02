@@ -1,0 +1,111 @@
+---
+import { LINKS } from '@lib/constants';
+import { getSection } from '@lib/database';
+
+const HOTLINE_TOKEN = '{hotline}';
+
+const ctaBanner = await getSection('cta-banner');
+
+const lead = (ctaBanner.lead ?? '').replace(HOTLINE_TOKEN, LINKS.hotline);
+---
+
+<section
+    class="cta-banner section"
+    aria-labelledby="cta-banner-title"
+>
+    <div class="shell">
+        <div
+            class="cta-banner__panel"
+            data-scroll="scale"
+        >
+            <div
+                class="cta-banner__glow glow"
+                aria-hidden="true"
+            />
+            <div class="cta-banner__body">
+                <p
+                    class="eyebrow eyebrow--on-dark"
+                    lang="en"
+                >
+                    {ctaBanner.eyebrow}
+                </p>
+                <h2 id="cta-banner-title">{ctaBanner.heading}</h2>
+                <p class="cta-banner__text">{lead}</p>
+                <div class="cta-banner__actions">
+                    <a
+                        class="button button--large button--on-dark"
+                        href={LINKS.hotlineHref}
+                    >
+                        {LINKS.hotline}
+                    </a>
+                    <a
+                        class="button button--large button--outline"
+                        href="/about/contact"
+                    >
+                        在线咨询
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .button--on-dark {
+        background: var(--color-white);
+        color: var(--color-pine);
+    }
+
+    .button--on-dark:hover {
+        background: var(--color-mint);
+    }
+
+    .button--outline {
+        border-color: var(--color-white-45);
+        color: var(--color-white);
+    }
+
+    .button--outline:hover {
+        border-color: var(--color-white);
+    }
+
+    .cta-banner__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.875rem;
+        justify-content: center;
+    }
+
+    .cta-banner__body {
+        position: relative;
+        text-align: center;
+    }
+
+    .cta-banner__body h2 {
+        margin-bottom: 1rem;
+    }
+
+    .cta-banner__glow {
+        left: 50%;
+        top: -12.5rem;
+        transform: translateX(-50%);
+    }
+
+    .cta-banner__panel {
+        --heading-color: var(--color-white);
+        background: var(--color-pine);
+        border-radius: var(--radius-card-lg);
+        box-shadow: var(--shadow-panel);
+        overflow: clip;
+        padding: clamp(2.5rem, calc(2rem + 2.5vw), 4rem) clamp(1.5rem, calc(1rem + 2.5vw), 3rem);
+        position: relative;
+    }
+
+    .cta-banner__text {
+        color: var(--color-white-70);
+        font-weight: 400;
+        margin-bottom: 2rem;
+        margin-inline: auto;
+        max-width: var(--measure-lead);
+    }
+</style>

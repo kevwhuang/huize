@@ -1,22 +1,22 @@
 ---
-import CtaBanner from '@sections/CtaBanner.astro';
+import CtaBanner from '@sections/shared/CtaBanner.astro';
 import Layout from '@/Layout.astro';
-import PageHero from '@sections/PageHero.astro';
-import ServicesWellnessBases from '@sections/ServicesWellnessBases.astro';
-import ServicesWellnessIntro from '@sections/ServicesWellnessIntro.astro';
-import ServicesWellnessOffer from '@sections/ServicesWellnessOffer.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import WellnessBases from '@sections/services/WellnessBases.astro';
+import WellnessIntro from '@sections/services/WellnessIntro.astro';
+import WellnessOffer from '@sections/services/WellnessOffer.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('services-wellness');
 ---
 
 <Layout
-    description="全国性养老服务提供商。惠泽自2012年布局线下养老机构与线上养老服务平台，现有40多家实体机构、15000张床位，并甄选2000家康养机构与21个康养疗愈基地。"
-    title="康养服务 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Wellness"
-        title="康养服务"
-    />
-    <ServicesWellnessIntro />
-    <ServicesWellnessOffer />
-    <ServicesWellnessBases />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <WellnessIntro />
+    <WellnessOffer />
+    <WellnessBases />
     <CtaBanner />
 </Layout>

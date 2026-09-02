@@ -1,0 +1,119 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getSection } from '@lib/database';
+
+const { eyebrow = '', groups, heading, lead, paragraphs = [] } = await getSection('services-premium-intro');
+
+const pillars = groups?.pillars ?? [];
+---
+
+<section
+    class="section services-premium-intro"
+    aria-labelledby="services-premium-intro-title"
+>
+    <div class="shell">
+        <div class="services-premium-intro__head">
+            <div data-scroll="left">
+                <SectionHead
+                    editKey="sections/services-premium-intro.heading"
+                    eyebrow={eyebrow}
+                    headingId="services-premium-intro-title"
+                >
+                    {heading}
+                    <Fragment slot="text">
+                        <p
+                            data-edit="sections/services-premium-intro.lead"
+                            data-edit-id={getEditId('sections/services-premium-intro.lead')}
+                        >
+                            {lead}
+                        </p>
+                    </Fragment>
+                </SectionHead>
+            </div>
+            <div
+                class="prose services-premium-intro__copy"
+                data-scroll="right"
+            >
+                {paragraphs.map((paragraph, index) => (
+                    <p
+                        data-edit={`sections/services-premium-intro.paragraphs.${index}`}
+                        data-edit-id={getEditId(`sections/services-premium-intro.paragraphs.${index}`)}
+                    >
+                        {paragraph}
+                    </p>
+                ))}
+            </div>
+        </div>
+        <ul
+            class="services-premium-intro__pillars"
+            data-scroll="scale"
+            data-scroll-stagger
+        >
+            {pillars.map((pillar, index) => (
+                <li class="card services-premium-intro__pillar">
+                    <span
+                        class="numeral"
+                        data-edit={`sections/services-premium-intro.groups.pillars.${index}.number`}
+                        data-edit-id={getEditId(`sections/services-premium-intro.groups.pillars.${index}.number`)}
+                    >
+                        {pillar.number}
+                    </span>
+                    <h3>{pillar.title}</h3>
+                    <span
+                        class="label label--gold"
+                        lang="en"
+                    >
+                        {pillar.english}
+                    </span>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>
+
+<style>
+    .services-premium-intro__copy {
+        padding-top: 3rem;
+    }
+
+    .services-premium-intro__head {
+        display: grid;
+        gap: clamp(2rem, calc(1.33rem + 3.33vw), 4rem);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+        margin-bottom: var(--space-split);
+    }
+
+    .services-premium-intro__pillar {
+        display: grid;
+        gap: 0.5rem;
+        height: 100%;
+    }
+
+    .services-premium-intro__pillar h3 {
+        margin-bottom: 0;
+    }
+
+    .services-premium-intro__pillars {
+        display: grid;
+        gap: clamp(1.25rem, calc(1.04rem + 1.04vw), 1.875rem);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    @media (max-width: 1024px) {
+        .services-premium-intro__copy {
+            padding-top: 0;
+        }
+
+        .services-premium-intro__head {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .services-premium-intro__pillars {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>

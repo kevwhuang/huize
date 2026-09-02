@@ -1,62 +1,74 @@
 @import 'tailwindcss';
 
 @theme {
-    --color-cedar: #1A2E29;
-    --color-cloud: #F8FBFA;
-    --color-coral: #A8402A;
-    --color-dew: #FAFCFB;
+    --color-cedar: #1a2e29;
+    --color-cloud: #f8fbfa;
+    --color-cobalt: #1d4ed8;
+    --color-cobalt-light: #c8e0ff;
+    --color-coral: #a8402a;
+    --color-coral-deep: #8b3523;
+    --color-crimson: #c62828;
+    --color-crimson-light: #ffcccc;
+    --color-fern: #096327;
+    --color-fern-light: #c0f7cf;
     --color-forest: #073029;
-    --color-gold: #96631E;
-    --color-gold-light: #C9A24B;
-    --color-ivory: #E9F1EE;
-    --color-jade: #0E7C6B;
-    --color-jade-10: #0E7C6B1A;
-    --color-jade-20: #0E7C6B33;
-    --color-jade-deep: #0A6457;
-    --color-jade-light: #12907D;
-    --color-laurel: #D9ECE5;
-    --color-mint: #EEF6F3;
-    --color-mist: #F1F8F5;
-    --color-moss: #2C3E39;
-    --color-pine: #0A3A33;
-    --color-pine-light: #0A4A42;
-    --color-reef: #9ED3C6;
-    --color-sage: #55645F;
-    --color-sage-dark: #3A534C;
-    --color-sand: #D5E5DF;
-    --color-shell: #E1ECE8;
-    --color-silk: #EAF1EE;
-    --color-slate: #16241F;
-    --color-snow: #EEF4F2;
-    --color-stone: #E4ECE9;
-    --color-veil-06: #073A330F;
-    --color-veil-10: #073A331A;
-    --color-veil-12: #073A331F;
-    --color-veil-80: #073A33CC;
-    --color-white-08: #FFFFFF14;
-    --color-white-12: #FFFFFF1F;
-    --color-white-45: #FFFFFF73;
-    --color-white-55: #FFFFFF8C;
-    --color-white-70: #FFFFFFB3;
-    --color-white-90: #FFFFFFE6;
-    --color-white-92: #FFFFFFEB;
-    --color-willow: #DDEBE6;
+    --color-gold: #96631e;
+    --color-gold-light: #c9a24b;
+    --color-jade: #0e7c6b;
+    --color-jade-10: #0e7c6b1a;
+    --color-jade-20: #0e7c6b33;
+    --color-jade-25: #0e7c6b40;
+    --color-jade-deep: #0a6457;
+    --color-jade-light: #12907d;
+    --color-laurel: #d9ece5;
+    --color-mint: #eef6f3;
+    --color-mist: #f1f8f5;
+    --color-moss: #2c3e39;
+    --color-pine: #0a3a33;
+    --color-pine-light: #0a4a42;
+    --color-reef: #9ed3c6;
+    --color-sage: #55645f;
+    --color-sage-dark: #3a534c;
+    --color-sand: #d5e5df;
+    --color-shell: #e1ece8;
+    --color-silk: #eaf1ee;
+    --color-slate: #16241f;
+    --color-snow: #eef4f2;
+    --color-stone: #e4ece9;
+    --color-veil-05: #073a330d;
+    --color-veil-10: #073a331a;
+    --color-veil-15: #073a3326;
+    --color-veil-20: #073a3333;
+    --color-veil-80: #073a33cc;
+    --color-white: #ffffff;
+    --color-white-10: #ffffff1a;
+    --color-white-15: #ffffff26;
+    --color-white-45: #ffffff73;
+    --color-white-55: #ffffff8c;
+    --color-white-70: #ffffffb3;
+    --color-white-90: #ffffffe6;
+    --color-willow: #ddebe6;
     --font-display: var(--font-noto-serif-sc);
-    --font-label: var(--font-jost), var(--font-noto-sans-sc);
+    --font-label:
+        var(--font-jost),
+        var(--font-noto-sans-sc);
     --font-sans: var(--font-noto-sans-sc);
+    --radius-button: 0.75rem;
     --radius-card: 1.125rem;
     --radius-card-lg: 1.375rem;
-    --radius-card-sm: 0.6875rem;
+    --radius-card-sm: 0.75rem;
     --radius-pill: 62.5rem;
-    --shadow-card: 0 0.5rem 1.5rem #073A330D;
-    --shadow-jade: 0 0.875rem 1.875rem #0E7C6B42;
-    --shadow-lift: 0 1.625rem 3.125rem #073A3321;
-    --shadow-panel: 0 1.375rem 3.125rem #073A3333;
+    --shadow-card: 0 0.5rem 1.5rem var(--color-veil-05);
+    --shadow-jade: 0 0.875rem 1.875rem var(--color-jade-25);
+    --shadow-lift: 0 1.625rem 3.125rem var(--color-veil-15);
+    --shadow-panel: 0 1.375rem 3.125rem var(--color-veil-20);
     --spacing-header: 4.625rem;
     --text-display: clamp(2.6rem, calc(2.05rem + 2.75vw), 4.25rem);
     --text-h2: clamp(1.9rem, calc(1.63rem + 1.33vw), 2.7rem);
     --text-h3: clamp(1.25rem, calc(1.17rem + 0.42vw), 1.5rem);
-    --text-lead: clamp(0.97rem, calc(0.93rem + 0.2vw), 1.09rem);
+    --text-lead: 1.0625rem;
+    --text-meta: 0.8125rem;
+    --text-small: 0.9375rem;
 }
 
 :root {
@@ -67,11 +79,16 @@
     --duration-fast: 0.2s;
     --duration-reveal: 0.9s;
     --ease-out: cubic-bezier(0.22, 0.7, 0.2, 1);
+    --editor-fade: 75%;
     --gutter: clamp(1.25rem, calc(0.58rem + 3.33vw), 3.25rem);
+    --measure-lead: 35rem;
     --measure-prose: 47.5rem;
+    --pad-panel: clamp(1.625rem, calc(1.29rem + 1.67vw), 2.625rem);
     --reveal-offset: 3.5rem;
     --reveal-step: 0.1s;
-    --shell: 78.75rem;
+    --shell: 80rem;
+    --space-grid: clamp(1.5rem, calc(1.17rem + 1.67vw), 2.5rem);
+    --space-split: clamp(2.5rem, calc(1.83rem + 3.33vw), 4.5rem);
 }
 
 a,
@@ -80,6 +97,10 @@ label,
 select,
 summary {
     cursor: pointer;
+}
+
+body {
+    overflow-wrap: anywhere;
 }
 
 h1,
@@ -107,7 +128,9 @@ h3 {
 }
 
 html {
+    overflow-x: clip;
     scroll-behavior: smooth;
+    touch-action: manipulation;
 }
 
 html[data-astro-transition] {
@@ -130,8 +153,8 @@ p {
 
 :focus-visible:not(input, select, textarea) {
     border-radius: 0.125rem;
-    outline: 0.1875rem solid var(--color-jade);
-    outline-offset: 0.1875rem;
+    outline: 0.125rem solid var(--color-jade-light);
+    outline-offset: 0.125rem;
 }
 
 ::placeholder {
@@ -157,5 +180,6 @@ p {
         scroll-behavior: auto !important;
         transition-delay: 0s !important;
         transition-duration: 0.00001s !important;
+        transition-property: none !important;
     }
 }

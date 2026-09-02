@@ -1,0 +1,198 @@
+---
+import MapPin from '@components/icons/MapPin.astro';
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getInstitutions, getSection } from '@lib/database';
+
+const institutions = await getInstitutions();
+const subsidiaries = await getSection('about-subsidiaries');
+
+const groups = (subsidiaries.groups?.brands ?? []).map(brand => ({
+    ...brand,
+    institutions: institutions.filter(institution => institution.data.brand === brand.label),
+}));
+---
+
+<section
+    class="about-subsidiaries section"
+    aria-labelledby="about-subsidiaries-title"
+>
+    <div class="shell">
+        <SectionHead
+            eyebrow={subsidiaries.eyebrow ?? ''}
+            headingId="about-subsidiaries-title"
+        >
+            <span
+                data-edit-count="institutions"
+                data-prefix={subsidiaries.badge}
+                data-suffix={subsidiaries.note}
+            >
+                {subsidiaries.badge}{institutions.length}{subsidiaries.note}
+            </span>
+            <Fragment slot="text">
+                <p
+                    data-edit="sections/about-subsidiaries.lead"
+                    data-edit-id={getEditId('sections/about-subsidiaries.lead')}
+                >
+                    {subsidiaries.lead}
+                </p>
+            </Fragment>
+        </SectionHead>
+        {groups.map((group, index) => (
+            <div
+                class="about-subsidiaries__group"
+                data-edit-scope={group.label}
+            >
+                <div data-scroll="up">
+                    <div class="about-subsidiaries__head">
+                        <h3 class="about-subsidiaries__brand">{group.label}</h3>
+                        <p
+                            class="about-subsidiaries__count label label--gold"
+                            data-edit-count="institutions"
+                            data-edit-count-scope={group.label}
+                            data-suffix={group.suffix}
+                        >
+                            {group.institutions.length}{group.suffix}
+                        </p>
+                        <p
+                            class="about-subsidiaries__region"
+                            data-edit={`sections/about-subsidiaries.groups.brands.${index}.note`}
+                            data-edit-id={getEditId(`sections/about-subsidiaries.groups.brands.${index}.note`)}
+                        >
+                            {group.note}
+                        </p>
+                    </div>
+                    <p
+                        class="about-subsidiaries__blurb"
+                        data-edit={`sections/about-subsidiaries.groups.brands.${index}.text`}
+                        data-edit-id={getEditId(`sections/about-subsidiaries.groups.brands.${index}.text`)}
+                    >
+                        {group.text}
+                    </p>
+                </div>
+                <ul
+                    class="about-subsidiaries__list"
+                    data-edit-list="institutions"
+                    data-scroll="up"
+                    data-scroll-stagger
+                >
+                    {group.institutions.map(institution => (
+                        <li
+                            class="about-subsidiaries__item"
+                            data-edit-item={`institutions/${institution.id}`}
+                            data-edit-item-id={getEditId(`institutions/${institution.id}`)}
+                        >
+                            <p
+                                class="about-subsidiaries__name"
+                                data-edit={`institutions/${institution.id}.name`}
+                                data-edit-id={getEditId(`institutions/${institution.id}.name`)}
+                            >
+                                {institution.data.name}
+                            </p>
+                            <p class="about-subsidiaries__address">
+                                <span
+                                    class="about-subsidiaries__pin"
+                                    aria-hidden="true"
+                                >
+                                    <MapPin size={12} />
+                                </span>
+                                <span
+                                    data-edit={`institutions/${institution.id}.address`}
+                                    data-edit-id={getEditId(`institutions/${institution.id}.address`)}
+                                >
+                                    {institution.data.address}
+                                </span>
+                            </p>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .about-subsidiaries__address {
+        align-items: start;
+        color: var(--color-sage);
+        display: flex;
+        font-size: var(--text-meta);
+        gap: 0.5rem;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+
+    .about-subsidiaries__blurb {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        line-height: 1.9;
+        margin-bottom: 0;
+        max-width: var(--measure-prose);
+    }
+
+    .about-subsidiaries__brand {
+        font-size: var(--text-h2);
+        margin-bottom: 0.25rem;
+    }
+
+    .about-subsidiaries__count {
+        margin-bottom: 0.375rem;
+    }
+
+    .about-subsidiaries__group {
+        margin-bottom: clamp(3rem, calc(2.5rem + 2.5vw), 4.5rem);
+    }
+
+    .about-subsidiaries__group:last-child {
+        margin-bottom: 0;
+    }
+
+    .about-subsidiaries__head {
+        align-items: baseline;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.25rem;
+        margin-bottom: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+    }
+
+    .about-subsidiaries__item {
+        background: var(--color-white);
+        border: var(--border-soft);
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow-card);
+        padding: 1.125rem 1.25rem;
+        transition: border-color var(--duration-fast) var(--ease-out);
+    }
+
+    .about-subsidiaries__item:hover {
+        border-color: var(--color-laurel);
+    }
+
+    .about-subsidiaries__list {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(21rem, 100%), 1fr));
+        list-style: none;
+        padding: 0;
+    }
+
+    .about-subsidiaries__name {
+        color: var(--color-pine);
+        font-family: var(--font-display);
+        font-size: var(--text-small);
+        font-weight: 700;
+        line-height: 1.6;
+        margin-bottom: 0.625rem;
+    }
+
+    .about-subsidiaries__pin {
+        color: var(--color-jade);
+        flex-shrink: 0;
+        padding-block-start: 0.25rem;
+    }
+
+    .about-subsidiaries__region {
+        color: var(--color-sage-dark);
+        font-size: var(--text-meta);
+        margin-bottom: 0.875rem;
+    }
+</style>

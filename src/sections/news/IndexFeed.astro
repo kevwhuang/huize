@@ -1,0 +1,185 @@
+---
+import SectionHead from '@components/SectionHead.astro';
+import { getEditId, getNews, getSection } from '@lib/database';
+
+const ARCHIVE_LINKS = [
+    { href: '/news/company', label: '查看全部公司新闻' },
+    { href: '/news/industry', label: '查看全部行业新闻' },
+];
+
+const news = await getNews();
+const section = await getSection('news-index-feed');
+
+const categories: Record<string, string> = Object.fromEntries(
+    (section.groups?.categories ?? []).map(category => [category.value ?? '', category.label ?? '']),
+);
+
+const [intro] = section.groups?.lead ?? [];
+---
+
+<section
+    class="news-index section"
+    aria-labelledby="news-index-title"
+>
+    <div class="shell">
+        <SectionHead
+            editKey="sections/news-index-feed.heading"
+            eyebrow={section.eyebrow ?? ''}
+            headingId="news-index-title"
+        >
+            {section.heading}
+            <Fragment slot="text">
+                <p>
+                    <span
+                        data-edit="sections/news-index-feed.groups.lead.0.text"
+                        data-edit-id={getEditId('sections/news-index-feed.groups.lead.0.text')}
+                    >
+                        {intro?.text}
+                    </span>{' '}
+                    <span data-edit-count="news">{news.length}</span>{' '}
+                    <span
+                        data-edit="sections/news-index-feed.groups.lead.0.suffix"
+                        data-edit-id={getEditId('sections/news-index-feed.groups.lead.0.suffix')}
+                    >
+                        {intro?.suffix}
+                    </span>
+                </p>
+            </Fragment>
+        </SectionHead>
+        <ol
+            class="news-index__list"
+            data-edit-list="news"
+            data-edit-scope="feed"
+            data-scroll="up"
+            data-scroll-stagger
+        >
+            {news.map(item => (
+                <li
+                    data-edit-item={`news/${item.id}`}
+                    data-edit-item-id={getEditId(`news/${item.id}`)}
+                >
+                    <article class="news-index__item">
+                        <p class="news-index__rail">
+                            <time
+                                class="label"
+                                datetime={item.data.date}
+                            >
+                                {item.data.date.replace(/-/g, '.')}
+                            </time>
+                            <span class:list={['tag', { 'news-index__tag--industry': item.data.category === 'industry' }]}>
+                                {categories[item.data.category]}
+                            </span>
+                        </p>
+                        <div class="news-index__body">
+                            <h3
+                                class="news-index__title"
+                                data-edit={`news/${item.id}.title`}
+                                data-edit-id={getEditId(`news/${item.id}.title`)}
+                            >
+                                {item.data.title}
+                            </h3>
+                            <p
+                                class="news-index__summary"
+                                data-edit={`news/${item.id}.summary`}
+                                data-edit-id={getEditId(`news/${item.id}.summary`)}
+                            >
+                                {item.data.summary}
+                            </p>
+                        </div>
+                    </article>
+                </li>
+            ))}
+        </ol>
+        <nav
+            class="news-index__actions"
+            aria-label="新闻分类"
+            data-scroll="up"
+        >
+            {ARCHIVE_LINKS.map(link => (
+                <a
+                    class="link-more"
+                    href={link.href}
+                >
+                    {link.label}
+                </a>
+            ))}
+        </nav>
+    </div>
+</section>
+
+<style>
+    .news-index {
+        --space-row: clamp(1.5rem, calc(1.33rem + 0.83vw), 2rem);
+    }
+
+    .news-index__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 2.5rem;
+    }
+
+    .news-index__actions .link-more {
+        min-height: 2.75rem;
+    }
+
+    .news-index__actions .link-more::before {
+        content: none;
+    }
+
+    .news-index__body {
+        padding-bottom: var(--space-row);
+    }
+
+    .news-index__item {
+        border-top: var(--border-soft);
+        display: grid;
+        gap: clamp(0.75rem, calc(0.25rem + 2.5vw), 2.25rem);
+        grid-template-columns: 10.5rem minmax(0, 1fr);
+        padding-top: var(--space-row);
+    }
+
+    .news-index__list {
+        list-style: none;
+        margin-bottom: var(--space-row);
+        padding: 0;
+    }
+
+    .news-index__rail {
+        align-items: start;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 0;
+    }
+
+    .news-index__summary {
+        color: var(--color-sage);
+        font-size: 0.875rem;
+        line-height: 1.9;
+        margin-bottom: 0;
+        max-width: var(--measure-prose);
+    }
+
+    .news-index__tag--industry {
+        background: var(--color-white);
+        box-shadow: inset 0 0 0 0.0625rem var(--color-sand);
+        color: var(--color-gold);
+    }
+
+    .news-index__title {
+        font-size: clamp(1.0625rem, calc(1.02rem + 0.21vw), 1.1875rem);
+        margin-bottom: 0.625rem;
+    }
+
+    @media (max-width: 1024px) {
+        .news-index__item {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .news-index__rail {
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+    }
+</style>

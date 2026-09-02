@@ -1,18 +1,18 @@
 ---
-import CtaBanner from '@sections/CtaBanner.astro';
+import BasesGrid from '@sections/network/BasesGrid.astro';
+import CtaBanner from '@sections/shared/CtaBanner.astro';
 import Layout from '@/Layout.astro';
-import NetworkBasesGrid from '@sections/NetworkBasesGrid.astro';
-import PageHero from '@sections/PageHero.astro';
+import PageHero from '@sections/shared/PageHero.astro';
+import { getPage } from '@lib/database';
+
+const { description, eyebrow = '', heading = '', title } = await getPage('network-bases');
 ---
 
 <Layout
-    description="惠泽21个康养疗愈基地分布在海南、云南、浙江等省级区域，主题涵盖温泉、雨林、海滩与湿地，打造旅居康养与疗愈目的地。"
-    title="康养基地 — 惠泽健康"
+    description={description}
+    title={title}
 >
-    <PageHero
-        eyebrow="Wellness Bases"
-        title="康养基地"
-    />
-    <NetworkBasesGrid />
+    <PageHero eyebrow={eyebrow} title={heading} />
+    <BasesGrid />
     <CtaBanner />
 </Layout>
